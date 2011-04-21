@@ -4,7 +4,7 @@ import java.sql.*;
 import org.postgis.*;
 
 
-public class Main {
+public class QueryTests{
 
 	/**
 	 * @param args

@@ -2,5 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/home/barroso/Documents/aau/mi2_d402a/project/trafficCode/postgis.jar"/>
+	<classpathentry kind="lib" path="/home/barroso/Documents/aau/mi2_d402a/project/trafficCode/postgresql.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
