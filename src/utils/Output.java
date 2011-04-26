@@ -42,7 +42,7 @@ public class Output {
 									"<coordinates>\n";
 									for(int i = 0; i < path.size(); i++){
 										GPSSignal g = path.getInstance(i);
-										output += g.getLatitude()+","+g.getLongitude()+"\n";
+										output += g.getLongitude()+","+g.getLatitude()+"\n";
 									}		
 		output += 					"</coordinates>\n" +
 								"</LineString>\n" +
