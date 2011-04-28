@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 
 import traffic.GPSSignal;
-import traffic.Path;
+import traffic.Trip;
 
 public class Output {
 
@@ -17,14 +17,14 @@ public class Output {
 	}
 	
 	public void save2database(){
-		//TODO
+		
 	}
 	
 	public void save2file(String output){
 		writeFile(output,"txt");
 	}
 	
-	public void savePathToKML(Path path){		
+	public void savePathToKML(Trip path){		
 		String output = "<?xml version='1.0' encoding='UTF-8'?>\n";
 		//output += "<import namespace='http://www.w3.org/2005/Atom' schemaLocation='http://code.google.com/apis/kml/schema/atom-author-link.xsd'/>";
 		output += "<kml xmlns='http://www.opengis.net/kml/2.2'>\n";		
@@ -54,7 +54,7 @@ public class Output {
 		writeFile(output,"kml");		
 	}
 	public void save2KML(){		
-		//TODO
+		//
 	}
 	
 	public String toString(){

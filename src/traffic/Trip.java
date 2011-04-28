@@ -1,18 +1,18 @@
 package traffic;
 
-import interfaces.IPath;
+import interfaces.ITrip;
 
 import java.util.ArrayList;
 
-public class Path implements IPath {
+public class Trip implements ITrip {
 
 	private ArrayList<GPSSignal> path;
 	
-	public Path(){
+	public Trip(){
 		this.path = new ArrayList<GPSSignal>();
 	}
 	
-	public Path(ArrayList<GPSSignal> path){
+	public Trip(ArrayList<GPSSignal> path){
 		this.path = path;
 	}
 	

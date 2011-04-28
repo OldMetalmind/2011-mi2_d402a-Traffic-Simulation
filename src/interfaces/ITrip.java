@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import traffic.GPSSignal;
 
-public interface IPath {
+public interface ITrip {
 	
 	//Get all the GPS signals of the path
 	public ArrayList<GPSSignal> getPath();	
