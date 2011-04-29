@@ -25,11 +25,7 @@ public class mainTest {
 	 * All this is output into a text.kml file to that it can be visible on Google Earth. 
 	 */
 	public static void test() {
-		
-		
-		UserInput user = new UserInput();
-		user.setVisible(true);
-		
+				
 		java.sql.Connection conn;
 		
 		String q = "SELECT * FROM shortest_path(' SELECT gid AS id, start_id::int4 AS source, end_id::int4 AS target, ST_Length(the_geom)::float8 AS cost FROM network', 1, 2, false, false);";

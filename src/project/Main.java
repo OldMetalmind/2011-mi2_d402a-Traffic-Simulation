@@ -3,7 +3,11 @@ package project;
 import java.sql.*;
 
 public class Main {
-
+	public static void main(String[] argv) {
+		
+	}
+	/*
+	 * 
     public static void main(String[] argv) {
         System.out.println("Checking if Driver is registered with DriverManager.");
 
@@ -49,5 +53,6 @@ public class Main {
         } else {
             System.out.println("We should never get here.");
         }
-    }
+    }    
+	 */
 }

@@ -59,6 +59,8 @@ public class DatabaseUtil {
 	 * Finds the shortest path between two points and return the trip
 	 */
 	public Trip getShortestPath(GPSSignal from, GPSSignal to){
+		
+		//TODO Find the closest position in a road that is closest to the GPSSignal from (?);		
 		String q = "SELECT * FROM shortest_path(' SELECT gid AS id, start_id::int4 AS source, end_id::int4 AS target, ST_Length(the_geom)::float8 AS cost FROM network', 1, 2, false, false);";
 		Trip UTMtrip = new Trip();
 		try {

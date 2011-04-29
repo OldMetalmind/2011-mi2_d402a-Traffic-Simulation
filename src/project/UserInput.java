@@ -15,8 +15,8 @@ public class UserInput extends javax.swing.JFrame {
     private Double frequency;
     private String nonFormatedFromZones;
     private String nonFormatedToZones;
-    private ArrayList<String> fromZones; 
-    private ArrayList<String> toZones;    /** Creates new form NewJFrame */
+    private ArrayList<Zone> fromZones; 
+    private ArrayList<Zone> toZones;    /** Creates new form NewJFrame */
     public UserInput() {
         initComponents();
     }
