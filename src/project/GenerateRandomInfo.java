@@ -2,7 +2,7 @@ package project;
 
 import interfaces.IGenerateRandomInfo;
 
-public class GenerateRanomInfo implements IGenerateRandomInfo {
+public class GenerateRandomInfo implements IGenerateRandomInfo {
 
 	@Override
 	//TODO Given the zones from and to, generate the vehicle. 

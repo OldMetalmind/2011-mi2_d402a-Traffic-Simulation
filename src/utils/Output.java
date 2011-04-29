@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import traffic.GPSSignal;
 import traffic.Trip;
 
+
+/*
+ * This class will only serve to output to a .KML file. 
+ * The rest is open for future development.
+ * 
+ */
 public class Output {
 
 	ArrayList<Pair<String,String>> data;
