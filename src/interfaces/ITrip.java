@@ -2,7 +2,8 @@ package interfaces;
 
 import java.util.ArrayList;
 
-import traffic.GPSSignal;
+import dataStructures.GPSSignal;
+
 
 public interface ITrip {
 	

@@ -2,8 +2,9 @@ package utils;
 
 import java.sql.*;
 
-import traffic.GPSSignal;
-import traffic.Trip;
+import dataStructures.GPSSignal;
+import dataStructures.Trip;
+
 
 public class DatabaseUtil {
 
@@ -56,31 +57,10 @@ public class DatabaseUtil {
 	}
 	
 	/*
-	 * Finds the shortest path between two points and return the trip
+	 * Finds the shortest path between two points and return the Trip
 	 */
-	public Trip getShortestPath(GPSSignal from, GPSSignal to){
-		
-		//TODO Find the closest position in a road that is closest to the GPSSignal from (?);		
-		String q = "SELECT * FROM shortest_path(' SELECT gid AS id, start_id::int4 AS source, end_id::int4 AS target, ST_Length(the_geom)::float8 AS cost FROM network', 1, 2, false, false);";
-		Trip UTMtrip = new Trip();
-		try {
-			//String url = "jdbc:postgresql://localhost:5432/project";
-			//conn = DriverManager.getConnection(url, "postgres", "123");
-			//Statement s = conn.createStatement();
-			Statement s = this.connection.createStatement();
-	
-			ResultSet r = s.executeQuery(q);
-			while(r.next()){
-				String road_id = r.getString(2);
-				//getPoints(connection,road_id);
-			}
-			s.close();
-			connection.close();
-		}
-		catch( Exception e){
-			e.printStackTrace();
-		}	
-		//UTM2GWS84(UTMtrip);
+	public Trip getShortestPath(GPSSignal from, GPSSignal to){		
+		//TODO Find the shortest trip between from and to points		
 		return null;
 	}
 }

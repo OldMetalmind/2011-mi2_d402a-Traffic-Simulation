@@ -1,6 +1,5 @@
-package project;
+package dataStructures;
 
-import traffic.GPSSignal;
 import interfaces.IZone;
 
 public class Zone implements IZone {
@@ -17,5 +16,11 @@ public class Zone implements IZone {
 		return Math.sqrt( Math.pow(center.getLatitude() - gps.getLatitude(), 2 )
 				+ Math.pow(center.getLongitude() - gps.getLongitude(), 2) )
 				< radius;
+	}
+	
+	public GPSSignal generateRandomGPS(){
+		//TODO: given the currently this.center and this.radius then return a GPSSignal
+		//check Helper.java
+		return null;
 	}
 }

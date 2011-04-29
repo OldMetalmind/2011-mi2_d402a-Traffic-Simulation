@@ -2,7 +2,8 @@ package project;
 
 import java.util.ArrayList;
 
-import tests.mainTest;
+import dataStructures.Zone;
+
 
 /**
  *
@@ -189,22 +190,17 @@ public class UserInput extends javax.swing.JFrame {
         this.frequency = Double.parseDouble(input[1]);
         this.nonFormatedFromZones = input[2];
         this.nonFormatedToZones = input[3];
-       // System.out.println(this.numberOfCars+"\n"+this.frequency+"\n"+this.nonFormatedFromZones+"\n"+this.nonFormatedToZones);
-        // TODO Generate the Zones given the NonFormatedZones;
+        
         this.setVisible(false);
     }
 
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {      java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new UserInput().setVisible(true);            }
-        });
-        
-        mainTest.test();
-        //TODO pass the arguments like this:
-        //mainTest.test(this.numberOfCars, this.frequency, this.FromZones, this.toZones);
+    public void start(){
+		java.awt.EventQueue.invokeLater(new Runnable() {
+	        public void run() {
+	            new UserInput().setVisible(true);            }
+	    });
+	    
+	    TrafficAlgorithm.start();	    
     }
 
     // Variables declaration - do not modify

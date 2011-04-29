@@ -1,7 +1,7 @@
 package interfaces;
 
-import project.Vehicle;
-import project.Zone;
+import dataStructures.Vehicle;
+import dataStructures.Zone;
 
 public interface IGenerateRandomInfo {
 	

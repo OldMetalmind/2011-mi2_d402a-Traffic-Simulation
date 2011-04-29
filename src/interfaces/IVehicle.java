@@ -1,6 +1,6 @@
 package interfaces;
 
-import traffic.GPSSignal;
+import dataStructures.GPSSignal;
 
 public interface IVehicle {
 		

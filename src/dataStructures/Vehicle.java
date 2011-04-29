@@ -1,20 +1,22 @@
-package project;
+package dataStructures;
 
-import traffic.GPSSignal;
-import traffic.Trip;
 import interfaces.IVehicle;
 
 public class Vehicle implements IVehicle {
 	
 	final private Integer personalMaxSpeed;
 	final private Trip shortestPath;
-	final private String vehicleID;
 	private Trip trip;
 	private String gpsFormat;
 	
-	public Vehicle(String id, Trip shortestPath, String gpsFormat){
+	public Vehicle(Trip shortestPath){
 		this.personalMaxSpeed = -1; //Unlimited
-		this.vehicleID = id;
+		this.shortestPath = shortestPath;
+		this.gpsFormat = "UTM";
+	}	
+	
+	public Vehicle(Trip shortestPath, String gpsFormat){
+		this.personalMaxSpeed = -1; //Unlimited
 		this.shortestPath = shortestPath;
 		this.gpsFormat = gpsFormat;
 	}	
@@ -37,7 +39,7 @@ public class Vehicle implements IVehicle {
 
 	@Override
 	public void nextStep() {
-		// TODO This should be done after the first demo. To confirm that the vehicles don't overlap
+		// TODO (not yet) This should be done after the first demo. To confirm that the vehicles don't overlap
 		
 	}
 
@@ -47,10 +49,6 @@ public class Vehicle implements IVehicle {
 
 	public String getGpsFormat() {
 		return gpsFormat;
-	}
-
-	public String getID() {		
-		return vehicleID;
 	}
 
 	@Override

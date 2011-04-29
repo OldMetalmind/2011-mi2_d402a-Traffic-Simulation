@@ -1,4 +1,4 @@
-package utils;
+package dataStructures;
 
 public class Pair<L,R> {
 	

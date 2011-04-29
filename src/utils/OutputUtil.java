@@ -4,8 +4,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
-import traffic.GPSSignal;
-import traffic.Trip;
+import dataStructures.GPSSignal;
+import dataStructures.Pair;
+import dataStructures.Trip;
+
 
 
 /*
@@ -13,24 +15,25 @@ import traffic.Trip;
  * The rest is open for future development.
  * 
  */
-public class Output {
+public class OutputUtil {
 
-	ArrayList<Pair<String,String>> data;
 	private static String filename;
 	
-	public Output(String name){
+	public OutputUtil(String name){
 		filename = name;
 	}
 	
-	public void save2database(){
-		
-	}
+	//public void save2database(){}
 	
 	public void save2file(String output){
 		writeFile(output,"txt");
 	}
 	
-	public void savePathToKML(Trip path){		
+	/*
+	 * This only saves 1 trip to a KML file
+	 */
+	public void savePathToKML(Trip path){
+		
 		String output = "<?xml version='1.0' encoding='UTF-8'?>\n";
 		//output += "<import namespace='http://www.w3.org/2005/Atom' schemaLocation='http://code.google.com/apis/kml/schema/atom-author-link.xsd'/>";
 		output += "<kml xmlns='http://www.opengis.net/kml/2.2'>\n";		
@@ -59,21 +62,15 @@ public class Output {
 		
 		writeFile(output,"kml");		
 	}
-	public void save2KML(){		
-		//
+	
+	/*
+	 * This method accepts a list of trips and writes them into a .kml file 
+	 */
+	public void save2KML(ArrayList<Trip> trips){		
+		//TODO: Given a undetermined number of trips write them all into a .kml file
+		//check Helper.java
 	}
 	
-	public String toString(){
-		String out = "";
-		for(int i = 0; i < data.size(); i++){
-			if(i == 0){
-				out += data.get(0).toString();
-				continue;
-			}
-			out += " " + data.get(i).toString();
-		}
-		return out;
-	}
 	
 	private void writeFile(String output, String ext){
 		try{

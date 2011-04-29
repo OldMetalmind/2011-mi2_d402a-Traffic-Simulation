@@ -1,6 +1,6 @@
 package interfaces;
 
-import project.Road;
+import dataStructures.Road;
 
 public interface IMap {
 	

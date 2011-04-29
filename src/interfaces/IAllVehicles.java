@@ -1,9 +1,9 @@
 package interfaces;
 
-import project.Vehicle;
+import dataStructures.Vehicle;
 
 public interface IAllVehicles {
 
-	public Vehicle getVehicle(String id);
 	public void addVehicle(Vehicle vehicle);
+	Vehicle getVehicle(Integer index);
 }

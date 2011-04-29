@@ -1,4 +1,4 @@
-package traffic;
+package dataStructures;
 
 public class GPSSignal {
 

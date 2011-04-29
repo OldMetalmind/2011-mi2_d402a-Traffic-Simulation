@@ -1,19 +1,28 @@
-package traffic;
+package dataStructures;
 
 import interfaces.ITrip;
 
 import java.util.ArrayList;
 
+
 public class Trip implements ITrip {
 
 	private ArrayList<GPSSignal> path;
+	private String format;
 	
-	public Trip(){
+	public Trip(String format){
 		this.path = new ArrayList<GPSSignal>();
+		this.setFormat(format);
 	}
 	
 	public Trip(ArrayList<GPSSignal> path){
 		this.path = path;
+		if(!path.isEmpty()) 
+			this.setFormat(path.get(0).getFormat()); 
+		else {
+			System.out.println("ERROR no format.....");
+			this.setFormat(null) ; 
+		}
 	}
 	
 	public ArrayList<GPSSignal> getPath() {		
@@ -41,5 +50,13 @@ public class Trip implements ITrip {
 	
 	public GPSSignal getInstance(Integer i) {		
 		return path.get(i);
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
+	}
+
+	public String getFormat() {
+		return format;
 	}
 }
