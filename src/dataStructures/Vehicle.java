@@ -60,5 +60,9 @@ public class Vehicle implements IVehicle {
 	public GPSSignal to() {
 		return this.trip.getInstance(trip.size());
 	}	
+	
+	public String toString() {
+		return personalMaxSpeed+" "+shortestPath.toString()+" "+trip.toString()+" "+gpsFormat;
+	}
 
 }

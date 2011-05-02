@@ -56,5 +56,10 @@ public class Helper {
 		}
 		return GWS84trip;
 	}	
+	private static GPSSignal PointUTML2GWS84(GPSSignal signal){
+		UTMRef utm = new UTMRef( signal.getLatitude().intValue(), signal.getLongitude().intValue(),'N', 32);
+		LatLng ll = utm.toLatLng();
+		return new GPSSignal(ll.toString(),"GWS84");
+	}
 
 }

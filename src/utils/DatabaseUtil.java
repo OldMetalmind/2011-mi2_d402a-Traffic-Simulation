@@ -5,7 +5,9 @@ import java.sql.*;
 import dataStructures.GPSSignal;
 import dataStructures.Trip;
 
-
+/*
+ * Every action/method related to the database, should be here.
+ */
 public class DatabaseUtil {
 
 	java.sql.Connection connection;

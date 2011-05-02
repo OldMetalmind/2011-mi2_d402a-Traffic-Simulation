@@ -6,5 +6,6 @@ public interface IZone {
 	
 	public boolean hasInside(GPSSignal gps);
 	public GPSSignal generateRandomGPS();
+	public String toString();
 
 }

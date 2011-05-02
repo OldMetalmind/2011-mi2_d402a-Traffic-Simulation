@@ -4,11 +4,6 @@ import java.util.ArrayList;
 
 import dataStructures.Zone;
 
-
-/**
- *
- * @author barroso
- */
 public class UserInput extends javax.swing.JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -56,13 +51,13 @@ public class UserInput extends javax.swing.JFrame {
             }
         });
 
-        jLabelFromZones.setText("From zones: [center coordinate (x,y); radius (km)]");
+        jLabelFromZones.setText("From zones: [center coordinate (GWS84); radius (km)]");
 
         jTextAreaFromZones.setColumns(20);
         jTextAreaFromZones.setRows(5);
         jScrollPane1.setViewportView(jTextAreaFromZones);
 
-        jLabelToZones.setText("To zones: [center coordinate (x,y); radius (km)]");
+        jLabelToZones.setText("To zones: [center coordinate (GWS84); radius (km)]");
 
         jTextAreaToZones.setColumns(20);
         jTextAreaToZones.setRows(5);
@@ -185,22 +180,40 @@ public class UserInput extends javax.swing.JFrame {
     }
 
     private void jButtonConfirmMouseClicked(java.awt.event.MouseEvent evt) {
+        this.fromZones = new ArrayList<Zone>();
+        this.toZones = new ArrayList<Zone>();
+        
         String input[] = jTextAreaSubmit.getText().split("#");
         this.numberOfCars = Integer.parseInt(input[0]);
         this.frequency = Double.parseDouble(input[1]);
         this.nonFormatedFromZones = input[2];
-        this.nonFormatedToZones = input[3];
+        if(!input[3].isEmpty())
+        	this.nonFormatedToZones = input[3];
+        else 
+        	this.nonFormatedToZones = "";
+                
         
+        String rawSplit[] = this.nonFormatedFromZones.split("[:]");
+	        for(int i = 0; i < rawSplit.length; i++) {
+		        this.fromZones.add( new Zone(rawSplit[i]) );
+        }
+	    String colSplit[] = nonFormatedToZones.split(":");
+	        for(int i = 0; i < colSplit.length; i++) {
+		        this.toZones.add( new Zone(rawSplit[i]) );
+        }
+        
+
         this.setVisible(false);
+        TrafficAlgorithm.start(this.numberOfCars, this.frequency, this.fromZones, this.toZones);
     }
 
     public void start(){
 		java.awt.EventQueue.invokeLater(new Runnable() {
 	        public void run() {
-	            new UserInput().setVisible(true);            }
+	            new UserInput().setVisible(true);
+	        }
 	    });
-	    
-	    TrafficAlgorithm.start();	    
+			    	    
     }
 
     // Variables declaration - do not modify
