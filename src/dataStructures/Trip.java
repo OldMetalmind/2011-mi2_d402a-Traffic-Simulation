@@ -34,7 +34,8 @@ public class Trip implements ITrip {
 	}
 
 	public void addInstance(GPSSignal s) {
-		this.path.add(s);
+		if(!this.path.contains(s))
+			this.path.add(s);
 	}
 
 	public void setInstance(Integer i, GPSSignal s) {
@@ -67,5 +68,16 @@ public class Trip implements ITrip {
 			output += this.path.get(i).toString()+";";
 		
 		return output;
+	}
+
+	@Override
+	public void addInstance(GPSSignal s, Integer speedLimit) {
+		if(!this.path.contains(s)){
+			this.path.add(s);
+			this.speedLimit.add(speedLimit);
+			if(this.speedLimit.size() != this.path.size())
+				System.out.println("There's a problem with size");
+		}
+		
 	}
 }

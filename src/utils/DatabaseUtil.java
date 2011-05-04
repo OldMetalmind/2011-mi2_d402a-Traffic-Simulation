@@ -2,8 +2,6 @@ package utils;
 
 import java.sql.*;
 
-import uk.me.jstott.jcoord.LatLng;
-
 import dataStructures.GPSSignal;
 import dataStructures.Trip;
 
@@ -76,28 +74,58 @@ public class DatabaseUtil {
 		
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
-		return Utils.ResultSet2Trip(result);
+		return resultSet2Trip(result);
 	}
-	
+	/**
+	 * 
+	 * @param result
+	 * @return Trip in GSW84 format
+	 * @throws SQLException 
+	 * @throws NumberFormatException 
+	 */
+	//TODO: ResultSet to Trip, it will return 
+	private Trip resultSet2Trip(ResultSet result) throws NumberFormatException, SQLException{
+		//vertex_id | edge_id | cost
+		Trip trip = new Trip("GSW84");
+		
+		while(result.next()){
+			int id = Integer.parseInt(result.getString("edged_id"));
+			String sql = 	"SELECT ST_asText(startpoint) AS start, " +
+								"ST_asText(endpoint) AS end, " +
+								"hastmax" +
+							"FROM network WHERE id ="+id;
+			Statement statement = this.connection.createStatement();
+			ResultSet rst = statement.executeQuery(sql);
+			Integer speedLimit = Integer.parseInt(rst.getString("hastmax"));
+			trip.addInstance(new GPSSignal(rst.getString("start"), trip.getFormat()), speedLimit);
+			trip.addInstance(new GPSSignal(rst.getString("end"), trip.getFormat()), speedLimit);
+		}
+		return trip;
+	}
+	/**
+	 * 
+	 * @param signal
+	 * @return the id of the_geom closest to the signal given
+	 * @throws SQLException
+	 */
 	private Integer getClosestPoint(GPSSignal signal) throws SQLException{		
 		if(signal.getFormat() != "UML")
 			signal = Utils.UTM2GWS84(signal);
 			
-		String sql = "SELECT id" +
-					"FROM network as f" +
-					"WHERE EXISTS (" +
-						"SELECT min(ST_Distance(ST_ClosestPoint(g.the_geom, pt), pt) )" +
+		String sql = 	"SELECT id" +
 						"FROM (" +
-						"SELECT" +
-							"'POINT("+signal.getLatitude()+" "+signal.getLongitude()+")'::geometry AS pt" +
-						") AS foo" +
-					")" +
-					"LIMIT 1";
+								"SELECT" +
+								"	'POINT(691068 6140692)'::geometry AS pt" +
+								") AS foo," +
+								"network as f, network as g" +
+								"WHERE ST_Distance(ST_ClosestPoint(f.the_geom, pt), pt)" +
+								"	< ST_Distance(ST_ClosestPoint(g.the_geom, pt), pt)" +
+						"LIMIT 1;";
 		
 		int id = -1;
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
-		id = Integer.parseInt(result.getString(0));
+		id = Integer.parseInt(result.getString(id));
 		result.close();
 		statement.close();		
 		return id;

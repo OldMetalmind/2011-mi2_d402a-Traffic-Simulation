@@ -72,12 +72,5 @@ public class Utils {
 		UTMRef utm = ll.toUTMRef();
 		return new GPSSignal(utm.toString(),"UTM");
 	}
-	
-	//TODO: ResultSet to Trip
-	public static Trip ResultSet2Trip(ResultSet result){
-		//vertex_id | edge_id | cost
-		Trip trip = new Trip("UTM");
-		return null;
-	}
 
 }

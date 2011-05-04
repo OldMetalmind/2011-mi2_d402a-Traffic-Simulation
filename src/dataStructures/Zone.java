@@ -1,7 +1,5 @@
 package dataStructures;
 
-import java.util.Random;
-
 import interfaces.IZone;
 
 public class Zone implements IZone {
@@ -22,14 +20,15 @@ public class Zone implements IZone {
 		this.radius = Double.parseDouble(coord[1]);
 	}
 
-	//TODO: it's not radius
+	/*
 	public boolean hasInside(GPSSignal gps) {
 		return Math.sqrt( Math.pow(center.getLatitude() - gps.getLatitude(), 2 )
 				+ Math.pow(center.getLongitude() - gps.getLongitude(), 2) )
 				< radius;
 	}
+	*/
 	
-	//TODO: is GWS84 in km or meters? I mean, in which scale is GWS84?
+	//TODO: is GWS84 in km or meters? I mean, in which scale is» GWS84?
 	//http://en.wikipedia.org/wiki/World_Geodetic_System
 	public GPSSignal generateRandomGPS(){
 		/*
@@ -47,23 +46,5 @@ public class Zone implements IZone {
 	
 	public String toString(){
 		return "("+this.center.toString()+") "+this.radius;
-	}
-	
-	private double retPX(){
-		return -Math.acos( first() - second() ) +
-				this.center.getLongitude() + 
-				Math.PI;
-	}
-	
-	//TODO: ...
-	private double first(){
-		return ( 
-					(Math.cos(this.center.getLatitude()) * Math.cos(1)) 
-				);
-	}
-	//TODO: ...
-	private double second(){
-		return 1;
-	}
-	
+	}	
 }
