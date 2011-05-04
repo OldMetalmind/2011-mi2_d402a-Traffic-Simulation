@@ -14,10 +14,9 @@ public class Zone implements IZone {
 	}
 	
 	public Zone(String zonex) {
-		zonex = zonex.replaceAll("[^\\w,:;#?\\s]", "");
-		String coord[] = zonex.split(";");
-		this.center = new GPSSignal(coord[0].replace(',', ' '),"GWS84");
-		this.radius = Double.parseDouble(coord[1]);
+		String coord[] = zonex.split(" ");
+		this.center = new GPSSignal(coord[0]+" "+coord[1]);
+		this.radius = Double.parseDouble(coord[2]);
 	}
 
 	/*
@@ -45,6 +44,6 @@ public class Zone implements IZone {
 	}
 	
 	public String toString(){
-		return "("+this.center.toString()+") "+this.radius;
+		return "("+this.center.toString()+") "+this.radius+" -format: "+ this.center.getFormat();
 	}	
 }

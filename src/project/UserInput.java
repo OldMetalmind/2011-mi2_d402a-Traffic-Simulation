@@ -173,7 +173,7 @@ public class UserInput extends javax.swing.JFrame {
                 jTextAreaFromZones.getText()+ "#" +
                 jTextAreaToZones.getText();
         if(insert.length() <= 3)        	
-            jTextAreaSubmit.setText("10#1#[(1,1);100]#[(1,1);100]");        
+            jTextAreaSubmit.setText("5#1#582319.51 6323951.61 100#717230.03 6182185.2 100");        
         else    
         	jTextAreaSubmit.setText(insert);
     }
@@ -195,14 +195,14 @@ public class UserInput extends javax.swing.JFrame {
         else 
         	this.nonFormatedToZones = "";
         
-        
-        String rawSplit[] = this.nonFormatedFromZones.split("[:]");
-	        for(int i = 0; i < rawSplit.length; i++) {
-		        this.fromZones.add( new Zone(rawSplit[i]) );
+        String rawSplit[] = this.nonFormatedFromZones.split(":");
+	    for(int i = 0; i < rawSplit.length; i++) {
+		   this.fromZones.add( new Zone(rawSplit[i]) );
+		     
         }
 	    String colSplit[] = nonFormatedToZones.split(":");
-	        for(int i = 0; i < colSplit.length; i++) {
-		        this.toZones.add( new Zone(rawSplit[i]) );
+	    for(int i = 0; i < colSplit.length; i++) {
+		   this.toZones.add( new Zone(colSplit[i]) );
         }
         
 

@@ -62,16 +62,19 @@ public class DatabaseUtil {
 	 * Finds the shortest path between two points and return the Trip
 	 */
 	public Trip getShortestPath(GPSSignal from, GPSSignal to) throws SQLException{
+		if(from.equals(to))
+			return new Trip(to.getFormat());
+		
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);
-			
-		String sql = "SELECT * FROM shortest_path(' " +
-				"SELECT gid AS id," +
-				"start_id::int4 AS source," +
-				"end_id::int4 AS target," +
-				"ST_Length(the_geom)::float8 AS cost" +
-				"FROM network', "+idFrom+", "+idTo+", false, false);";
 		
+		String sql = "SELECT * FROM shortest_path(' " +
+				" SELECT gid AS id, " +
+				" start_id::int4 AS source, " +
+				" end_id::int4 AS target, " +
+				" ST_Length(the_geom)::float8 AS cost " +
+				" FROM network', "+idFrom+", "+idTo+", false, false);";
+				
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		return resultSet2Trip(result);
@@ -87,19 +90,26 @@ public class DatabaseUtil {
 	private Trip resultSet2Trip(ResultSet result) throws NumberFormatException, SQLException{
 		//vertex_id | edge_id | cost
 		Trip trip = new Trip("GSW84");
-		
+		Statement statement = this.connection.createStatement();
 		while(result.next()){
-			int id = Integer.parseInt(result.getString("edged_id"));
+			int id = Integer.parseInt(result.getString("edge_id"));
+			if(id == -1)
+				break;
 			String sql = 	"SELECT ST_asText(startpoint) AS start, " +
-								"ST_asText(endpoint) AS end, " +
-								"hastmax" +
-							"FROM network WHERE id ="+id;
-			Statement statement = this.connection.createStatement();
+								" ST_asText(endpoint) AS end, " +
+								" hastmax" +
+							" FROM network WHERE id = "+id+";";
+			
 			ResultSet rst = statement.executeQuery(sql);
+			rst.next();			
 			Integer speedLimit = Integer.parseInt(rst.getString("hastmax"));
 			trip.addInstance(new GPSSignal(rst.getString("start"), trip.getFormat()), speedLimit);
 			trip.addInstance(new GPSSignal(rst.getString("end"), trip.getFormat()), speedLimit);
+			rst.close();
+			
 		}
+		statement.close();
+		result.close();
 		return trip;
 	}
 	/**
@@ -108,25 +118,26 @@ public class DatabaseUtil {
 	 * @return the id of the_geom closest to the signal given
 	 * @throws SQLException
 	 */
-	private Integer getClosestPoint(GPSSignal signal) throws SQLException{		
-		if(signal.getFormat() != "UML")
-			signal = Utils.UTM2GWS84(signal);
-			
-		String sql = 	"SELECT f.id" +
-						"FROM (" +
-								"SELECT" +
-								"	'POINT(691068 6140692)'::geometry AS pt" +
-								") AS foo," +
-								"network as f,"+
-								"network as g" +
-								"WHERE ST_Distance(ST_ClosestPoint(f.the_geom, pt), pt)" +
-								"	< ST_Distance(ST_ClosestPoint(g.the_geom, pt), pt)" +
-						"LIMIT 1;";
+	private Integer getClosestPoint(GPSSignal signal) throws SQLException{
+		if(signal.getFormat() != "GWS84")
+			signal = Utils.LatLng2GWS84(signal);			
 		
+		String sql = 	"SELECT f.id " +
+						"FROM (" +
+								" SELECT " +
+								"	'POINT("+signal.getLatitude() +" "+signal.getLongitude()+")'::geometry AS pt " +
+								" ) AS foo," +
+								" network as f, "+
+								" network as g " +
+								" WHERE ST_Distance(ST_ClosestPoint(f.the_geom, pt), pt) " +
+								"	< ST_Distance(ST_ClosestPoint(g.the_geom, pt), pt) " +
+						"LIMIT 1;";
+
 		int id = -1;
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
-		id = Integer.parseInt(result.getString(id));
+		result.next();
+		id = Integer.parseInt(result.getString("id"));
 		result.close();
 		statement.close();		
 		return id;

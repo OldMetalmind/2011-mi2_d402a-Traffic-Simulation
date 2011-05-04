@@ -12,7 +12,7 @@ public class Vehicle implements IVehicle {
 	public Vehicle(Trip shortestPath){
 		this.personalMaxSpeed = -1; //Unlimited
 		this.shortestPath = shortestPath;
-		this.gpsFormat = "UTM";
+		this.gpsFormat = "GWS84";
 	}	
 	
 	public Vehicle(Trip shortestPath, String gpsFormat){
@@ -62,7 +62,10 @@ public class Vehicle implements IVehicle {
 	}	
 	
 	public String toString() {
-		return personalMaxSpeed+" "+shortestPath.toString()+" "+trip.toString()+" "+gpsFormat;
+		return personalMaxSpeed+" "
+				+shortestPath.toString()+" "
+				//+trip.toString()+" "
+				+gpsFormat;
 	}
 
 }

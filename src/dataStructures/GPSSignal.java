@@ -7,7 +7,7 @@ public class GPSSignal {
 	private String format;	
 	
 	public GPSSignal(Double latitude, Double longitude){
-		this.format = "UTM";
+		this.format = "GWS84";
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
@@ -15,14 +15,18 @@ public class GPSSignal {
 	/*
 	 * String format equal: "Coordinate Coordinate"
 	 */
-	public GPSSignal(String str){
+	public GPSSignal(String str){		
+		if(str.startsWith("POINT"))
+			str = clean(str);
 		String coordinate[] = str.split(" ");
-		this.format = "UTM";
+		this.format = "GWS84";
 		this.latitude = Double.parseDouble(clean(coordinate[0]));
 		this.longitude = Double.parseDouble(clean(coordinate[1]));		
 	}
 	
 	public GPSSignal(String str, String format){
+		if(str.startsWith("POINT"))
+			str = clean(str);
 		String coordinate[] = str.split(" ");
 		this.format = format;
 		this.latitude = Double.parseDouble(clean(coordinate[0]));
@@ -54,13 +58,25 @@ public class GPSSignal {
 	public String getFormat() {
 		return format;
 	}
+
+	public boolean equals(GPSSignal other){
+		if(other.getLatitude() == this.getLatitude() && 
+				other.getLongitude() == this.getLongitude() &&
+				other.getFormat() == this.getFormat())
+			return true;
+		else
+			return false;
+	}
+	
 	//Latitude first then longitude ex.: 123 144
 	public String toString() {
-		return this.latitude+" "+this.longitude;
+		return this.latitude+" "+this.longitude+" - format: "+this.format;
 	}
+	
 
-	private String clean(String str) {
-		return str.replaceAll(",|[(]|[)]", "");
+	private String clean(String str) {		
+		str = str.replaceAll("[POINT]", "");
+		return str.replaceAll("[,]|[(]|[)]", "");
 	}
 	
 	

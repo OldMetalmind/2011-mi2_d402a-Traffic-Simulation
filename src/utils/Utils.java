@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import uk.me.jstott.jcoord.LatLng;
+import uk.me.jstott.jcoord.OSRef;
 import uk.me.jstott.jcoord.UTMRef;
 import dataStructures.GPSSignal;
 import dataStructures.Road;
@@ -57,20 +58,42 @@ public class Utils {
 		return GWS84trip;
 	}	
 	
-	public static GPSSignal UTM2GWS84(GPSSignal signal){
-		if(signal.getFormat() == "UTM")
+	public static GPSSignal LatLng2GWS84(GPSSignal signal){
+		if(signal.getFormat() == "GWS84")
 			return signal;
-		UTMRef utm = new UTMRef( signal.getLatitude().intValue(), signal.getLongitude().intValue(),'N', 32);
-		LatLng ll = utm.toLatLng();
-		return new GPSSignal(ll.toString(),"GWS84");
+		LatLng ll = new LatLng(signal.getLatitude(), signal.getLongitude());
+		ll.toOSGB36();
+		OSRef os = ll.toOSRef();
+		System.out.println(os.toString());
+		return new GPSSignal(os.toString(),"GWS84");
+	}
+
+	public static Trip GWS842LatLon(Trip trip) {
+		Trip lltrip = new Trip("LatLon"); 
+		for(int i = 0; i < trip.size(); i++){
+			lltrip.addInstance( GWS842LatLon( trip.getInstance(i) ) );
+		}			
+		return lltrip;
+	}
+
+	public static GPSSignal GWS842LatLon(GPSSignal signal) {		
+		if(signal.getFormat() == "LatLon")
+			return signal;
+	    OSRef os = new OSRef(signal.getLatitude(), signal.getLongitude());
+	    LatLng ll = os.toLatLng();	    
+	    return new GPSSignal(ll.getLat(),ll.getLng());
 	}
 	
+	/*
 	public static GPSSignal GWS842UTM(GPSSignal signal){
 		if(signal.getFormat() == "GWS84")
 			return signal;
 		LatLng ll = new LatLng(signal.getLatitude(), signal.getLongitude());
-		UTMRef utm = ll.toUTMRef();
-		return new GPSSignal(utm.toString(),"UTM");
+		ll.toOSGB36();
+		OSRef os = ll.toOSRef(); 
+		System.out.println(os.toString());
+		return new GPSSignal(os.toString(),"GWS84");
 	}
+	*/
 
 }

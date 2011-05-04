@@ -74,7 +74,7 @@ public class OutputUtil {
 			GPSSignal g = path.getInstance(i);
 			output += g.getLongitude()+","+g.getLatitude()+"\n";
 		}
-		output += "</LineString>\n</coordinates>\n";
+		output += "</coordinates>\n</LineString>\n";
 		return output;
 	}
 	
