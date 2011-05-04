@@ -172,7 +172,10 @@ public class UserInput extends javax.swing.JFrame {
                 jTextFieldFrequency.getText()+ "#" +
                 jTextAreaFromZones.getText()+ "#" +
                 jTextAreaToZones.getText();
-        jTextAreaSubmit.setText(insert);
+        if(insert.length() <= 3)        	
+            jTextAreaSubmit.setText("10#1#[(1,1);100]#[(1,1);100]");        
+        else    
+        	jTextAreaSubmit.setText(insert);
     }
 
     private void jButtonConfirmActionPerformed(java.awt.event.ActionEvent evt) {
@@ -181,7 +184,7 @@ public class UserInput extends javax.swing.JFrame {
 
     private void jButtonConfirmMouseClicked(java.awt.event.MouseEvent evt) {
         this.fromZones = new ArrayList<Zone>();
-        this.toZones = new ArrayList<Zone>();
+        this.toZones = new ArrayList<Zone>();       
         
         String input[] = jTextAreaSubmit.getText().split("#");
         this.numberOfCars = Integer.parseInt(input[0]);
@@ -191,7 +194,7 @@ public class UserInput extends javax.swing.JFrame {
         	this.nonFormatedToZones = input[3];
         else 
         	this.nonFormatedToZones = "";
-                
+        
         
         String rawSplit[] = this.nonFormatedFromZones.split("[:]");
 	        for(int i = 0; i < rawSplit.length; i++) {

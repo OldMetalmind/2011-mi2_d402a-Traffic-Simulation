@@ -31,7 +31,7 @@ public class OutputUtil {
 	/*
 	 * This only saves 1 trip to a KML file
 	 */
-	public void savePathToKML(Trip path){
+	public String savePathToKML(Trip path){
 		
 		String output = "<?xml version='1.0' encoding='UTF-8'?>\n";
 		//output += "<import namespace='http://www.w3.org/2005/Atom' schemaLocation='http://code.google.com/apis/kml/schema/atom-author-link.xsd'/>";
@@ -39,13 +39,7 @@ public class OutputUtil {
 		output += "<Document>\n" +
 					"<Placemark>\n" +
 						"<name>GPS path</name>\n" +
-							"<MultiGeometry>\n" +
-								/*"<LineString>\n" +
-									"<extrude>1</extrude>\n" +
-										"<tessellate>0</tessellate>\n" +
-										"<altitudeMode>clampToGround</altitudeMode>\n" +
-										"<coordinates></coordinates>\n" +
-								"</LineString>\n" +*/
+							"<MultiGeometry>\n" + //
 								"<LineString>\n" +
 									"<coordinates>\n";
 									for(int i = 0; i < path.size(); i++){
@@ -53,14 +47,45 @@ public class OutputUtil {
 										output += g.getLongitude()+","+g.getLatitude()+"\n";
 									}		
 		output += 					"</coordinates>\n" +
-								"</LineString>\n" +
+								"</LineString>\n" + //
 							"</MultiGeometry>\n" +
 					"</Placemark>\n" +
 				"</Document>\n" +
 				"</kml>";
 		
-		writeFile(output,"kml");		
+		return output;
+		//writeFile(output,"kml");		
 	}
+	public String KMLHeader(){
+		String output = "<?xml version='1.0' encoding='UTF-8'?>\n";
+		//output += "<import namespace='http://www.w3.org/2005/Atom' schemaLocation='http://code.google.com/apis/kml/schema/atom-author-link.xsd'/>";
+		output += "<kml xmlns='http://www.opengis.net/kml/2.2'>\n";		
+		output += "<Document>\n" +
+					"<Placemark>\n" +
+						"<name>GPS path</name>\n" +
+							"<MultiGeometry>\n"; //
+		return output;
+	}
+	
+	public String KMLTrip(Trip path){
+		String output = "<LineString>\n" +
+							"<coordinates>\n";
+		for(int i = 0; i < path.size(); i++){
+			GPSSignal g = path.getInstance(i);
+			output += g.getLongitude()+","+g.getLatitude()+"\n";
+		}
+		output += "</LineString>\n</coordinates>\n";
+		return output;
+	}
+	
+	public String KMLFooter(){
+		String output = 			"</MultiGeometry>\n" +
+								"</Placemark>\n" +
+							"</Document>\n" +
+						"</kml>";
+		return output;
+	}
+	
 	
 	/*
 	 * This method accepts a list of trips and writes them into a .kml file 
@@ -71,7 +96,7 @@ public class OutputUtil {
 	}
 	
 	
-	private void writeFile(String output, String ext){
+	public void writeFile(String output, String ext){
 		try{
 	  		// Create file  
 	  		FileWriter fstream = new FileWriter(filename+"."+ext);

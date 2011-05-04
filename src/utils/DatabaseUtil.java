@@ -112,12 +112,13 @@ public class DatabaseUtil {
 		if(signal.getFormat() != "UML")
 			signal = Utils.UTM2GWS84(signal);
 			
-		String sql = 	"SELECT id" +
+		String sql = 	"SELECT f.id" +
 						"FROM (" +
 								"SELECT" +
 								"	'POINT(691068 6140692)'::geometry AS pt" +
 								") AS foo," +
-								"network as f, network as g" +
+								"network as f,"+
+								"network as g" +
 								"WHERE ST_Distance(ST_ClosestPoint(f.the_geom, pt), pt)" +
 								"	< ST_Distance(ST_ClosestPoint(g.the_geom, pt), pt)" +
 						"LIMIT 1;";
