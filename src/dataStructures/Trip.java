@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Trip implements ITrip {
 
 	private ArrayList<GPSSignal> path;
+	private ArrayList<Integer> speedLimit;
 	private String format;
 	
 	public Trip(String format){
@@ -39,14 +40,6 @@ public class Trip implements ITrip {
 	public void setInstance(Integer i, GPSSignal s) {
 		this.path.set(i, s);
 	}
-
-	public String toString(){
-		String output = "";
-		for(int i = 0; i < this.path.size(); i++)
-			output += this.path.get(i).toString()+";";
-		
-		return output;
-	}
 	
 	public GPSSignal getInstance(Integer i) {		
 		return path.get(i);
@@ -58,5 +51,21 @@ public class Trip implements ITrip {
 
 	public String getFormat() {
 		return format;
+	}
+
+	public ArrayList<Integer> getSpeedLimits() {
+		return this.speedLimit;
+	}
+
+	public Integer getSpeedLimitAt(Integer i) {
+		return this.speedLimit.get(i);
+	}
+	
+	public String toString(){
+		String output = "";
+		for(int i = 0; i < this.path.size(); i++)
+			output += this.path.get(i).toString()+";";
+		
+		return output;
 	}
 }

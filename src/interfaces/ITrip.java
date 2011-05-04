@@ -13,5 +13,7 @@ public interface ITrip {
 	public void setInstance(Integer i, GPSSignal s);
 	public GPSSignal getInstance(Integer i);
 	public Integer size();
+	public ArrayList<Integer> getSpeedLimits();
+	public Integer getSpeedLimitAt(Integer i);
 	public String toString();
 }

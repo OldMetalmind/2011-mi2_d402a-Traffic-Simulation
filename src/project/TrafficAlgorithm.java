@@ -26,8 +26,7 @@ public class TrafficAlgorithm {
 		*/
 		GenerationUtil gen = new GenerationUtil();
 		for(int i = 0; i < numberOfCars; i++){
-			Vehicle v = gen.generateVehicle(fromZones.get(0), toZones.get(0));
-			System.out.println(v.toString());
+			Vehicle v = gen.generateVehicle(fromZones.get(0), toZones.get(0));			
 		}	
 		
 	}	

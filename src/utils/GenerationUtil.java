@@ -1,5 +1,7 @@
 package utils;
 
+import java.sql.SQLException;
+
 import dataStructures.GPSSignal;
 import dataStructures.Trip;
 import dataStructures.Vehicle;
@@ -13,7 +15,12 @@ public class GenerationUtil implements IGenerateRandomInfo {
 		GPSSignal f = from.generateRandomGPS();
 		GPSSignal t = to.generateRandomGPS();		
 		DatabaseUtil db = new DatabaseUtil();
-		Trip trip = db.getShortestPath(f, t);		
+		Trip trip = null;
+		try {
+			trip = db.getShortestPath(f, t);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
 		return new Vehicle(trip);
 	}
 }

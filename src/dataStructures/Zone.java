@@ -42,7 +42,7 @@ public class Zone implements IZone {
 		return new GPSSignal(y,x);
 		*/
 		
-		return null;
+		return new GPSSignal(center.getLatitude(), center.getLongitude(), center.getFormat());
 	}
 	
 	public String toString(){

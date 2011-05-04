@@ -14,11 +14,11 @@ import dataStructures.Trip;
 /*
  * Methods that help other classes;
  */
-public class Helper {
+public class Utils {
 	
 	
 	
-	private static void getPoints(Connection conn, String roadID){
+	public static void getPoints(Connection conn, String roadID){
 		String query = "Select ST_asText(the_geom), hastmax from network where id="+roadID;
 		try {
 			
@@ -36,7 +36,7 @@ public class Helper {
 		
 	}
 
-	private static Trip road2points(Road road) {
+	public static Trip road2points(Road road) {
 		Trip UTM_Trip = new Trip("UTM");
 		String[] res = road.getGeomText().split("[,]|[((]|[))]");
 		for(int i = 2; i < res.length; i++){
@@ -46,7 +46,7 @@ public class Helper {
 		return UTM_Trip;
 	}
 	
-	private static Trip UTM2GWS84(Trip UTMTrip){
+	public static Trip UTM2GWS84(Trip UTMTrip){
 		Trip GWS84trip = new Trip("GWS84"); 
 		for(int i = 0; i < UTMTrip.size(); i++){
 			UTMRef utm = new UTMRef( UTMTrip.getInstance(i).getLatitude().intValue(),UTMTrip.getInstance(i).getLongitude().intValue(),'N', 32);			
@@ -56,10 +56,28 @@ public class Helper {
 		}
 		return GWS84trip;
 	}	
-	private static GPSSignal PointUTML2GWS84(GPSSignal signal){
+	
+	public static GPSSignal UTM2GWS84(GPSSignal signal){
+		if(signal.getFormat() == "UTM")
+			return signal;
 		UTMRef utm = new UTMRef( signal.getLatitude().intValue(), signal.getLongitude().intValue(),'N', 32);
 		LatLng ll = utm.toLatLng();
 		return new GPSSignal(ll.toString(),"GWS84");
+	}
+	
+	public static GPSSignal GWS842UTM(GPSSignal signal){
+		if(signal.getFormat() == "GWS84")
+			return signal;
+		LatLng ll = new LatLng(signal.getLatitude(), signal.getLongitude());
+		UTMRef utm = ll.toUTMRef();
+		return new GPSSignal(utm.toString(),"UTM");
+	}
+	
+	//TODO: ResultSet to Trip
+	public static Trip ResultSet2Trip(ResultSet result){
+		//vertex_id | edge_id | cost
+		Trip trip = new Trip("UTM");
+		return null;
 	}
 
 }
