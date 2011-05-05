@@ -173,7 +173,7 @@ public class UserInput extends javax.swing.JFrame {
                 jTextAreaFromZones.getText()+ "#" +
                 jTextAreaToZones.getText();
         if(insert.length() <= 3)
-        	jTextAreaSubmit.setText("5#1#57.042107 9.935256 100#57.047045 9.915451 100");//jTextAreaSubmit.setText("5#1#57.043952 9.921952 100#57.047045 9.915451 100");       /* jTextAreaSubmit.setText("5#1#582319.51 6323951.61 100#717230.03 6182185.2 100"); */        
+        	jTextAreaSubmit.setText("5#1#56.992088 10.041676 100#57.047045 9.915451 100");//jTextAreaSubmit.setText("5#1#57.043952 9.921952 100#57.047045 9.915451 100");       /* jTextAreaSubmit.setText("5#1#582319.51 6323951.61 100#717230.03 6182185.2 100"); */        
         else    
         	jTextAreaSubmit.setText(insert);
     }

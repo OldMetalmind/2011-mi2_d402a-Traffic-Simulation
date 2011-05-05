@@ -61,14 +61,15 @@ public class DatabaseUtil {
 	/*
 	 * Finds the shortest path between two points and return the Trip
 	 */
-	public Trip getShortestPath(GPSSignal from, GPSSignal to) throws SQLException{
+	public Trip getShortestPath(GPSSignal from, GPSSignal to) throws SQLException{		
 		if(from.equals(to))
 			return new Trip(to.getFormat());
-				
+			
+		
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);
 		
-		//System.out.println(idFrom+" "+idTo);
+		System.out.println(idFrom+" "+idTo);
 		
 		String sql = "SELECT * FROM shortest_path(' " +
 				" SELECT gid AS id, " +
@@ -91,7 +92,7 @@ public class DatabaseUtil {
 	//TODO: ResultSet to Trip, it will return 
 	private Trip resultSet2Trip(ResultSet result) throws NumberFormatException, SQLException{
 		//vertex_id | edge_id | cost
-		Trip trip = new Trip("GSW84");
+		Trip trip = new Trip("UTM");
 		Statement statement = this.connection.createStatement();
 		while(result.next()){
 			int id = Integer.parseInt(result.getString("edge_id"));
@@ -121,29 +122,27 @@ public class DatabaseUtil {
 	 * @throws SQLException
 	 */
 	private Integer getClosestPoint(GPSSignal signal) throws SQLException{
-		if(signal.getFormat() == "LatLon")
-			signal = Utils.LatLon2UTM(signal);
-		
-		
-		
+		if(signal.getFormat() == "LatLon")			
+			signal = Utils.LatLon2UTM(signal);	
+				
 		String sql = 	"SELECT f.id " +
 						"FROM (" +
 								" SELECT " +
-								"	'POINT("+signal.getLatitude() +" "+signal.getLongitude()+")'::geometry AS pt " +
+								"	ST_MakePoint("+signal.getLongitude()+","+signal.getLatitude()+") AS pt " +
 								" ) AS foo," +
 								" network as f, "+
 								" network as g " +
 								" WHERE ST_Distance(ST_ClosestPoint(f.the_geom, pt), pt) " +
 								"	< ST_Distance(ST_ClosestPoint(g.the_geom, pt), pt) " +
 						"LIMIT 1;";
-
-		//System.out.println(sql);
+				
+		System.out.println(sql);
 		
 		int id = -1;
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		result.next();
-		id = Integer.parseInt(result.getString("id"));
+		id = Integer.parseInt(result.getString("id"));		
 		result.close();
 		statement.close();	
 		return id;

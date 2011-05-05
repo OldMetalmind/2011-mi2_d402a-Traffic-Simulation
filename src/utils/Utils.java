@@ -71,10 +71,10 @@ public class Utils {
 		if(signal.getFormat() == "UTM")
 			return signal;		
 		LatLng ll = new LatLng(signal.getLatitude(),signal.getLongitude());
-		ll.toOSGB36();
 		UTMRef utm = ll.toUTMRef();		
-		//TODO: Confirm Easting <=> Latitude and Northing <=> Longitude;
-		return new GPSSignal(utm.getNorthing(),utm.getEasting(),"UTM");
+		return new GPSSignal(utm.getEasting(),utm.getNorthing(),"UTM");	
+	    
+		
 	}
 
 }
