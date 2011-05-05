@@ -64,9 +64,11 @@ public class DatabaseUtil {
 	public Trip getShortestPath(GPSSignal from, GPSSignal to) throws SQLException{
 		if(from.equals(to))
 			return new Trip(to.getFormat());
-		
+				
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);
+		
+		//System.out.println(idFrom+" "+idTo);
 		
 		String sql = "SELECT * FROM shortest_path(' " +
 				" SELECT gid AS id, " +
@@ -119,8 +121,10 @@ public class DatabaseUtil {
 	 * @throws SQLException
 	 */
 	private Integer getClosestPoint(GPSSignal signal) throws SQLException{
-		if(signal.getFormat() != "GWS84")
-			signal = Utils.LatLng2GWS84(signal);			
+		if(signal.getFormat() == "LatLon")
+			signal = Utils.LatLon2UTM(signal);
+		
+		
 		
 		String sql = 	"SELECT f.id " +
 						"FROM (" +
@@ -133,13 +137,15 @@ public class DatabaseUtil {
 								"	< ST_Distance(ST_ClosestPoint(g.the_geom, pt), pt) " +
 						"LIMIT 1;";
 
+		//System.out.println(sql);
+		
 		int id = -1;
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		result.next();
 		id = Integer.parseInt(result.getString("id"));
 		result.close();
-		statement.close();		
+		statement.close();	
 		return id;
 	}
 }

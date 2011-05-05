@@ -15,14 +15,18 @@ public class TrafficAlgorithm {
 							 Double frequency, 
 							 ArrayList<Zone> fromZones, 
 							 ArrayList<Zone> toZones) {
+
+		//System.out.println(fromZones.toString());
+		//System.out.println(toZones.toString());
 		
 		OutputUtil outUtil = new OutputUtil("TestOut");	
-		GenerationUtil gen = new GenerationUtil();		
+		GenerationUtil gen = new GenerationUtil();
+		
 		String output = outUtil.KMLHeader();	
 		for(int i = 0; i < numberOfCars; i++){			
 			Vehicle v = gen.generateVehicle(fromZones.get(0), toZones.get(0));
 			System.out.println(v.toString());			
-			output += outUtil.KMLTrip(Utils.GWS842LatLon(v.getShortestPath()));
+			output += outUtil.KMLTrip(Utils.UTM2LatLon(v.getShortestPath()));
 		}
 		System.out.println();		
 		output += outUtil.KMLFooter();		

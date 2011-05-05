@@ -172,8 +172,8 @@ public class UserInput extends javax.swing.JFrame {
                 jTextFieldFrequency.getText()+ "#" +
                 jTextAreaFromZones.getText()+ "#" +
                 jTextAreaToZones.getText();
-        if(insert.length() <= 3)        	
-            jTextAreaSubmit.setText("5#1#582319.51 6323951.61 100#717230.03 6182185.2 100");        
+        if(insert.length() <= 3)
+        	jTextAreaSubmit.setText("5#1#57.042107 9.935256 100#57.047045 9.915451 100");//jTextAreaSubmit.setText("5#1#57.043952 9.921952 100#57.047045 9.915451 100");       /* jTextAreaSubmit.setText("5#1#582319.51 6323951.61 100#717230.03 6182185.2 100"); */        
         else    
         	jTextAreaSubmit.setText(insert);
     }
@@ -197,12 +197,12 @@ public class UserInput extends javax.swing.JFrame {
         
         String rawSplit[] = this.nonFormatedFromZones.split(":");
 	    for(int i = 0; i < rawSplit.length; i++) {
-		   this.fromZones.add( new Zone(rawSplit[i]) );
+		   this.fromZones.add( new Zone(rawSplit[i], "LatLon" ));
 		     
         }
 	    String colSplit[] = nonFormatedToZones.split(":");
 	    for(int i = 0; i < colSplit.length; i++) {
-		   this.toZones.add( new Zone(colSplit[i]) );
+		   this.toZones.add( new Zone(colSplit[i], "LatLon" )  );
         }
         
 

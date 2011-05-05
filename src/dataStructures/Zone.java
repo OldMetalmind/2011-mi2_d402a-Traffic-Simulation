@@ -1,5 +1,6 @@
 package dataStructures;
 
+import utils.Utils;
 import interfaces.IZone;
 
 public class Zone implements IZone {
@@ -13,9 +14,9 @@ public class Zone implements IZone {
 		this.radius = radius;
 	}
 	
-	public Zone(String zonex) {
+	public Zone(String zonex, String format) {
 		String coord[] = zonex.split(" ");
-		this.center = new GPSSignal(coord[0]+" "+coord[1]);
+		this.center = new GPSSignal(coord[0]+" "+coord[1], format);
 		this.radius = Double.parseDouble(coord[2]);
 	}
 
@@ -27,19 +28,8 @@ public class Zone implements IZone {
 	}
 	*/
 	
-	//TODO: is GWS84 in km or meters? I mean, in which scale is» GWS84?
-	//http://en.wikipedia.org/wiki/World_Geodetic_System
-	public GPSSignal generateRandomGPS(){
-		/*
-		Random rand = new Random();
-		double degree = rand.nextDouble()*360; // TODO: Confirm this is between 0 and 360;
-		double length = rand.nextDouble()*this.radius; // TODO: Confirm this is between 0 and radius
-		assert(this.center.getFormat() == "GWS84");
-		double x = length*Math.cos(degree)+this.center.getLongitude();
-		double y = length*Math.sin(degree)+this.center.getLatitude();
-		return new GPSSignal(y,x);
-		*/
-		
+	//TODO: A real random....
+	public GPSSignal generateRandomGPS(){		
 		return new GPSSignal(center.getLatitude(), center.getLongitude(), center.getFormat());
 	}
 	
