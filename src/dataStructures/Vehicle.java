@@ -9,6 +9,7 @@ public class Vehicle implements IVehicle {
 	private Trip trip; //This is where all the positioning of the vehicle will be saved
 	private String gpsFormat;
 	
+	
 	public Vehicle(Trip shortestPath){
 		this.personalMaxSpeed = -1; //Unlimited
 		this.shortestPath = shortestPath;
@@ -51,12 +52,10 @@ public class Vehicle implements IVehicle {
 		return gpsFormat;
 	}
 
-	@Override
 	public GPSSignal from() {
 		return this.trip.getInstance(0);
 	}
-
-	@Override
+	
 	public GPSSignal to() {
 		return this.trip.getInstance(trip.size());
 	}	

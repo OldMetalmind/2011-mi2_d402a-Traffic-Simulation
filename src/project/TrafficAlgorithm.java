@@ -1,29 +1,51 @@
 package project;
 
+import utils.DatabaseUtil;
 import dataStructures.*;
 
 public class TrafficAlgorithm {
-					
-	public static void start(UserInput user_input) {
 		
+	private UserInput user;
+	private AllVehicles vehicles;
+	private DatabaseUtil database;
+	
+	public TrafficAlgorithm(UserInput userInput){
+		user = userInput;
+		setVehicles(new AllVehicles());
+		database = new DatabaseUtil();
+		
+		database.clearVehicles();
 		AllVehicles vehicles = new AllVehicles();
-		for(int i = 0; i < user_input.getTotalVehicles(); i++){			
+		for(int i = 0; i < user.getTotalVehicles(); i++){			
 			
-			Zone from = user_input.getFromZones().selectRandomZone();
-			Zone to = user_input.getToZones().selectRandomZone();
-			Vehicle v = vehicles.generateVehicle(from, to);		
+			Zone from = user.getFromZones().selectRandomZone();
+			Zone to = user.getToZones().selectRandomZone();
+			Vehicle v = vehicles.generateVehicle(from, to);			
 			vehicles.addVehicle(v);
+			database.addVehicle(v,vehicles.size());
 		}
-		
-		run(vehicles);
-		
+	}
+	
+	public void run(){
+		double tick = 0;
+		while(tick <= user.getDuration()){
+			
+			vehicles.nextTick();
+			
+			tick+=user.getFrequency();
+		}
 		System.exit(1);
 	}
 	
-	private static void run(AllVehicles vehicles){
-		
-		
+	public void setVehicles(AllVehicles vehicles) {
+		this.vehicles = vehicles;
 	}
+
+	public AllVehicles getVehicles() {
+		return vehicles;
+	}
+	
+
 	/*
 	 * 
 	 * 

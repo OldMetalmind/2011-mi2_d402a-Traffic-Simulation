@@ -36,5 +36,15 @@ public class AllVehicles implements IAllVehicles {
 		return new Vehicle(trip);
 	}
 
+	//TODO: The vehicles all move 1 tick
+	public void nextTick() {
+		
+		
+	}
+
+	public int size() {
+		return this.vehicles.size();
+	}
+
 	
 }

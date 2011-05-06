@@ -8,4 +8,6 @@ public interface IAllVehicles {
 	public void addVehicle(Vehicle vehicle);
 	Vehicle getVehicle(Integer index);
 	public Vehicle generateVehicle(Zone from, Zone to);
+	public void nextTick();
+	public int size();
 }

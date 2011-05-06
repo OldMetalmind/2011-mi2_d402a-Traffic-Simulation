@@ -207,7 +207,8 @@ public class Input extends javax.swing.JFrame {
 
         this.setVisible(false);        
         UserInput userInput = new UserInput(this.numberOfCars, this.frequency, 100, this.fromZones, this.toZones);
-        TrafficAlgorithm.start(userInput);
+        TrafficAlgorithm traffic = new TrafficAlgorithm(userInput);
+        traffic.run();
     }
 
     public void start(){
