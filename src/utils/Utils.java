@@ -1,17 +1,8 @@
 package utils;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import project.UserInput;
-
 import uk.me.jstott.jcoord.LatLng;
-import uk.me.jstott.jcoord.OSRef;
 import uk.me.jstott.jcoord.UTMRef;
 import dataStructures.GPSSignal;
-import dataStructures.Road;
 import dataStructures.Trip;
 
 /*
@@ -44,6 +35,7 @@ public class Utils {
 		return new GPSSignal(utm.getEasting(),utm.getNorthing(),"UTM");		
 	}
 	
+	/*
 	public static void main(String[] argv) {
 		double latitude = 55;
 		double longitude = 9;
@@ -53,5 +45,6 @@ public class Utils {
 		GPSSignal s3 = UTM2LatLon(s2);
 		System.out.println(s1+"\n"+s2+"\n"+s3);		
 	}
+	*/
 
 }
