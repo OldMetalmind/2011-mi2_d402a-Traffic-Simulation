@@ -37,9 +37,9 @@ public class Vehicle implements IVehicle {
 		return trip;
 	}
 
-	@Override
+	//TODO: Move the vehicle one more frequency and get his coordinates.
 	public void nextStep() {
-		// TODO (not yet) This should be done after the first demo. To confirm that the vehicles don't overlap
+		
 		
 	}
 

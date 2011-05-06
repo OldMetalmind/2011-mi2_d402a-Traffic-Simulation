@@ -77,7 +77,9 @@ public class DatabaseUtil {
 				" end_id::int4 AS target, " +
 				" ST_Length(the_geom)::float8 AS cost " +
 				" FROM network', "+idFrom+", "+idTo+", false, false);";
-				
+		
+		System.out.println(sql);
+		
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		return resultSet2Trip(result);
@@ -88,8 +90,7 @@ public class DatabaseUtil {
 	 * @return Trip in GSW84 format
 	 * @throws SQLException 
 	 * @throws NumberFormatException 
-	 */
-	//TODO: ResultSet to Trip, it will return 
+	 */ 
 	private Trip resultSet2Trip(ResultSet result) throws NumberFormatException, SQLException{
 		//vertex_id | edge_id | cost
 		Trip trip = new Trip("UTM");
@@ -124,8 +125,9 @@ public class DatabaseUtil {
 	private Integer getClosestPoint(GPSSignal signal) throws SQLException{
 		if(signal.getFormat() == "LatLon")			
 			signal = Utils.LatLon2UTM(signal);	
-				
-		String sql = 	"SELECT f.id " +
+		
+		//System.out.println(signal.getLongitude().intValue()+" "+signal.getLatitude().intValue());
+		String sql = 	"SELECT * " +
 						"FROM (" +
 								" SELECT " +
 								"	ST_MakePoint("+signal.getLongitude()+","+signal.getLatitude()+") AS pt " +
@@ -136,13 +138,13 @@ public class DatabaseUtil {
 								"	< ST_Distance(ST_ClosestPoint(g.the_geom, pt), pt) " +
 						"LIMIT 1;";
 				
-		System.out.println(sql);
+		//System.out.println(sql);
 		
 		int id = -1;
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		result.next();
-		id = Integer.parseInt(result.getString("id"));		
+		id = Integer.parseInt(result.getString("start_id"));		
 		result.close();
 		statement.close();	
 		return id;

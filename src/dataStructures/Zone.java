@@ -5,7 +5,6 @@ import interfaces.IZone;
 
 public class Zone implements IZone {
 	
-	//Make sure center is GWS84....
 	final private GPSSignal center;
 	final private Double radius;
 	
@@ -19,16 +18,8 @@ public class Zone implements IZone {
 		this.center = new GPSSignal(coord[0]+" "+coord[1], format);
 		this.radius = Double.parseDouble(coord[2]);
 	}
-
-	/*
-	public boolean hasInside(GPSSignal gps) {
-		return Math.sqrt( Math.pow(center.getLatitude() - gps.getLatitude(), 2 )
-				+ Math.pow(center.getLongitude() - gps.getLongitude(), 2) )
-				< radius;
-	}
-	*/
 	
-	//TODO: A real random....
+	//TODO: Generate a random signal inside this zone. (The zone is in UTM format.)
 	public GPSSignal generateRandomGPS(){		
 		return new GPSSignal(center.getLatitude(), center.getLongitude(), center.getFormat());
 	}

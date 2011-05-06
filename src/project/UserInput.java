@@ -51,13 +51,13 @@ public class UserInput extends javax.swing.JFrame {
             }
         });
 
-        jLabelFromZones.setText("From zones: [center coordinate (GWS84); radius (km)]");
+        jLabelFromZones.setText("From zones: [center coordinate (Lat Lng); radius (meters)]");
 
         jTextAreaFromZones.setColumns(20);
         jTextAreaFromZones.setRows(5);
         jScrollPane1.setViewportView(jTextAreaFromZones);
 
-        jLabelToZones.setText("To zones: [center coordinate (GWS84); radius (km)]");
+        jLabelToZones.setText("To zones: [center coordinate (Lat Lng); radius (meters)]");
 
         jTextAreaToZones.setColumns(20);
         jTextAreaToZones.setRows(5);
@@ -173,7 +173,8 @@ public class UserInput extends javax.swing.JFrame {
                 jTextAreaFromZones.getText()+ "#" +
                 jTextAreaToZones.getText();
         if(insert.length() <= 3)
-        	jTextAreaSubmit.setText("5#1#56.992088 10.041676 100#57.047045 9.915451 100");//jTextAreaSubmit.setText("5#1#57.043952 9.921952 100#57.047045 9.915451 100");       /* jTextAreaSubmit.setText("5#1#582319.51 6323951.61 100#717230.03 6182185.2 100"); */        
+        	jTextAreaSubmit.setText("5#1#57.04711 9.91231 100#57.04704 9.91545 100");//jTextAreaSubmit.setText("5#1#57.043952 9.921952 100#57.047045 9.915451 100");       /* jTextAreaSubmit.setText("5#1#582319.51 6323951.61 100#717230.03 6182185.2 100"); */
+        //57.04711033901427,9.912316530298757
         else    
         	jTextAreaSubmit.setText(insert);
     }

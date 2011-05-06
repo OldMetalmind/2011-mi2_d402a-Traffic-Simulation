@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import dataStructures.GPSSignal;
 import dataStructures.Trip;
 
-
-
 /*
  * This class will only serve to output to a .KML file. 
  * The rest is open for future development.
@@ -21,9 +19,7 @@ public class OutputUtil {
 	public OutputUtil(String name){
 		filename = name;
 	}
-	
-	//public void save2database(){}
-	
+		
 	public void save2file(String output){
 		writeFile(output,"txt");
 	}
@@ -91,7 +87,6 @@ public class OutputUtil {
 	 * This method accepts a list of trips and writes them into a .kml file 
 	 */
 	public void save2KML(ArrayList<Trip> trips){		
-		//TODO: Given a undetermined number of trips write them all into a .kml file
 		//check Helper.java
 	}
 	

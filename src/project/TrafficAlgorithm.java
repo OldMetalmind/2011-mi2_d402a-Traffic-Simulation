@@ -15,9 +15,6 @@ public class TrafficAlgorithm {
 							 Double frequency, 
 							 ArrayList<Zone> fromZones, 
 							 ArrayList<Zone> toZones) {
-
-		//System.out.println(fromZones.toString());
-		//System.out.println(toZones.toString());
 		
 		OutputUtil outUtil = new OutputUtil("TestOut");	
 		GenerationUtil gen = new GenerationUtil();

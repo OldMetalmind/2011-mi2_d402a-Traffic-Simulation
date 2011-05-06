@@ -12,7 +12,7 @@ public class GenerationUtil implements IGenerateRandomInfo {
 
 	public Vehicle generateVehicle(Zone from, Zone to) {
 		GPSSignal f = from.generateRandomGPS();
-		GPSSignal t = to.generateRandomGPS();	
+		GPSSignal t = to.generateRandomGPS();
 		DatabaseUtil db = new DatabaseUtil();
 		Trip trip = null;
 		try {
