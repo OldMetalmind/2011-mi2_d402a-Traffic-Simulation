@@ -5,8 +5,8 @@ import interfaces.IVehicle;
 public class Vehicle implements IVehicle {
 	
 	final private Integer personalMaxSpeed;
-	final private Trip shortestPath;
-	private Trip trip;
+	final private Trip shortestPath; //This is the path that the vehicle must do;
+	private Trip trip; //This is where all the positioning of the vehicle will be saved
 	private String gpsFormat;
 	
 	public Vehicle(Trip shortestPath){
