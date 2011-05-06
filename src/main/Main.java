@@ -1,10 +1,10 @@
 package main;
 
-import project.UserInput;
+import project.Input;
 
 public class Main {
 	public static void main(String[] argv) {
-		UserInput input = new UserInput();
+		Input input = new Input();
 		input.start();
 	}
 }

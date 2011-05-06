@@ -1,42 +1,28 @@
 package project;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import utils.GenerationUtil;
-import utils.OutputUtil;
-import utils.Utils;
-
-import dataStructures.AllVehicles;
-import dataStructures.Vehicle;
-import dataStructures.Zone;
+import dataStructures.*;
 
 public class TrafficAlgorithm {
+					
+	public static void start(UserInput user_input) {
+		
+		AllVehicles vehicles = new AllVehicles();
+		for(int i = 0; i < user_input.getTotalVehicles(); i++){			
 			
-	public static void start(Integer numberOfCars, 
-							 Double frequency, 
-							 ArrayList<Zone> fromZones, 
-							 ArrayList<Zone> toZones) {
-		
-		
-		GenerationUtil gen = new GenerationUtil();
-		Random rand = new Random();
-		for(int i = 0; i < numberOfCars; i++){			
-			AllVehicles vehicles = new AllVehicles();
-			Zone from = selectRandomZone(fromZones, rand);
-			Zone to = selectRandomZone(toZones, rand);
-			Vehicle v = gen.generateVehicle(from, to);		
+			Zone from = user_input.getFromZones().selectRandomZone();
+			Zone to = user_input.getToZones().selectRandomZone();
+			Vehicle v = vehicles.generateVehicle(from, to);		
 			vehicles.addVehicle(v);
 		}
+		
+		run(vehicles);
+		
 		System.exit(1);
-	}	
+	}
 	
-	private static Zone selectRandomZone(ArrayList<Zone> zones, Random rand){
-		int i = rand.nextInt(zones.size());
-		zones.get(i).decreaseNumVehicles();
-		if(zones.get(i).getMaxVehicles() == 0)
-			zones.remove(i);
-		return zones.get(i);
+	private static void run(AllVehicles vehicles){
+		
+		
 	}
 	/*
 	 * 

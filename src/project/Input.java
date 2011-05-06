@@ -1,19 +1,17 @@
 package project;
 
-import java.util.ArrayList;
+import dataStructures.*;
 
-import dataStructures.Zone;
-
-public class UserInput extends javax.swing.JFrame {
+public class Input extends javax.swing.JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Integer numberOfCars;
     private Double frequency;
     private String nonFormatedFromZones;
     private String nonFormatedToZones;
-    private ArrayList<Zone> fromZones; 
-    private ArrayList<Zone> toZones;    /** Creates new form NewJFrame */
-    public UserInput() {
+    private Zones fromZones; 
+    private Zones toZones;    /** Creates new form NewJFrame */
+    public Input() {
         initComponents();
     }
 
@@ -184,8 +182,8 @@ public class UserInput extends javax.swing.JFrame {
     }
 
     private void jButtonConfirmMouseClicked(java.awt.event.MouseEvent evt) {
-        this.fromZones = new ArrayList<Zone>();
-        this.toZones = new ArrayList<Zone>();       
+        this.fromZones = new Zones();
+        this.toZones = new Zones();       
         
         String input[] = jTextAreaSubmit.getText().split("#");
         this.numberOfCars = Integer.parseInt(input[0]);
@@ -198,23 +196,24 @@ public class UserInput extends javax.swing.JFrame {
         
         String rawSplit[] = this.nonFormatedFromZones.split(":");
 	    for(int i = 0; i < rawSplit.length; i++) {
-		   this.fromZones.add( new Zone(rawSplit[i], "LatLon" ));
+		   this.fromZones.addZone( new Zone(rawSplit[i], "LatLon" ));
 		     
         }
 	    String colSplit[] = nonFormatedToZones.split(":");
 	    for(int i = 0; i < colSplit.length; i++) {
-		   this.toZones.add( new Zone(colSplit[i], "LatLon" )  );
+		   this.toZones.addZone( new Zone(colSplit[i], "LatLon" )  );
         }
         
 
-        this.setVisible(false);
-        TrafficAlgorithm.start(this.numberOfCars, this.frequency, this.fromZones, this.toZones);
+        this.setVisible(false);        
+        UserInput userInput = new UserInput(this.numberOfCars, this.frequency, 100, this.fromZones, this.toZones);
+        TrafficAlgorithm.start(userInput);
     }
 
     public void start(){
 		java.awt.EventQueue.invokeLater(new Runnable() {
 	        public void run() {
-	            new UserInput().setVisible(true);
+	            new Input().setVisible(true);
 	        }
 	    });
 			    	    
