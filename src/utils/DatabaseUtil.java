@@ -85,6 +85,17 @@ public class DatabaseUtil {
 		ResultSet result = statement.executeQuery(sql);
 		return resultSet2Trip(result);
 	}
+	
+	public void clearVehicles() {
+		// TODO Empty the vehicles table in the database;
+		
+	}
+
+	public void addVehicle(Vehicle v, int vehicle_id) {		
+		// TODO Add the information of this vehicle to the table vehicles;
+		// TABLE vehicles (vehicle_id "int4", location "point" )
+		// Don't forget to update the vehicle id!!!
+	}	
 	/**
 	 * 
 	 * @param result
@@ -150,14 +161,4 @@ public class DatabaseUtil {
 		statement.close();	
 		return id;
 	}
-
-	public void clearVehicles() {
-		// TODO Empty the vehicles table in the database;
-		
-	}
-
-	public void addVehicle(Vehicle v, int vehicle_id) {
-		// TODO Add the information of this vehicle to the table vehicles;
-		// TABLE vehicles (vehicle_id "int4", location "point" )		
-	}	
 }

@@ -1,28 +1,34 @@
 package dataStructures;
 
+import utils.DatabaseUtil;
+import utils.Utils;
 import interfaces.IVehicle;
 
 public class Vehicle implements IVehicle {
 	
-	final private Integer personalMaxSpeed;
-	final private Trip shortestPath; //This is the path that the vehicle must do;
-	private Trip trip; //This is where all the positioning of the vehicle will be saved
+	final private double personalMaxSpeed; // m/s
+	final private Trip shortestPath; //This is the path that the vehicle must make.
+	private Trip trip; //This is where all the positioning of the vehicle will be saved.
+	private int positionIndex; //this index is related to the 'shortest path' trip.
 	private String gpsFormat;
+	private int vehicle_id;
 	
 	
 	public Vehicle(Trip shortestPath){
 		this.personalMaxSpeed = -1; //Unlimited
 		this.shortestPath = shortestPath;
 		this.gpsFormat = shortestPath.getFormat();
+		this.positionIndex = 0;
 	}	
 	
 	public Vehicle(Trip shortestPath, String gpsFormat){
 		this.personalMaxSpeed = -1; //Unlimited
 		this.shortestPath = shortestPath;
 		this.gpsFormat = gpsFormat;
+		this.positionIndex = 0;
 	}	
 
-	public Integer getPersonalMaxSpeed() {
+	public double getPersonalMaxSpeed() {
 		return personalMaxSpeed;
 	}
 
@@ -36,12 +42,6 @@ public class Vehicle implements IVehicle {
 
 	public Trip getTrip() {
 		return trip;
-	}
-
-	//TODO: Move the vehicle one more frequency and get his coordinates.
-	public void nextStep() {
-		
-		
 	}
 
 	public void setGpsFormat(String gpsFormat) {
@@ -58,7 +58,30 @@ public class Vehicle implements IVehicle {
 	
 	public GPSSignal to() {
 		return this.trip.getInstance(trip.size());
-	}	
+	}
+
+	//TODO: Move the vehicle one more frequency and get his coordinates.
+	public GPSSignal move(DatabaseUtil database, double timeLeft) {
+		double distanceTillCheckpoint = 100;
+		double allowedActualMaxSpeed = shortestPath.getSpeedLimitAt(this.positionIndex);
+		
+		double vehiclePosition = 1;
+		double nextCHECKPOINT = 2;
+		
+		String sql = "SELECT ST_Distance(+"+vehiclePosition+","+nextCHECKPOINT+")";
+		
+		double distanceMade = Utils.kmh2ms(allowedActualMaxSpeed) * timeLeft;
+		
+		return null;
+	}
+
+	public void setVehicle_id(int vehicle_id) {
+		this.vehicle_id = vehicle_id;
+	}
+
+	public int getVehicle_id() {
+		return vehicle_id;
+	}
 	
 	public String toString() {
 		return personalMaxSpeed+" "

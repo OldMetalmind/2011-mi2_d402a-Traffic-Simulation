@@ -36,10 +36,10 @@ public class AllVehicles implements IAllVehicles {
 		return new Vehicle(trip);
 	}
 
-	//TODO: The vehicles all move 1 tick
-	public void nextTick() {
-		
-		
+	public void move(DatabaseUtil database, double timeleft) {
+		for(Vehicle v : this.vehicles){
+			v.move(database, timeleft);
+		}		
 	}
 
 	public int size() {

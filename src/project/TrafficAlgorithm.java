@@ -27,12 +27,11 @@ public class TrafficAlgorithm {
 	}
 	
 	public void run(){
-		double tick = 0;
-		while(tick <= user.getDuration()){
-			
-			vehicles.nextTick();
-			
-			tick+=user.getFrequency();
+		DatabaseUtil database = new DatabaseUtil();
+		double timeleft = 0;
+		while(timeleft <= user.getDuration()){			
+			vehicles.move(database, user.getDuration() - timeleft);			
+			timeleft+=user.getFrequency();
 		}
 		System.exit(1);
 	}

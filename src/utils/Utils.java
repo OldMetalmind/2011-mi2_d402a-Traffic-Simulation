@@ -35,6 +35,15 @@ public class Utils {
 		return new GPSSignal(utm.getEasting(),utm.getNorthing(),"UTM");		
 	}
 	
+	/**
+	 * 
+	 * @param kmh - kilometer per hour
+	 * @return meter per second
+	 */
+	public static double kmh2ms(double kmh){
+		return kmh / 3600;
+	}
+	
 	/*
 	public static void main(String[] argv) {
 		double latitude = 55;

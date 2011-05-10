@@ -1,10 +1,11 @@
 package interfaces;
 
-import dataStructures.GPSSignal;
+import utils.DatabaseUtil;
+import dataStructures.*;
 
 public interface IVehicle {
 		
-	public void nextStep();		
+	public GPSSignal move(DatabaseUtil database, double time);
 	public GPSSignal from();
 	public GPSSignal to();
 	public String toString();
