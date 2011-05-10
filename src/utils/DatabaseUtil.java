@@ -59,8 +59,16 @@ public class DatabaseUtil {
 		}
 	}
 	
-	/*
+	
+	//TODO: GIEDRIUS, the problematic method is "getClosestPoint" and it's called in this method (...)
+	//(...) has you can see the method is called for 2 different points: 'from' and 'to'. But at (...)
+	//(...) the end the idFrom and idTo are equal and this shouldn't happen.
+	/**
 	 * Finds the shortest path between two points and return the Trip
+	 * @param from
+	 * @param to
+	 * @return
+	 * @throws SQLException
 	 */
 	public Trip getShortestPath(GPSSignal from, GPSSignal to) throws SQLException{		
 		if(from.equals(to))
@@ -134,6 +142,10 @@ public class DatabaseUtil {
 		result.close();
 		return trip;
 	}
+	
+	//TODO: GIEDRIUS - This is the problematic method, the query is always returning the same points (...)
+	//(...) even if the two points are separated by 100km... Please try to query the data that we have (...) 
+	//(...) using the query or even try to redo the query from scratch.
 	/**
 	 * 
 	 * @param signal
