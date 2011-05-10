@@ -8,6 +8,7 @@ public interface IVehicle {
 	public GPSSignal move(DatabaseUtil database, double time);
 	public GPSSignal from();
 	public GPSSignal to();
-	public String getActualPosition();
+	public GPSSignal getActualPosition();
+	public String getActualPositionUTM();
 	public String toString();
 }

@@ -97,7 +97,7 @@ public class DatabaseUtil {
 	public void addVehicle(Vehicle v, int vehicle_id) throws SQLException {
 		// TABLE vehicles (vehicle_id "int4", location "point" ) DONE
 		// Don't forget to update the vehicle id!!! DONE
-		String sql = "INSERT INTO vehicles VALUES ("+vehicle_id+","+ v.getActualPosition()+")";		
+		String sql = "INSERT INTO vehicles VALUES ("+vehicle_id+","+ v.getActualPositionUTM()+")";		
 		Statement statement = this.connection.createStatement();
 		statement.executeQuery(sql);
 		v.setVehicle_id(vehicle_id);

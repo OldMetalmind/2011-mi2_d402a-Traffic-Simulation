@@ -63,17 +63,9 @@ public class Vehicle implements IVehicle {
 	//TODO: Move the vehicle one more frequency and get his coordinates.
 	public GPSSignal move(DatabaseUtil database, double timeLeft) {
 		
-		String sqlCheckpoint = "SELECT ST_Distance(";
-		//after this query we will be able to find the distance till next checkpoint;
-		double distanceTillCheckpoint = 100;
-		double allowedActualMaxSpeed = shortestPath.getSpeedLimitAt(this.positionIndex);
+		GPSSignal from = this.getActualPosition();
+		GPSSignal checkpoint = this.getShortestPath().getInstance(positionIndex+1);	
 		
-		double vehiclePosition = 1;
-		double nextCHECKPOINT = 2;
-		
-		String sql = "SELECT ST_Distance(+"+vehiclePosition+","+nextCHECKPOINT+")";
-		
-		double distanceMade = Utils.kmh2ms(allowedActualMaxSpeed) * timeLeft;
 		
 		return null;
 	}
@@ -90,7 +82,7 @@ public class Vehicle implements IVehicle {
 	 * 
 	 * @return a string with the actual position in UTM format
 	 */
-	public String getActualPosition() { 
+	public String getActualPositionUTM() { 
 		String ret = "";
 		GPSSignal last = this.trip.getInstance(this.trip.size());
 		if(last.getFormat() == "UTM")
@@ -100,6 +92,10 @@ public class Vehicle implements IVehicle {
 			ret = "'POINT("+ n.getLongitude() +" "+ n.getLatitude() +")'::geometry";
 		}		
 		return ret;
+	}
+	
+	public GPSSignal getActualPosition(){
+		return this.trip.getInstance( this.trip.size() );
 	}
 	
 	public String toString() {
