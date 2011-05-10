@@ -43,17 +43,18 @@ public class Utils {
 	public static double kmh2ms(double kmh){
 		return kmh / 3600;
 	}
-	
-	/*
-	public static void main(String[] argv) {
-		double latitude = 55;
-		double longitude = 9;
-		
-		GPSSignal s1 = new GPSSignal(latitude,longitude,"LatLon");
-		GPSSignal s2 = LatLon2UTM(s1);
-		GPSSignal s3 = UTM2LatLon(s2);
-		System.out.println(s1+"\n"+s2+"\n"+s3);		
-	}
-	*/
 
+	/**
+	 * Calculate the distance between these two UTM signals.
+	 * @param from
+	 * @param to
+	 * @return Distance between the two point in meters
+	 */
+	public static double UTMdistance(GPSSignal from, GPSSignal to) {
+		if(from.getFormat() != "UTM" || to.getFormat() != "UTM")
+			return -1;
+		
+		return Math.sqrt(Math.pow(from.getLatitude() - to.getLatitude(), 2) 
+				+ Math.pow(from.getLongitude() - to.getLongitude(), 2));
+	}
 }

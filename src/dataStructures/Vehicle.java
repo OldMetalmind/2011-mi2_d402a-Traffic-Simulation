@@ -66,6 +66,17 @@ public class Vehicle implements IVehicle {
 		GPSSignal from = this.getActualPosition();
 		GPSSignal checkpoint = this.getShortestPath().getInstance(positionIndex+1);	
 		
+		double distance = Utils.UTMdistance(from,checkpoint); //it's in meters;
+		
+		double maxDistance = timeLeft * this.shortestPath.getSpeedLimitAt(this.positionIndex);
+		
+		if(distance < maxDistance){
+			
+		}
+		else {
+			
+		}
+		
 		
 		return null;
 	}
