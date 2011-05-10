@@ -12,7 +12,7 @@ public class Vehicle implements IVehicle {
 	private int positionIndex; //this index is related to the 'shortest path' trip.
 	private String gpsFormat;
 	private int vehicle_id;
-	
+		
 	
 	public Vehicle(Trip shortestPath){
 		this.personalMaxSpeed = -1; //Unlimited
@@ -62,6 +62,9 @@ public class Vehicle implements IVehicle {
 
 	//TODO: Move the vehicle one more frequency and get his coordinates.
 	public GPSSignal move(DatabaseUtil database, double timeLeft) {
+		
+		String sqlCheckpoint = "SELECT ST_Distance(";
+		//after this query we will be able to find the distance till next checkpoint;
 		double distanceTillCheckpoint = 100;
 		double allowedActualMaxSpeed = shortestPath.getSpeedLimitAt(this.positionIndex);
 		
@@ -82,6 +85,22 @@ public class Vehicle implements IVehicle {
 	public int getVehicle_id() {
 		return vehicle_id;
 	}
+
+	/**
+	 * 
+	 * @return a string with the actual position in UTM format
+	 */
+	public String getActualPosition() { 
+		String ret = "";
+		GPSSignal last = this.trip.getInstance(this.trip.size());
+		if(last.getFormat() == "UTM")
+			ret = "'POINT("+ last.getLongitude() +" "+ last.getLatitude() +")'::geometry";
+		else {
+			GPSSignal n = Utils.LatLon2UTM(last);
+			ret = "'POINT("+ n.getLongitude() +" "+ n.getLatitude() +")'::geometry";
+		}		
+		return ret;
+	}
 	
 	public String toString() {
 		return personalMaxSpeed+" "
@@ -89,5 +108,4 @@ public class Vehicle implements IVehicle {
 				//+trip.toString()+" "
 				+gpsFormat;
 	}
-
 }

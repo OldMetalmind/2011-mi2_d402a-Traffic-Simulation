@@ -1,5 +1,7 @@
 package project;
 
+import java.sql.SQLException;
+
 import dataStructures.*;
 
 public class Input extends javax.swing.JFrame {
@@ -207,7 +209,12 @@ public class Input extends javax.swing.JFrame {
 
         this.setVisible(false);        
         UserInput userInput = new UserInput(this.numberOfCars, this.frequency, 100, this.fromZones, this.toZones);
-        TrafficAlgorithm traffic = new TrafficAlgorithm(userInput);
+        TrafficAlgorithm traffic = null;
+		try {
+			traffic = new TrafficAlgorithm(userInput);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
         traffic.run();
     }
 

@@ -1,5 +1,7 @@
 package project;
 
+import java.sql.SQLException;
+
 import utils.DatabaseUtil;
 import dataStructures.*;
 
@@ -9,7 +11,7 @@ public class TrafficAlgorithm {
 	private AllVehicles vehicles;
 	private DatabaseUtil database;
 	
-	public TrafficAlgorithm(UserInput userInput){
+	public TrafficAlgorithm(UserInput userInput) throws SQLException{
 		user = userInput;
 		setVehicles(new AllVehicles());
 		database = new DatabaseUtil();

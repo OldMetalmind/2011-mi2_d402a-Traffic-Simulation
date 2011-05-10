@@ -86,15 +86,21 @@ public class DatabaseUtil {
 		return resultSet2Trip(result);
 	}
 	
-	public void clearVehicles() {
-		// TODO Empty the vehicles table in the database;
+	public void clearVehicles() throws SQLException {
+		String sql = "DELETE FROM vehicles";
+		
+		Statement statement = this.connection.createStatement();
+		statement.executeQuery(sql);
 		
 	}
 
-	public void addVehicle(Vehicle v, int vehicle_id) {		
-		// TODO Add the information of this vehicle to the table vehicles;
-		// TABLE vehicles (vehicle_id "int4", location "point" )
-		// Don't forget to update the vehicle id!!!
+	public void addVehicle(Vehicle v, int vehicle_id) throws SQLException {
+		// TABLE vehicles (vehicle_id "int4", location "point" ) DONE
+		// Don't forget to update the vehicle id!!! DONE
+		String sql = "INSERT INTO vehicles VALUES ("+vehicle_id+","+ v.getActualPosition()+")";		
+		Statement statement = this.connection.createStatement();
+		statement.executeQuery(sql);
+		v.setVehicle_id(vehicle_id);
 	}	
 	/**
 	 * 
