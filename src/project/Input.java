@@ -12,7 +12,7 @@ public class Input extends javax.swing.JFrame {
     private String nonFormatedFromZones;
     private String nonFormatedToZones;
     private Zones fromZones; 
-    private Zones toZones;    /** Creates new form NewJFrame */
+    private Zones toZones;    
     public Input() {
         initComponents();
     }
@@ -173,8 +173,7 @@ public class Input extends javax.swing.JFrame {
                 jTextAreaFromZones.getText()+ "#" +
                 jTextAreaToZones.getText();
         if(insert.length() <= 3)
-        	jTextAreaSubmit.setText("5#1#57.04711 9.91231 100#57.04704 9.91545 100");//jTextAreaSubmit.setText("5#1#57.043952 9.921952 100#57.047045 9.915451 100");       /* jTextAreaSubmit.setText("5#1#582319.51 6323951.61 100#717230.03 6182185.2 100"); */
-        //57.04711033901427,9.912316530298757
+        	jTextAreaSubmit.setText("5#1#57.04711 9.91231 100 20#57.04704 9.91545 100 20");
         else    
         	jTextAreaSubmit.setText(insert);
     }

@@ -66,8 +66,48 @@ public class Vehicle implements IVehicle {
 		GPSSignal from = this.getActualPosition();
 		GPSSignal checkpoint = this.getShortestPath().getInstance(positionIndex+1);	
 		
+		double distance = Utils.UTMdistance(from,checkpoint); //it's in meters;
+		
+		double maxDistance = timeLeft * this.shortestPath.getSpeedLimitAt(this.positionIndex);
+		
+		if(distance < maxDistance){
+			move(distance, checkpoint);
+		}
+		else {
+			
+		}
+		
 		
 		return null;
+	}
+
+
+	//TODO: Make sure vehicles don't overlap.
+	/**
+	 * Moves the vehicle x meters in direction d
+	 * @param m - how much meters it will move
+	 * @param d - the direction of the movement
+	 */
+	private void move(double m, GPSSignal d) {
+		// TODO CHECK: moves the vehicle x meters in direction d;
+		GPSSignal position = this.getActualPosition();
+		
+		double angletemp = Math.atan((position.getLatitude() - d.getLatitude() / 
+									position.getLongitude() - d.getLongitude()));
+		
+		double angle = Math.atan2(position.getLatitude() - d.getLatitude(), 
+									position.getLongitude() - d.getLongitude());
+		System.out.println("angletemp: "+angletemp+ " angle2: "+ angle);
+		double x = Math.cos(angle) * m;
+		double y = Math.sin(angle) * m;
+		
+		setActualPosition(position.getLatitude() + y, position.getLongitude() + x );
+		// cos(x) = adjacent / hipotenuse*
+		// sin(x) = oposite / hipotenuse* 
+	}
+
+	private void setActualPosition(double latitude, double longitude) {
+		this.trip.addInstance(new GPSSignal(latitude, longitude, "UTM"));
 	}
 
 	public void setVehicle_id(int vehicle_id) {

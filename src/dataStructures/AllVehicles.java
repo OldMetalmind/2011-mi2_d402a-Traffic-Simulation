@@ -9,10 +9,10 @@ import interfaces.IAllVehicles;
 
 public class AllVehicles implements IAllVehicles {
 	
-	private ArrayList<Vehicle> vehicles; 
+	private Vector<Vehicle> vehicles; 
 	
 	public AllVehicles(){
-		this.vehicles = new ArrayList<Vehicle>();
+		this.vehicles = new Vector<Vehicle>();
 	}
 
 	public Vehicle getVehicle(Integer index) {		

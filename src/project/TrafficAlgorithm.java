@@ -16,13 +16,14 @@ public class TrafficAlgorithm {
 		setVehicles(new AllVehicles());
 		database = new DatabaseUtil();
 		
-		database.clearVehicles();
+		database.clearVehicles(); 
 		AllVehicles vehicles = new AllVehicles();
 		for(int i = 0; i < user.getTotalVehicles(); i++){			
 			
 			Zone from = user.getFromZones().selectRandomZone();
 			Zone to = user.getToZones().selectRandomZone();
-			Vehicle v = vehicles.generateVehicle(from, to);			
+			Vehicle v = vehicles.generateVehicle(from, to);
+			System.out.println(v.toString());
 			vehicles.addVehicle(v);
 			database.addVehicle(v,vehicles.size());
 		}

@@ -2,22 +2,22 @@ package dataStructures;
 
 import interfaces.ITrip;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 
 public class Trip implements ITrip {
 
-	private ArrayList<GPSSignal> trip;
-	private ArrayList<Integer> speedLimit;
+	private Vector<GPSSignal> trip;
+	private Vector<Integer> speedLimit;
 	private String format;
 	
 	public Trip(String format){
-		this.trip = new ArrayList<GPSSignal>();
-		this.speedLimit = new ArrayList<Integer>();
+		this.trip = new Vector<GPSSignal>();
+		this.speedLimit = new Vector<Integer>();
 		this.setFormat(format);
 	}
 	
-	public Trip(ArrayList<GPSSignal> trip){
+	public Trip(Vector<GPSSignal> trip){
 		this.trip = trip;
 		this.speedLimit = null;
 		if(!trip.isEmpty()) 
@@ -28,7 +28,7 @@ public class Trip implements ITrip {
 		}
 	}
 	
-	public ArrayList<GPSSignal> getPath() {		
+	public Vector<GPSSignal> getPath() {		
 		return this.trip;
 	}
 	public Integer size(){
@@ -56,7 +56,7 @@ public class Trip implements ITrip {
 		return format;
 	}
 
-	public ArrayList<Integer> getSpeedLimits() {
+	public Vector<Integer> getSpeedLimits() {
 		return this.speedLimit;
 	}
 
@@ -72,7 +72,6 @@ public class Trip implements ITrip {
 		return output;
 	}
 
-	@Override
 	public void addInstance(GPSSignal s, Integer speedLimit) {
 		this.trip.add(s);
 		this.speedLimit.add(speedLimit);
