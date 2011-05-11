@@ -1,6 +1,6 @@
 package dataStructures;
 
-import java.util.ArrayList;
+import java.util.Vector;
 import java.util.Random;
 
 import interfaces.IZones;
@@ -8,15 +8,15 @@ import interfaces.IZones;
 public class Zones implements IZones {
 
 	final private String name;
-	private static ArrayList<Zone> zones;
+	private static Vector<Zone> zones;
 	
 	public Zones(){
 		this.name = "unkown";
-		this.setZones(new ArrayList<Zone>());
+		this.setZones(new Vector<Zone>());
 	}
 	
 	public Zones(String name){
-		this.setZones(new ArrayList<Zone>());
+		this.setZones(new Vector<Zone>());
 		this.name = name;		
 	}
 	
@@ -32,11 +32,11 @@ public class Zones implements IZones {
 		return name;
 	}
 	
-	public void setZones(ArrayList<Zone> zones) {
+	public void setZones(Vector<Zone> zones) {
 		Zones.zones = zones;
 	}
 
-	public static ArrayList<Zone> getZones() {
+	public static Vector<Zone> getZones() {
 		return zones;
 	}
 	

@@ -12,7 +12,7 @@ public class Input extends javax.swing.JFrame {
     private String nonFormatedFromZones;
     private String nonFormatedToZones;
     private Zones fromZones; 
-    private Zones toZones;    /** Creates new form NewJFrame */
+    private Zones toZones;    
     public Input() {
         initComponents();
     }

@@ -9,12 +9,18 @@ public class Zone implements IZone {
 	
 	final private GPSSignal center;
 	final private Double radius;
-	private int numberVehicles; // -1 = unlimited
+	private double numberVehicles; // -1 = unlimited
 	
 	public Zone(GPSSignal center, Double radius){
 		this.center = center;
 		this.radius = radius;
 		this.numberVehicles = -1;
+	}
+	
+	public Zone(GPSSignal center, double radius, double vehicles){
+		this.center = center;
+		this.radius = radius;
+		this.numberVehicles = vehicles;
 	}
 	
 	public Zone(String zonex, String format) {
@@ -57,7 +63,7 @@ public class Zone implements IZone {
 		return "("+this.center.toString()+") "+this.radius+" -format: "+ this.center.getFormat();
 	}
 
-	public int getMaxVehicles() {
+	public double getMaxVehicles() {
 		return numberVehicles;
 	}
 
