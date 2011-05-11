@@ -156,14 +156,38 @@ public class DatabaseUtil {
 		if(signal.getFormat() == "LatLon"){
 			signal = Utils.LatLon2UTM(signal);
 		}
+		//System.out.println(">>  " + signal);
+		
+		//System.out.println(signal.getLongitude().intValue()+" "+signal.getLatitude().intValue());
+		Double lat = signal.getLatitude();
+		Double lng = signal.getLongitude();
+		int bboxsize = 100;
+		String sql= "SELECT ST_Distance(ST_MakePoint("+lat + "," + lng +
+			")::geometry, ST_astext(the_geom)::geometry) as x,id " +
+					"FROM network " +
+					"WHERE ST_intersects(ST_MakeBox2D(ST_Point(" +(lat-bboxsize) + ","+(lng-bboxsize)
+					+"),ST_Point(" +(lat+bboxsize)  + ","+(lng+bboxsize)+
+					")),the_geom)" +
+					" ORDER BY x asc limit 1;";
 
-		String sql= "SELECT ST_Distance(ST_MakePoint("+signal.getLatitude()+"," +signal.getLongitude()+
-				")::geometry, ST_astext(the_geom)::geometry) as x,* from network order by x asc limit 1;";
+		System.out.println(sql);
+
+		
+
+
 				
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
-		result.next();
-		int id = Integer.parseInt(result.getString("id"));		
+		result.next();		
+		//System.out.println(">>> dif: "+result.getString("id"));
+		//sql = "SELECT id FROM network WHERE ST_DWithin('"+ result.getString("cp")+"',the_geom,"+this.precision+");";		
+		
+		//result = statement.executeQuery(sql);
+		//result.next();		
+		int id = Integer.parseInt(result.getString("id"));
+		
+		System.out.println(id);
+		
 		result.close();
 		statement.close();	
 		return id;
