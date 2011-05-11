@@ -162,8 +162,16 @@ public class DatabaseUtil {
 		//System.out.println(">>  " + signal);
 		
 		//System.out.println(signal.getLongitude().intValue()+" "+signal.getLatitude().intValue());
-		String sql= "SELECT ST_Distance(ST_MakePoint("+signal.getLatitude()+"," +signal.getLongitude()+
-				")::geometry, ST_astext(the_geom)::geometry) as x,* from network order by x asc limit 1;";
+		Double lat = signal.getLatitude();
+		Double lng = signal.getLongitude();
+		int bboxsize = 100;
+		String sql= "SELECT ST_Distance(ST_MakePoint("+(lat-bboxsize) + "," + (lng-bboxsize) +
+			")::geometry, ST_astext(the_geom)::geometry) as x,id " +
+					"FROM network " +
+					"WHERE ST_intersects(ST_MakeBox2D(ST_Point(" +(lat+bboxsize) + ","+(lng+bboxsize)
+					+"),ST_Point(" +lat + ","+lng+
+					")),the_geom)" +
+					" ORDER BY x asc limit 1;";
 		System.out.println(sql);
 		
 
