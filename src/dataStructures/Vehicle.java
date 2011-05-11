@@ -135,7 +135,7 @@ public class Vehicle implements IVehicle {
 		else {
 			GPSSignal n = Utils.LatLon2UTM(last);
 			ret = "'POINT("+ n.getLongitude() +" "+ n.getLatitude() +")'::geometry";
-		}		
+		}
 		return ret;
 	}
 	

@@ -47,6 +47,8 @@ public class Zone implements IZone {
 	 * @return a random GPS signal in UTM format, that is located inside the zone
 	 */
 	public GPSSignal generateRandomGPS(){	
+		return this.center;
+		/*
 		Random rand = new Random();
 		double distance = rand.nextDouble()*this.radius;
 		double degree = rand.nextDouble()*360;
@@ -56,7 +58,7 @@ public class Zone implements IZone {
 		double y = Math.sin(radian)*distance;
 		
 		return new GPSSignal(this.center.getLatitude() + y, this.center.getLongitude() + x, "UTM");
-		//return new GPSSignal(center.getLatitude(), center.getLongitude(), center.getFormat());
+		*/		
 	}
 	
 	public String toString(){

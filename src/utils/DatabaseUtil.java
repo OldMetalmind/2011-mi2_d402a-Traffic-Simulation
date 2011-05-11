@@ -11,6 +11,8 @@ import dataStructures.Vehicle;
  */
 public class DatabaseUtil {
 
+	private static final double precision = 0.1;
+
 	java.sql.Connection connection;
 	
 	static private String defaultUrl = "jdbc:postgresql://localhost:5432/project";
@@ -74,11 +76,10 @@ public class DatabaseUtil {
 		if(from.equals(to))
 			return new Trip(to.getFormat());
 			
-		
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);
 		
-		System.out.println(idFrom+" "+idTo);
+		//System.out.println(idFrom+" "+idTo);
 		
 		String sql = "SELECT * FROM shortest_path(' " +
 				" SELECT gid AS id, " +
@@ -87,7 +88,7 @@ public class DatabaseUtil {
 				" ST_Length(the_geom)::float8 AS cost " +
 				" FROM network', "+idFrom+", "+idTo+", false, false);";
 		
-		System.out.println(sql);
+		//System.out.println(sql);
 		
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
@@ -158,11 +159,14 @@ public class DatabaseUtil {
 	 * @throws SQLException
 	 */
 	private Integer getClosestPoint(GPSSignal signal) throws SQLException{
-		if(signal.getFormat() == "LatLon")			
-			signal = Utils.LatLon2UTM(signal);	
+		if(signal.getFormat() == "LatLon"){
+			signal = Utils.LatLon2UTM(signal);
+		}
+		//System.out.println(">>  " + signal);
 		
 		//System.out.println(signal.getLongitude().intValue()+" "+signal.getLatitude().intValue());
-		String sql = 	"SELECT * " +
+		/*
+		String sql = 	"SELECT ST_ClosestPoint(f.the_geom, pt) as cp " +
 						"FROM (" +
 								" SELECT " +
 								"	ST_MakePoint("+signal.getLongitude()+","+signal.getLatitude()+") AS pt " +
@@ -172,14 +176,19 @@ public class DatabaseUtil {
 								" WHERE ST_Distance(ST_ClosestPoint(f.the_geom, pt), pt) " +
 								"	< ST_Distance(ST_ClosestPoint(g.the_geom, pt), pt) " +
 						"LIMIT 1;";
-				
-		//System.out.println(sql);
-		
-		int id = -1;
+		*/		
+
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
-		result.next();
-		id = Integer.parseInt(result.getString("start_id"));		
+		result.next();		
+		System.out.println(">>> dif: "+result.getString("cp"));
+		sql = "SELECT id FROM network WHERE ST_DWithin('"+ result.getString("cp")+"',the_geom,"+this.precision+");";		
+		
+		result = statement.executeQuery(sql);
+		result.next();		
+		int id = Integer.parseInt(result.getString("id"));
+		
+		System.out.println(id);
 		result.close();
 		statement.close();	
 		return id;
