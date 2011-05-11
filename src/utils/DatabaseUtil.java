@@ -165,32 +165,11 @@ public class DatabaseUtil {
 		//System.out.println(">>  " + signal);
 		
 		//System.out.println(signal.getLongitude().intValue()+" "+signal.getLatitude().intValue());
-<<<<<<< HEAD
-		/*String sql = 	"SELECT * " +
-=======
-		/*
-		String sql = 	"SELECT ST_ClosestPoint(f.the_geom, pt) as cp " +
->>>>>>> branch 'refs/heads/master' of https://Giedriusz@github.com/smithereen/2011-mi2_d402a-Traffic-Simulation.git
-						"FROM (" +
-								" SELECT " +
-								"	ST_MakePoint("+signal.getLongitude()+","+signal.getLatitude()+") AS pt " +
-								" ) AS foo," +
-								" network as f, "+
-								" network as g " +
-								" WHERE ST_Distance(ST_ClosestPoint(f.the_geom, pt), pt) " +
-								"	< ST_Distance(ST_ClosestPoint(g.the_geom, pt), pt) " +
-						"LIMIT 1;";
-<<<<<<< HEAD
-				*/
+
 		String sql= "SELECT ST_Distance(ST_MakePoint("+signal.getLatitude()+"," +signal.getLongitude()+
 				")::geometry, ST_astext(the_geom)::geometry) as x,* from network order by x asc limit 1;";
 		System.out.println(sql);
-		
-		int id = -1;
-=======
-		*/		
-
->>>>>>> branch 'refs/heads/master' of https://Giedriusz@github.com/smithereen/2011-mi2_d402a-Traffic-Simulation.git
+				
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		result.next();		
