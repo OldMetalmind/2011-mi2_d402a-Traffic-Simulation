@@ -15,7 +15,7 @@ public class DatabaseUtil {
 	
 	static private String defaultUrl = "jdbc:postgresql://localhost:5432/project";
 	static private String defaultUser = "postgres";
-	static private String defaultPassword = "123";
+	static private String defaultPassword = "admin";
 	
 	public DatabaseUtil(){
 		try{
