@@ -165,17 +165,20 @@ public class DatabaseUtil {
 		Double lat = signal.getLatitude();
 		Double lng = signal.getLongitude();
 		int bboxsize = 100;
-		String sql= "SELECT ST_Distance(ST_MakePoint("+(lat-bboxsize) + "," + (lng-bboxsize) +
+		String sql= "SELECT ST_Distance(ST_MakePoint("+lat + "," + lng +
 			")::geometry, ST_astext(the_geom)::geometry) as x,id " +
 					"FROM network " +
-					"WHERE ST_intersects(ST_MakeBox2D(ST_Point(" +(lat+bboxsize) + ","+(lng+bboxsize)
-					+"),ST_Point(" +lat + ","+lng+
+					"WHERE ST_intersects(ST_MakeBox2D(ST_Point(" +(lat-bboxsize) + ","+(lng-bboxsize)
+					+"),ST_Point(" +(lat+bboxsize)  + ","+(lng+bboxsize)+
 					")),the_geom)" +
 					" ORDER BY x asc limit 1;";
+
 		System.out.println(sql);
+
 		
 
 
+				
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		result.next();		
