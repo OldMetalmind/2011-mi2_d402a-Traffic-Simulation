@@ -124,7 +124,12 @@ public class Vehicle implements IVehicle {
 	 */
 	public String getActualPositionUTM() { 
 		String ret = "";
-		GPSSignal last = this.trip.getInstance(this.trip.size());
+		GPSSignal last = null;
+		if(this.trip != null)
+			last = this.trip.getInstance(this.trip.size());
+		else
+			last = this.shortestPath.getInstance(0);
+			
 		if(last.getFormat() == "UTM")
 			ret = "'POINT("+ last.getLongitude() +" "+ last.getLatitude() +")'::geometry";
 		else {
