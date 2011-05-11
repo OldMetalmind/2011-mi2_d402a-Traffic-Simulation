@@ -87,7 +87,7 @@ public class DatabaseUtil {
 				" ST_Length(the_geom)::float8 AS cost " +
 				" FROM network', "+idFrom+", "+idTo+", false, false);";
 		
-		System.out.println(sql);
+		//System.out.println(sql);
 		
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
@@ -162,7 +162,7 @@ public class DatabaseUtil {
 			signal = Utils.LatLon2UTM(signal);	
 		
 		//System.out.println(signal.getLongitude().intValue()+" "+signal.getLatitude().intValue());
-		String sql = 	"SELECT * " +
+		/*String sql = 	"SELECT * " +
 						"FROM (" +
 								" SELECT " +
 								"	ST_MakePoint("+signal.getLongitude()+","+signal.getLatitude()+") AS pt " +
@@ -172,8 +172,10 @@ public class DatabaseUtil {
 								" WHERE ST_Distance(ST_ClosestPoint(f.the_geom, pt), pt) " +
 								"	< ST_Distance(ST_ClosestPoint(g.the_geom, pt), pt) " +
 						"LIMIT 1;";
-				
-		//System.out.println(sql);
+				*/
+		String sql= "SELECT ST_Distance(ST_MakePoint("+signal.getLatitude()+"," +signal.getLongitude()+
+				")::geometry, ST_astext(the_geom)::geometry) as x,* from network order by x asc limit 1;";
+		System.out.println(sql);
 		
 		int id = -1;
 		Statement statement = this.connection.createStatement();
