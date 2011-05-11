@@ -27,7 +27,7 @@ public class Zone implements IZone {
 		String coord[] = zonex.split(" ");
 		this.center = new GPSSignal(coord[0]+" "+coord[1], format);
 		this.radius = Double.parseDouble(coord[2]);
-		this.numberVehicles = -1;
+		this.numberVehicles = Double.parseDouble(coord[3]);
 	}
 	
 	public Zone(GPSSignal center, Double radius, int maxVehicles){
