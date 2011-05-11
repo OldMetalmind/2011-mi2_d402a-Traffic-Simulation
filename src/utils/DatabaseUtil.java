@@ -94,12 +94,17 @@ public class DatabaseUtil {
 		return resultSet2Trip(result);
 	}
 	
-	public void clearVehicles() throws SQLException {
+	public void clearVehicles(){
 		String sql = "DELETE FROM vehicles";
 		
-		Statement statement = this.connection.createStatement();
-		statement.executeQuery(sql);
-		
+		Statement statement;
+		try {
+			statement = this.connection.createStatement();
+			statement.executeQuery(sql);
+			statement.close();		
+		} catch (SQLException e) {
+			return;
+		}
 	}
 
 	public void addVehicle(Vehicle v, int vehicle_id) throws SQLException {
