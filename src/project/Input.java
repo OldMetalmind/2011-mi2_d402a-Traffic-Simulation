@@ -214,6 +214,7 @@ public class Input extends javax.swing.JFrame {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
         traffic.run();
     }
 

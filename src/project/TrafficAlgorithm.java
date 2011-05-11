@@ -19,11 +19,9 @@ public class TrafficAlgorithm {
 		database.clearVehicles(); 
 		AllVehicles vehicles = new AllVehicles();
 		for(int i = 0; i < user.getTotalVehicles(); i++){			
-			
 			Zone from = user.getFromZones().selectRandomZone();
 			Zone to = user.getToZones().selectRandomZone();
 			Vehicle v = vehicles.generateVehicle(from, to);
-			System.out.println(v.toString());
 			vehicles.addVehicle(v);
 			database.addVehicle(v,vehicles.size());
 		}
@@ -31,10 +29,10 @@ public class TrafficAlgorithm {
 	
 	public void run(){
 		DatabaseUtil database = new DatabaseUtil();
-		double timeleft = 0;
-		while(timeleft <= user.getDuration()){			
-			vehicles.move(database, user.getDuration() - timeleft);			
-			timeleft+=user.getFrequency();
+		double time = 0;
+		while(time <= user.getDuration()){			
+			vehicles.move(database, user.getDuration() - time);			
+			time+=user.getFrequency();
 		}
 		System.exit(1);
 	}
@@ -54,11 +52,9 @@ public class TrafficAlgorithm {
 	 	OutputUtil outUtil = new OutputUtil("TestOut");
 		String output = outUtil.KMLHeader();		
 		for(int i = 0; i < numberOfCars; i++){			
-			System.out.println(v.toString());			
 			output += outUtil.KMLTrip(Utils.UTM2LatLon(v.getShortestPath()));
 		}
-		
-		System.out.println();		
+				
 		output += outUtil.KMLFooter();		
 		outUtil.writeFile(output, "kml");
 	 */

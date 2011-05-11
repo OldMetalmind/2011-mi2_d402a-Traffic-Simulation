@@ -17,7 +17,7 @@ public class DatabaseUtil {
 	
 	static private String defaultUrl = "jdbc:postgresql://localhost:5432/project";
 	static private String defaultUser = "postgres";
-	static private String defaultPassword = "admin";
+	static private String defaultPassword = "123";
 	
 	public DatabaseUtil(){
 		try{
@@ -61,10 +61,6 @@ public class DatabaseUtil {
 		}
 	}
 	
-	
-	//TODO: GIEDRIUS, the problematic method is "getClosestPoint" and it's called in this method (...)
-	//(...) has you can see the method is called for 2 different points: 'from' and 'to'. But at (...)
-	//(...) the end the idFrom and idTo are equal and this shouldn't happen.
 	/**
 	 * Finds the shortest path between two points and return the Trip
 	 * @param from
@@ -77,19 +73,16 @@ public class DatabaseUtil {
 			return new Trip(to.getFormat());
 			
 		int idFrom = getClosestPoint(from);
-		int idTo = getClosestPoint(to);
+		int idTo = getClosestPoint(to);		
 		
-		//System.out.println(idFrom+" "+idTo);
-		
+		System.out.println("DbUtil| from: "+idFrom+"  to: "+idTo );
 		String sql = "SELECT * FROM shortest_path(' " +
 				" SELECT gid AS id, " +
 				" start_id::int4 AS source, " +
 				" end_id::int4 AS target, " +
 				" ST_Length(the_geom)::float8 AS cost " +
 				" FROM network', "+idFrom+", "+idTo+", false, false);";
-		
-		//System.out.println(sql);
-		
+				
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		return resultSet2Trip(result);
@@ -108,13 +101,17 @@ public class DatabaseUtil {
 		}
 	}
 
-	public void addVehicle(Vehicle v, int vehicle_id) throws SQLException {
-		// TABLE vehicles (vehicle_id "int4", location "point" ) DONE
-		// Don't forget to update the vehicle id!!! DONE
-		String sql = "INSERT INTO vehicles VALUES ("+vehicle_id+","+ v.getActualPositionUTM()+")";		
-		Statement statement = this.connection.createStatement();
-		statement.executeQuery(sql);
-		v.setVehicle_id(vehicle_id);
+	public void addVehicle(Vehicle v, int vehicle_id) {
+		String sql = "INSERT INTO vehicles VALUES ("+vehicle_id+", ST_SetSRID("+ v.getActualPositionUTM()+",4236))";
+		try {
+			Statement statement = this.connection.createStatement();
+			statement.executeQuery(sql);
+			v.setVehicle_id(vehicle_id);
+			statement.close();
+		} catch (SQLException e) {
+			//The query never returns nothing;
+		}
+		
 	}	
 	/**
 	 * 
@@ -146,12 +143,9 @@ public class DatabaseUtil {
 		}
 		statement.close();
 		result.close();
+
 		return trip;
 	}
-	
-	//TODO: GIEDRIUS - This is the problematic method, the query is always returning the same points (...)
-	//(...) even if the two points are separated by 100km... Please try to query the data that we have (...) 
-	//(...) using the query or even try to redo the query from scratch.
 	/**
 	 * 
 	 * @param signal
@@ -162,25 +156,14 @@ public class DatabaseUtil {
 		if(signal.getFormat() == "LatLon"){
 			signal = Utils.LatLon2UTM(signal);
 		}
-		//System.out.println(">>  " + signal);
-		
-		//System.out.println(signal.getLongitude().intValue()+" "+signal.getLatitude().intValue());
 
 		String sql= "SELECT ST_Distance(ST_MakePoint("+signal.getLatitude()+"," +signal.getLongitude()+
 				")::geometry, ST_astext(the_geom)::geometry) as x,* from network order by x asc limit 1;";
-		System.out.println(sql);
 				
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
-		result.next();		
-		System.out.println(">>> dif: "+result.getString("cp"));
-		sql = "SELECT id FROM network WHERE ST_DWithin('"+ result.getString("cp")+"',the_geom,"+this.precision+");";		
-		
-		result = statement.executeQuery(sql);
-		result.next();		
-		int id = Integer.parseInt(result.getString("id"));
-		
-		System.out.println(id);
+		result.next();
+		int id = Integer.parseInt(result.getString("id"));		
 		result.close();
 		statement.close();	
 		return id;

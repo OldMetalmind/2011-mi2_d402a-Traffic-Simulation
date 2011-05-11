@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/giedrius/Downloads/postgresql-9.0-801.jdbc4.jar"/>
-	<classpathentry kind="lib" path="jcoord-1.0.jar"/>
-	<classpathentry kind="lib" path="postgis.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>

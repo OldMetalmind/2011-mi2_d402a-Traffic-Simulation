@@ -27,13 +27,14 @@ public class AllVehicles implements IAllVehicles {
 		GPSSignal f = from.generateRandomGPS();
 		GPSSignal t = to.generateRandomGPS();
 		DatabaseUtil db = new DatabaseUtil();
-		Trip trip = null;
+		Trip shortestpath = null;
 		try {
-			trip = db.getShortestPath(f, t);
+			shortestpath = db.getShortestPath(f, t);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
-		return new Vehicle(trip);
+		System.out.println("AllVehicles| shortestPath:"+ shortestpath);
+		return new Vehicle(shortestpath);
 	}
 
 	public void move(DatabaseUtil database, double timeleft) {

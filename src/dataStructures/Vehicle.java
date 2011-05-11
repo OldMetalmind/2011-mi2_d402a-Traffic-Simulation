@@ -97,7 +97,6 @@ public class Vehicle implements IVehicle {
 		
 		double angle = Math.atan2(position.getLatitude() - d.getLatitude(), 
 									position.getLongitude() - d.getLongitude());
-		System.out.println("angletemp: "+angletemp+ " angle2: "+ angle);
 		double x = Math.cos(angle) * m;
 		double y = Math.sin(angle) * m;
 		
@@ -122,7 +121,8 @@ public class Vehicle implements IVehicle {
 	 * 
 	 * @return a string with the actual position in UTM format
 	 */
-	public String getActualPositionUTM() { 
+	public String getActualPositionUTM() {
+		System.out.println("Vehicle| shortestPath:\n"+this.shortestPath);
 		String ret = "";
 		GPSSignal last = null;
 		if(this.trip != null)
