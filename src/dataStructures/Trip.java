@@ -78,4 +78,8 @@ public class Trip implements ITrip {
 		if(this.speedLimit.size() != this.trip.size())
 			System.out.println("There's a problem with size");		
 	}
+
+	public boolean isEmpty() {
+		return this.trip.isEmpty();
+	}
 }
