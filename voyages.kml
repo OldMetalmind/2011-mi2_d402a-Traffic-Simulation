@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+<Document>
+<Placemark>
+	<name>id=0  t=0.0</name>
+	<description>56.80964267536726 9.78916843427471</description>
+	<Point>
+		<coordinates>56.80964267536726,9.78916843427471</coordinates>
+		<altitudeMode>relativeToGround</altitudeMode>
+		<extrude>1</extrude>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=0.0</name>
+	<description>56.80895429262562 9.78879256392969</description>
+	<Point>
+		<coordinates>56.80895429262562,9.78879256392969</coordinates>
+		<altitudeMode>relativeToGround</altitudeMode>
+		<extrude>1</extrude>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=5.0</name>
+	<description>56.80895429262562 9.78879256392969</description>
+	<Point>
+		<coordinates>56.80895429262562,9.78879256392969</coordinates>
+		<altitudeMode>relativeToGround</altitudeMode>
+		<extrude>1</extrude>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=10.0</name>
+	<description>56.80895429262562 9.78879256392969</description>
+	<Point>
+		<coordinates>56.80895429262562,9.78879256392969</coordinates>
+		<altitudeMode>relativeToGround</altitudeMode>
+		<extrude>1</extrude>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=15.0</name>
+	<description>56.80895429262562 9.78879256392969</description>
+	<Point>
+		<coordinates>56.80895429262562,9.78879256392969</coordinates>
+		<altitudeMode>relativeToGround</altitudeMode>
+		<extrude>1</extrude>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=20.0</name>
+	<description>56.80895429262562 9.78879256392969</description>
+	<Point>
+		<coordinates>56.80895429262562,9.78879256392969</coordinates>
+		<altitudeMode>relativeToGround</altitudeMode>
+		<extrude>1</extrude>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=25.0</name>
+	<description>56.80895429262562 9.78879256392969</description>
+	<Point>
+		<coordinates>56.80895429262562,9.78879256392969</coordinates>
+		<altitudeMode>relativeToGround</altitudeMode>
+		<extrude>1</extrude>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=30.0</name>
+	<description>56.80895429262562 9.78879256392969</description>
+	<Point>
+		<coordinates>56.80895429262562,9.78879256392969</coordinates>
+		<altitudeMode>relativeToGround</altitudeMode>
+		<extrude>1</extrude>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=35.0</name>
+	<description>56.80895429262562 9.78879256392969</description>
+	<Point>
+		<coordinates>56.80895429262562,9.78879256392969</coordinates>
+		<altitudeMode>relativeToGround</altitudeMode>
+		<extrude>1</extrude>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=40.0</name>
+	<description>56.80895429262562 9.78879256392969</description>
+	<Point>
+		<coordinates>56.80895429262562,9.78879256392969</coordinates>
+		<altitudeMode>relativeToGround</altitudeMode>
+		<extrude>1</extrude>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=45.0</name>
+	<description>56.80895429262562 9.78879256392969</description>
+	<Point>
+		<coordinates>56.80895429262562,9.78879256392969</coordinates>
+		<altitudeMode>relativeToGround</altitudeMode>
+		<extrude>1</extrude>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=50.0</name>
+	<description>56.80895429262562 9.78879256392969</description>
+	<Point>
+		<coordinates>56.80895429262562,9.78879256392969</coordinates>
+		<altitudeMode>relativeToGround</altitudeMode>
+		<extrude>1</extrude>
+	</Point>
+</Placemark>
+</Document>
+</kml>

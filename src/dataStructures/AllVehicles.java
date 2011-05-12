@@ -9,46 +9,62 @@ import interfaces.IAllVehicles;
 
 public class AllVehicles implements IAllVehicles {
 	
-	private Vector<Vehicle> vehicles; 
+	private static Vector<Vehicle> vehicles; 
 	
 	public AllVehicles(){
-		this.vehicles = new Vector<Vehicle>();
+		vehicles = new Vector<Vehicle>();
 	}
 
 	public Vehicle getVehicle(Integer index) {		
-		return this.vehicles.get(index);
+		return vehicles.get(index);
 	}
 
 	public void addVehicle(Vehicle vehicle) {
-		this.vehicles.add(vehicle);	
+		vehicles.add(vehicle);	
 	}
 	
 	public Vehicle generateVehicle(Zone from, Zone to) {
 		GPSSignal f = from.generateRandomGPS();
 		GPSSignal t = to.generateRandomGPS();
+		
 		assert(!f.toString().isEmpty()): "'from' signal, shouldn't be empty";
 		assert(!t.toString().isEmpty()): "'to' signal, shouldn't be empty";
 		assert(!f.equals(t)) : "'from' and 'to' signals shouldn't be the same";
-		DatabaseUtil db = new DatabaseUtil();
-		Trip shortestpath = null;
+		
+		DatabaseUtil database = new DatabaseUtil();
+		ShortestPath shortestpath = null;
 		try {
-			shortestpath = db.getShortestPath(f, t);
+			shortestpath = database.getShortestPath(f, t);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		assert(shortestpath != null): "'shortestpath', shouldn't be NULL";
+		assert(shortestpath.size() > 0): "'shortestpath', shouldn't not be empty";
+		assert(shortestpath.getInstance(0) != null): "value shouldn't be null";
+		
 		return new Vehicle(shortestpath);
 	}
 
-	public void move(DatabaseUtil database, double timeleft) {
-		for(Vehicle v : this.vehicles){
-			v.move(database, timeleft);
+	public void move(DatabaseUtil database, double timeleft, double time) {
+		assert(vehicles.size() > 0);
+		for(Vehicle v : vehicles){
+			v.move(database, timeleft, time);
 		}		
 	}
 
 	public int size() {
-		return this.vehicles.size();
+		return vehicles.size();
 	}
 
+	public Vector<Vehicle> getVehicles() {		
+		return AllVehicles.vehicles;
+	}
 	
+	public String toString(){
+		String str = "\n";
+		for(Vehicle v: AllVehicles.vehicles)
+			str += v.toString()+"\n";
+		return str;
+	}
 }

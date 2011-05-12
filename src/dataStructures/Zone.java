@@ -6,19 +6,18 @@ import interfaces.IZone;
 public class Zone implements IZone {
 	
 	final private GPSSignal center;
-	final private Double radius;
-	private double numberVehicles; // -1 = unlimited
+	final private double radius;
+	private double numberVehicles = -1; // -1 = unlimited
 	
 	public Zone(GPSSignal center, Double radius){
 		this.center = Utils.LatLon2UTM(center);
 		this.radius = radius;
-		this.numberVehicles = -1;
 	}
 	
-	public Zone(GPSSignal center, double radius, double vehicles){
+	public Zone(GPSSignal center, double radius, double maxVehicles){
 		this.center = Utils.LatLon2UTM(center);
 		this.radius = radius;
-		this.numberVehicles = vehicles;
+		this.numberVehicles = maxVehicles;
 	}
 	
 	public Zone(String zonex, String format) {
@@ -62,7 +61,7 @@ public class Zone implements IZone {
 	}
 	
 	public String toString(){
-		return this.center.toString()+" "+this.radius+" "+ this.center.getFormat();
+		return "["+this.center.toString() +" "+ this.center.getFormat() +" "+ this.radius +"]";
 	}
 
 	public double getMaxVehicles() {

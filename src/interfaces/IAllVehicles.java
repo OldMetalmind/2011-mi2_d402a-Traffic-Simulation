@@ -1,5 +1,7 @@
 package interfaces;
 
+import java.util.Vector;
+
 import utils.DatabaseUtil;
 import dataStructures.Vehicle;
 import dataStructures.Zone;
@@ -7,8 +9,9 @@ import dataStructures.Zone;
 public interface IAllVehicles {
 
 	public void addVehicle(Vehicle vehicle);
-	Vehicle getVehicle(Integer index);
+	public Vehicle getVehicle(Integer index);
+	public Vector<Vehicle> getVehicles();
 	public Vehicle generateVehicle(Zone from, Zone to);
-	public void move(DatabaseUtil database, double timeLeft);
+	public void move(DatabaseUtil database, double timeLeft, double time);
 	public int size();
 }

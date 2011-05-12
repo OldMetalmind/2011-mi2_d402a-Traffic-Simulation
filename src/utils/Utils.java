@@ -10,18 +10,38 @@ import dataStructures.Trip;
  */
 public class Utils {
 	
+	final static int UTMCode = 32;
+	final static char UTMZone = 'N';
+	
 	public static Trip UTM2LatLon(Trip trip) {
-		Trip lltrip = new Trip("LatLon"); 
+		Trip lltrip = new Trip("LonLat"); 
 		for(int i = 0; i < trip.size(); i++){
 			lltrip.addInstance( UTM2LatLon( trip.getInstance(i) ) );
 		}			
 		return lltrip;
 	}
+	
+	public static Trip UTM2LonLat(Trip trip) {
+		Trip lltrip = new Trip("LonLat"); 
+		for(int i = 0; i < trip.size(); i++){
+			lltrip.addInstance( UTM2LonLat( trip.getInstance(i) ) );
+		}			
+		return lltrip;
+	}
+
+	public static GPSSignal UTM2LonLat(GPSSignal signal) {		
+		if(signal.getFormat() == "LonLat")
+			return signal;		
+	    UTMRef utm = new UTMRef(signal.getLatitude(), signal.getLongitude(),UTMZone, UTMCode);
+	    LatLng ll = utm.toLatLng();
+	    ll.toWGS84();
+	    return new GPSSignal(ll.getLng(),ll.getLat(),"LonLat");
+	}
 
 	public static GPSSignal UTM2LatLon(GPSSignal signal) {		
 		if(signal.getFormat() == "LatLon")
 			return signal;		
-	    UTMRef utm = new UTMRef(signal.getLatitude(), signal.getLongitude(),'N', 32);
+	    UTMRef utm = new UTMRef(signal.getLatitude(), signal.getLongitude(),UTMZone, UTMCode);
 	    LatLng ll = utm.toLatLng();
 	    ll.toWGS84();
 	    return new GPSSignal(ll.getLat(),ll.getLng(),"LatLon");

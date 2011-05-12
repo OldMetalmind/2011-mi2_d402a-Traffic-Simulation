@@ -5,10 +5,12 @@ import dataStructures.*;
 
 public interface IVehicle {
 		
-	public GPSSignal move(DatabaseUtil database, double time);
-	public GPSSignal from();
-	public GPSSignal to();
+	public void move(DatabaseUtil database, double timeLeft, double time);
+	public GPSSignal origin();
+	public GPSSignal destination();
 	public GPSSignal getActualPosition();
+	public String getVoyageFormat();
+	public String getShortestPathFormat();
 	public String getActualPositionUTM();
 	public String toString();
 }
