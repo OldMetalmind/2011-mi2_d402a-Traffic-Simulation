@@ -8,7 +8,7 @@ import interfaces.IZones;
 public class Zones implements IZones {
 
 	final private String name;
-	private static Vector<Zone> zones;
+	private Vector<Zone> zones;
 	
 	public Zones(){
 		this.name = "unkown";
@@ -33,10 +33,10 @@ public class Zones implements IZones {
 	}
 	
 	public void setZones(Vector<Zone> zones) {
-		Zones.zones = zones;
+		this.zones = zones;
 	}
 
-	public static Vector<Zone> getZones() {
+	public Vector<Zone> getZones() {
 		return zones;
 	}
 	
@@ -47,6 +47,14 @@ public class Zones implements IZones {
 		if(getZones().get(i).getMaxVehicles() == 0)
 			getZones().remove(i);
 		return getZones().get(i);
+	}
+
+	public String toString(){
+		String ret = "";
+		for(Zone z : getZones())
+			ret += z.toString() + " ";
+		assert(ret.length() > 0); 
+		return ret;		
 	}
 
 }

@@ -11,7 +11,7 @@ import dataStructures.Vehicle;
  */
 public class DatabaseUtil {
 
-	private static final double precision = 0.1;
+	final private double precision = 0.1;
 
 	java.sql.Connection connection;
 	
@@ -156,12 +156,10 @@ public class DatabaseUtil {
 		if(signal.getFormat() == "LatLon"){
 			signal = Utils.LatLon2UTM(signal);
 		}
-		//System.out.println(">>  " + signal);
 		
-		//System.out.println(signal.getLongitude().intValue()+" "+signal.getLatitude().intValue());
 		Double lat = signal.getLatitude();
 		Double lng = signal.getLongitude();
-		int bboxsize = 1000;
+		int bboxsize = 100;
 		String sql= "SELECT ST_Distance(ST_MakePoint("+lat + "," + lng +
 			")::geometry, ST_astext(the_geom)::geometry) as x,id " +
 					"FROM network " +
@@ -169,24 +167,13 @@ public class DatabaseUtil {
 					+"),ST_Point(" +(lat+bboxsize)  + ","+(lng+bboxsize)+
 					")),the_geom)" +
 					" ORDER BY x asc limit 1;";
-
-		System.out.println(sql);
-
 		
-
-
+		System.out.println("DatabaseUtil\n"+ sql);
 				
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		result.next();		
-		//System.out.println(">>> dif: "+result.getString("id"));
-		//sql = "SELECT id FROM network WHERE ST_DWithin('"+ result.getString("cp")+"',the_geom,"+this.precision+");";		
-		
-		//result = statement.executeQuery(sql);
-		//result.next();		
-		int id = Integer.parseInt(result.getString("id"));
-		
-		System.out.println(id);
+		int id = Integer.parseInt(result.getString("id"));	
 		
 		result.close();
 		statement.close();	

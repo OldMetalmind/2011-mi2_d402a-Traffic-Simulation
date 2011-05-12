@@ -1,7 +1,5 @@
 package dataStructures;
 
-import java.util.Random;
-
 import utils.Utils;
 import interfaces.IZone;
 
@@ -64,14 +62,13 @@ public class Zone implements IZone {
 	}
 	
 	public String toString(){
-		return "("+this.center.toString()+") "+this.radius+" -format: "+ this.center.getFormat();
+		return this.center.toString()+" "+this.radius+" "+ this.center.getFormat();
 	}
 
 	public double getMaxVehicles() {
 		return numberVehicles;
 	}
 
-	@Override
 	public void decreaseNumVehicles() {
 		if(this.numberVehicles != -1)
 			this.numberVehicles--;		

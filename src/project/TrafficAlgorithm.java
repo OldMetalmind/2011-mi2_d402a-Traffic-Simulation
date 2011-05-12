@@ -25,6 +25,8 @@ public class TrafficAlgorithm {
 			vehicles.addVehicle(v);
 			database.addVehicle(v,vehicles.size());
 		}
+		
+		
 	}
 	
 	public void run(){
