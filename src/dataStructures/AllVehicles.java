@@ -26,13 +26,17 @@ public class AllVehicles implements IAllVehicles {
 	public Vehicle generateVehicle(Zone from, Zone to) {
 		GPSSignal f = from.generateRandomGPS();
 		GPSSignal t = to.generateRandomGPS();
+		assert(!f.toString().isEmpty()): "'from' signal, shouldn't be empty";
+		assert(!t.toString().isEmpty()): "'to' signal, shouldn't be empty";
+		assert(!f.equals(t)) : "'from' and 'to' signals shouldn't be the same";
 		DatabaseUtil db = new DatabaseUtil();
 		Trip shortestpath = null;
 		try {
 			shortestpath = db.getShortestPath(f, t);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
+		}
+		assert(!shortestpath.isEmpty()): "'shortestpath', shouldn't be empty";
 		System.out.println("AllVehicles| shortestPath:"+ shortestpath);
 		return new Vehicle(shortestpath);
 	}

@@ -74,8 +74,8 @@ public class DatabaseUtil {
 			
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);		
-		
-		System.out.println("DbUtil| from: "+idFrom+"  to: "+idTo );
+		assert(idFrom != idTo): "idFrom and idTo should be different.";
+		//System.out.println("DbUtil| from: "+idFrom+"  to: "+idTo );
 		String sql = "SELECT * FROM shortest_path(' " +
 				" SELECT gid AS id, " +
 				" start_id::int4 AS source, " +
@@ -127,7 +127,7 @@ public class DatabaseUtil {
 		while(result.next()){
 			int id = Integer.parseInt(result.getString("edge_id"));
 			if(id == -1)
-				break;
+				continue;
 			String sql = 	"SELECT ST_asText(startpoint) AS start, " +
 								" ST_asText(endpoint) AS end, " +
 								" hastmax" +
@@ -161,7 +161,7 @@ public class DatabaseUtil {
 		//System.out.println(signal.getLongitude().intValue()+" "+signal.getLatitude().intValue());
 		Double lat = signal.getLatitude();
 		Double lng = signal.getLongitude();
-		int bboxsize = 100;
+		int bboxsize = 1000;
 		String sql= "SELECT ST_Distance(ST_MakePoint("+lat + "," + lng +
 			")::geometry, ST_astext(the_geom)::geometry) as x,id " +
 					"FROM network " +

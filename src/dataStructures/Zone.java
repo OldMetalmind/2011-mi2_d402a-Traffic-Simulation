@@ -43,11 +43,13 @@ public class Zone implements IZone {
 		this.numberVehicles = maxVehicles;
 	}
 	
+	//TODO: Should return a random point inside the circunference and at the momento it isn't.
 	/**
 	 * @return a random GPS signal in UTM format, that is located inside the zone
 	 */
-	public GPSSignal generateRandomGPS(){	
-		return this.center;
+	public GPSSignal generateRandomGPS(){
+		//assert(this.center.getFormat() == "UTM"): "center format is - " + this.center.getFormat() + ", it should be UTM";		
+		return Utils.LatLon2UTM(this.center);
 		/*
 		Random rand = new Random();
 		double distance = rand.nextDouble()*this.radius;
