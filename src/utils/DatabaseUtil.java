@@ -63,13 +63,19 @@ public class DatabaseUtil {
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);		
 		assert(idFrom != idTo): "idFrom and idTo should be different.";
-		String sql = "SELECT * FROM shortest_path(' " +
-				" SELECT gid AS id, " +
-				" start_id::int4 AS source, " +
-				" end_id::int4 AS target, " +
-				" ST_Length(the_geom)::float8 AS cost " +
-				" FROM network', "+idFrom+", "+idTo+", false, false);";		
-		
+		String sql = "SELECT edge_id, st_astext(startpoint) as start, " +
+				"st_astext(endpoint) as end," +
+				"hastmax, " +
+				"start_id as source, " +
+				"end_id as target " +
+				"FROM shortest_path('SELECT gid AS id," +
+				" start_id::int4 AS source," +
+				"  end_id::int4 AS target," +
+				"   ST_Length(the_geom)::float8 AS cost" +
+				"	FROM network',"+idFrom+ ","+idTo+ ", false, false) as x" +
+						" left join network ON (x.edge_id=network.gid)";
+				
+		System.out.println(sql);
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		return resultSet2ShortestPath(result);
@@ -112,6 +118,20 @@ public class DatabaseUtil {
 		Statement statement = this.connection.createStatement();
 		
 		//TODO: Try to remove this loop and create a query that does this in only one query.
+		
+		/*THIS SHOULD BE USED IN GETSHORTESTPATH METHOD
+		 * SELECT st_astext(startpoint) as start,
+		st_astext(endpoint) as end,
+		hastmax,
+		start_id as source, 
+		end_id as target
+			FROM shortest_path('SELECT gid AS id,
+					    start_id::int4 AS source,
+					    end_id::int4 AS target,
+					   ST_Length(the_geom)::float8 AS cost
+						FROM network',"+ ","+ " false, false) as x
+						 left join network ON (x.edge_id=network.gid);*/
+
 		while(result.next()){
 			int id = Integer.parseInt(result.getString("edge_id"));
 			if(id == -1)
@@ -147,6 +167,7 @@ public class DatabaseUtil {
 		Double lat = signal.getLatitude();
 		Double lng = signal.getLongitude();
 		int bboxsize = 100;
+		
 		String sql= "SELECT ST_Distance(ST_MakePoint("+lat + "," + lng +
 			")::geometry, ST_astext(the_geom)::geometry) as x,id " +
 					"FROM network " +
