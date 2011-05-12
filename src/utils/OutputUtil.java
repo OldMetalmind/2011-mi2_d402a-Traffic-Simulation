@@ -48,9 +48,9 @@ public class OutputUtil {
 					"</Placemark>\n" +
 				"</Document>\n" +
 				"</kml>";
-		
+		writeFile(output,"kml");	
 		return output;
-		//writeFile(output,"kml");		
+		
 	}
 	public String KMLHeader(){
 		String output = "<?xml version='1.0' encoding='UTF-8'?>\n";
