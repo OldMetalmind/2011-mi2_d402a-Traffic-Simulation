@@ -11,8 +11,8 @@ public class Input extends javax.swing.JFrame {
     private Double frequency;
     private String nonFormatedFromZones;
     private String nonFormatedToZones;
-    private Zones fromZones; 
-    private Zones toZones;    
+    private static Zones fromZones; 
+    private static Zones toZones;    
     public Input() {
         initComponents();
     }
@@ -183,31 +183,31 @@ public class Input extends javax.swing.JFrame {
     }
 
     private void jButtonConfirmMouseClicked(java.awt.event.MouseEvent evt) {
-        this.fromZones = new Zones();
-        this.toZones = new Zones();       
+        fromZones = new Zones();
+        toZones = new Zones(); 
         
         String input[] = jTextAreaSubmit.getText().split("#");
+        assert(input.length == 4);
         this.numberOfCars = Integer.parseInt(input[0]);
         this.frequency = Double.parseDouble(input[1]);
         this.nonFormatedFromZones = input[2];
-        if(!input[3].isEmpty())
-        	this.nonFormatedToZones = input[3];
-        else 
-        	this.nonFormatedToZones = "";
-        
+        this.nonFormatedToZones = input[3];
+               
         String rawSplit[] = this.nonFormatedFromZones.split(":");
 	    for(int i = 0; i < rawSplit.length; i++) {
-		   this.fromZones.addZone( new Zone(rawSplit[i], "LatLon" ));
-		     
+	    	Zone f = new Zone(rawSplit[i], "LatLon" );
+	    	fromZones.addZone(f);		     
         }
-	    String colSplit[] = nonFormatedToZones.split(":");
+	    
+	    String colSplit[] = this.nonFormatedToZones.split(":");
 	    for(int i = 0; i < colSplit.length; i++) {
-		   this.toZones.addZone( new Zone(colSplit[i], "LatLon" )  );
+	    	Zone t = new Zone(colSplit[i], "LatLon" );
+	    	toZones.addZone( t );
         }
         
-
-        this.setVisible(false);        
-        UserInput userInput = new UserInput(this.numberOfCars, this.frequency, 100, this.fromZones, this.toZones);
+        this.setVisible(false);
+        this.setEnabled(false);
+        UserInput userInput = new UserInput(this.numberOfCars, this.frequency, 100, fromZones, toZones);
         TrafficAlgorithm traffic = null;
 		try {
 			traffic = new TrafficAlgorithm(userInput);

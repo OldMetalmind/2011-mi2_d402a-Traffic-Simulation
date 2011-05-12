@@ -38,8 +38,11 @@ public class TrafficAlgorithm {
 			out += kml.KMLTrip(v.getTrip());
 			
 		}
+<<<<<<< HEAD
 		out+=	kml.KMLFooter();
 		kml.writeFile(out, "kml");
+=======
+>>>>>>> branch 'refs/heads/master' of https://Giedriusz@github.com/smithereen/2011-mi2_d402a-Traffic-Simulation.git
 		
 		
 	}

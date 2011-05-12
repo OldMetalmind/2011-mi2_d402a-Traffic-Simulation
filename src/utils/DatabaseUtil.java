@@ -11,7 +11,7 @@ import dataStructures.Vehicle;
  */
 public class DatabaseUtil {
 
-	private static final double precision = 0.1;
+	final private double precision = 0.1;
 
 	java.sql.Connection connection;
 	
@@ -75,7 +75,6 @@ public class DatabaseUtil {
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);		
 		assert(idFrom != idTo): "idFrom and idTo should be different.";
-		//System.out.println("DbUtil| from: "+idFrom+"  to: "+idTo );
 		String sql = "SELECT * FROM shortest_path(' " +
 				" SELECT gid AS id, " +
 				" start_id::int4 AS source, " +
@@ -124,6 +123,8 @@ public class DatabaseUtil {
 		//vertex_id | edge_id | cost
 		Trip trip = new Trip("UTM");
 		Statement statement = this.connection.createStatement();
+		
+		//TODO: Try to remove this loop and create a query that does this in only one query.
 		while(result.next()){
 			int id = Integer.parseInt(result.getString("edge_id"));
 			if(id == -1)
@@ -139,11 +140,10 @@ public class DatabaseUtil {
 			trip.addInstance(new GPSSignal(rst.getString("start"), trip.getFormat()), speedLimit);
 			trip.addInstance(new GPSSignal(rst.getString("end"), trip.getFormat()), speedLimit);
 			rst.close();
-			
 		}
 		statement.close();
 		result.close();
-
+		assert(trip.size() > 0): "Trip should return something with";
 		return trip;
 	}
 	/**
@@ -156,12 +156,10 @@ public class DatabaseUtil {
 		if(signal.getFormat() == "LatLon"){
 			signal = Utils.LatLon2UTM(signal);
 		}
-		//System.out.println(">>  " + signal);
 		
-		//System.out.println(signal.getLongitude().intValue()+" "+signal.getLatitude().intValue());
 		Double lat = signal.getLatitude();
 		Double lng = signal.getLongitude();
-		int bboxsize = 1000;
+		int bboxsize = 100;
 		String sql= "SELECT ST_Distance(ST_MakePoint("+lat + "," + lng +
 			")::geometry, ST_astext(the_geom)::geometry) as x,id " +
 					"FROM network " +
@@ -169,24 +167,13 @@ public class DatabaseUtil {
 					+"),ST_Point(" +(lat+bboxsize)  + ","+(lng+bboxsize)+
 					")),the_geom)" +
 					" ORDER BY x asc limit 1;";
-
-		System.out.println(sql);
-
 		
-
-
+		System.out.println("DatabaseUtil\n"+ sql);
 				
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		result.next();		
-		//System.out.println(">>> dif: "+result.getString("id"));
-		//sql = "SELECT id FROM network WHERE ST_DWithin('"+ result.getString("cp")+"',the_geom,"+this.precision+");";		
-		
-		//result = statement.executeQuery(sql);
-		//result.next();		
-		int id = Integer.parseInt(result.getString("id"));
-		
-		System.out.println(id);
+		int id = Integer.parseInt(result.getString("id"));	
 		
 		result.close();
 		statement.close();	

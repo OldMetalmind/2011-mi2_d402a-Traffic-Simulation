@@ -36,8 +36,7 @@ public class AllVehicles implements IAllVehicles {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		assert(!shortestpath.isEmpty()): "'shortestpath', shouldn't be empty";
-		System.out.println("AllVehicles| shortestPath:"+ shortestpath);
+		assert(shortestpath != null): "'shortestpath', shouldn't be NULL";
 		return new Vehicle(shortestpath);
 	}
 
