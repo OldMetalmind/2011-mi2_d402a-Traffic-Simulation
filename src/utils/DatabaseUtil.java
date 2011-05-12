@@ -75,7 +75,6 @@ public class DatabaseUtil {
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);		
 		assert(idFrom != idTo): "idFrom and idTo should be different.";
-		//System.out.println("DbUtil| from: "+idFrom+"  to: "+idTo );
 		String sql = "SELECT * FROM shortest_path(' " +
 				" SELECT gid AS id, " +
 				" start_id::int4 AS source, " +
@@ -124,6 +123,8 @@ public class DatabaseUtil {
 		//vertex_id | edge_id | cost
 		Trip trip = new Trip("UTM");
 		Statement statement = this.connection.createStatement();
+		
+		//TODO: Try to remove this loop and create a query that does this in only one query.
 		while(result.next()){
 			int id = Integer.parseInt(result.getString("edge_id"));
 			if(id == -1)
@@ -139,11 +140,10 @@ public class DatabaseUtil {
 			trip.addInstance(new GPSSignal(rst.getString("start"), trip.getFormat()), speedLimit);
 			trip.addInstance(new GPSSignal(rst.getString("end"), trip.getFormat()), speedLimit);
 			rst.close();
-			
 		}
 		statement.close();
 		result.close();
-
+		assert(trip.size() > 0): "Trip should return something with";
 		return trip;
 	}
 	/**
