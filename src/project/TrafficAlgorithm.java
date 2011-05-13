@@ -20,21 +20,34 @@ public class TrafficAlgorithm {
 		this.database = new DatabaseUtil();
 		this.database.clearVehicles();
 		
-		this.vehicles = new AllVehicles();
+		long t0 = System.currentTimeMillis();
+		user = userInput;
+		setVehicles(new AllVehicles());
+		database = new DatabaseUtil();
+		String out = "";
+		OutputUtil kml = new OutputUtil("Test");
+		out = kml.KMLHeader();
 		
-		for(int i = 0; i < this.user.getTotalVehicles(); i++){			
-			Zone from = this.user.getFromZones().selectRandomZone();
-			Zone to = this.user.getToZones().selectRandomZone();
-			
+		database.clearVehicles(); 
+		AllVehicles vehicles = new AllVehicles();
+		for(int i = 0; i <  this.user.getTotalVehicles(); i++){			
+			Zone from =  this.user.getFromZones().selectRandomZone();
+			Zone to =  this.user.getToZones().selectRandomZone();
 			Vehicle v = this.vehicles.generateVehicle(from, to);
 			this.vehicles.addVehicle(v);
 			this.database.addVehicle(v, this.vehicles.size());			
 			
-			System.out.println((i+1) +"/"+ this.user.getTotalVehicles());			
+			System.out.println((i+1) +"/"+ this.user.getTotalVehicles());	
+			 System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliceconds");
 		}		
 		run();
-	}
+		}
 	
+	private void setVehicles(AllVehicles allVehicles) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void run(){
 		System.out.println("Traffic Algorithm phase 2 started");
 		DatabaseUtil database = new DatabaseUtil();

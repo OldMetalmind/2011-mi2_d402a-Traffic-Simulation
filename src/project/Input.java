@@ -218,7 +218,7 @@ public class Input extends javax.swing.JFrame {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		long t0 = System.currentTimeMillis();
         traffic.run();
     }
 

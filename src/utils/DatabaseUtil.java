@@ -59,8 +59,8 @@ public class DatabaseUtil {
 		//TODO: Do we need to make sure they are different?
 		/*if(from.equals(to))
 			return new Trip(to.getFormat());*/
-			
-		int idFrom = getClosestPoint(from);
+	long t0 = System.currentTimeMillis();
+	int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);		
 		assert(idFrom != idTo): "idFrom and idTo should be different.";
 		String sql = "SELECT edge_id, st_astext(startpoint) as start, " +
@@ -75,11 +75,12 @@ public class DatabaseUtil {
 				"	FROM network',"+idFrom+ ","+idTo+ ", false, false) as x" +
 						" left join network ON (x.edge_id=network.gid)";
 				
-		System.out.println(sql);
+		//System.out.println(sql);
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
-		return resultSet2ShortestPath(result);
-	}
+
+        System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliceconds");
+		return resultSet2ShortestPath(result);}
 	
 	public void clearVehicles(){
 		String sql = "DELETE FROM vehicles";
@@ -175,8 +176,9 @@ public class DatabaseUtil {
 					+"),ST_Point(" +(lat+bboxsize)  + ","+(lng+bboxsize)+
 					")),the_geom)" +
 					" ORDER BY x asc limit 1;";
-						
-		Statement statement = this.connection.createStatement();
+
+		
+Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		result.next();		
 		int id = Integer.parseInt(result.getString("id"));
