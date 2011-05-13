@@ -2,8 +2,9 @@ package utils;
 
 import java.sql.*;
 
+import dataStructures.AllVehicles;
 import dataStructures.GPSSignal;
-import dataStructures.Trip;
+import dataStructures.ShortestPath;
 import dataStructures.Vehicle;
 
 /*
@@ -11,51 +12,37 @@ import dataStructures.Vehicle;
  */
 public class DatabaseUtil {
 
-	final private double precision = 0.1;
-
 	java.sql.Connection connection;
 	
 	static private String defaultUrl = "jdbc:postgresql://localhost:5432/project";
 	static private String defaultUser = "postgres";
-	static private String defaultPassword = "admin";
+	static private String defaultPassword = "123";
 	
 	public DatabaseUtil(){
 		try{
-			connection = DriverManager.getConnection(defaultUrl, defaultUser, defaultPassword);
+			this.connection = DriverManager.getConnection(defaultUrl, defaultUser, defaultPassword);
 		}
 		catch( Exception e){
-			e.printStackTrace();
+			try {
+				this.connection = DriverManager.getConnection(defaultUrl, defaultUser, "admin");
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 		}	
 	}
 	
 	public DatabaseUtil(String url, String user, String password){
 		try{
-			connection = DriverManager.getConnection(url, user, password);
-			
+			this.connection = DriverManager.getConnection(url, user, password);			
 		}
 		catch( Exception e){
 			e.printStackTrace();
 		}	
 	}
-	
-	public ResultSet query(String query){
-		Statement statement = null;
-		ResultSet result = null;
-		try {
-			statement = connection.createStatement();
-			result = statement.executeQuery(query);
-			statement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}		
-		return result;
-	}	
-	
-	
-	
+		
 	public void closeConnection(){
 		try {
-			connection.close();
+			this.connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -68,11 +55,12 @@ public class DatabaseUtil {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Trip getShortestPath(GPSSignal from, GPSSignal to) throws SQLException{		
-		long t0 = System.currentTimeMillis();
-		if(from.equals(to))
-			return new Trip(to.getFormat());
-		int idFrom = getClosestPoint(from);
+	public ShortestPath getShortestPath(GPSSignal from, GPSSignal to) throws SQLException{
+		//TODO: Do we need to make sure they are different?
+		/*if(from.equals(to))
+			return new Trip(to.getFormat());*/
+	long t0 = System.currentTimeMillis();
+	int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);		
 		assert(idFrom != idTo): "idFrom and idTo should be different.";
 		String sql = "SELECT edge_id, st_astext(startpoint) as start, " +
@@ -90,9 +78,9 @@ public class DatabaseUtil {
 		//System.out.println(sql);
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
+
         System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliceconds");
-		return resultSet2Trip(result);
-	}
+		return resultSet2ShortestPath(result);}
 	
 	public void clearVehicles(){
 		String sql = "DELETE FROM vehicles";
@@ -115,9 +103,8 @@ public class DatabaseUtil {
 			v.setVehicle_id(vehicle_id);
 			statement.close();
 		} catch (SQLException e) {
-			//The query never returns nothing;
-		}
-		
+			//The query should always returns nothing;
+		}		
 	}	
 	/**
 	 * 
@@ -126,9 +113,9 @@ public class DatabaseUtil {
 	 * @throws SQLException 
 	 * @throws NumberFormatException 
 	 */ 
-	private Trip resultSet2Trip(ResultSet result) throws NumberFormatException, SQLException{
+	private ShortestPath resultSet2ShortestPath(ResultSet result) throws NumberFormatException, SQLException{
 		//vertex_id | edge_id | cost
-		Trip trip = new Trip("UTM");
+		ShortestPath path = new ShortestPath("UTM");
 		Statement statement = this.connection.createStatement();
 		
 		//TODO: Try to remove this loop and create a query that does this in only one query.
@@ -150,14 +137,22 @@ public class DatabaseUtil {
 			int id = Integer.parseInt(result.getString("edge_id"));
 			if(id == -1)
 				continue;
-			Integer speedLimit = Integer.parseInt(result.getString("hastmax"));
-			trip.addInstance(new GPSSignal(result.getString("start"), trip.getFormat()), speedLimit);
-			trip.addInstance(new GPSSignal(result.getString("end"), trip.getFormat()), speedLimit);
+			String sql = 	"SELECT ST_asText(startpoint) AS start, " +
+								" ST_asText(endpoint) AS end, " +
+								" hastmax" +
+							" FROM network WHERE id = "+id+";";
+			
+			ResultSet rst = statement.executeQuery(sql);
+			rst.next();			
+			Integer speedLimit = Integer.parseInt(rst.getString("hastmax"));
+			path.addInstance(new GPSSignal(rst.getString("start"), path.getFormat()), speedLimit);
+			path.addInstance(new GPSSignal(rst.getString("end"), path.getFormat()), speedLimit);
+			rst.close();
 		}
 		statement.close();
 		result.close();
-		assert(trip.size() > 0): "Trip should return something with";
-		return trip;
+		assert(path.size() > 0 && path.getInstance(0) != null): "Trip should return something with";
+		return path;
 	}
 	/**
 	 * 
@@ -181,16 +176,52 @@ public class DatabaseUtil {
 					+"),ST_Point(" +(lat+bboxsize)  + ","+(lng+bboxsize)+
 					")),the_geom)" +
 					" ORDER BY x asc limit 1;";
+
 		
-		//System.out.println("DatabaseUtil\n"+ sql);
-				
-		Statement statement = this.connection.createStatement();
+Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		result.next();		
-		int id = Integer.parseInt(result.getString("id"));	
-		
+		int id = Integer.parseInt(result.getString("id"));
 		result.close();
 		statement.close();	
 		return id;
+	}
+
+	public void setVehicle(int vehicle_id, GPSSignal newPosition) {		
+		String sql = "UPDATE vehicles SET location = ST_MakePoint("+ newPosition.getLatitude() +","+ newPosition.getLongitude()+")::geometry WHERE vehicle_id = "+vehicle_id+" ;";		
+		try {
+			Statement statement = this.connection.createStatement();
+			statement.executeQuery(sql);
+			statement.close();
+		} catch (SQLException e) {
+			//this shouldn't return nothing... it's ok..
+		}	
+	}
+
+	public GPSSignal lineInterpolatePoint(GPSSignal from, GPSSignal to, float percentage) {
+		GPSSignal point = null;
+		String sql = "SELECT ST_asText(ST_Line_Interpolate_Point(line,0.164511)) as point FROM ST_SetSRID( 'LINESTRING("+from.getLatitude()+" "+from.getLongitude()+","+to.getLatitude()+" "+to.getLongitude()+")'::geometry , 4326 ) as line;";
+		try {
+			Statement statement = this.connection.createStatement();
+			ResultSet result = statement.executeQuery(sql);
+			result.next();
+			point = new GPSSignal( result.getString("point"), "UTM");			
+			result.close();
+			statement.close();
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		}
+		
+		assert(point != null && point.getFormat() == "UTM");
+		return point;
+	}
+
+	public void save(AllVehicles vehicles) {
+		// TODO Save all vehicles to table: output.
+		/*
+		for(Vehicle v : vehicles.getVehicles()){
+			System.out.println("id > "+ v.getVehicle_id()+" |"+v.getVoyage());
+		}
+		*/
 	}
 }

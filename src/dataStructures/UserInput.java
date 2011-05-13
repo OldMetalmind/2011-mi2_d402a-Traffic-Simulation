@@ -9,32 +9,41 @@ public class UserInput implements IUserInput {
 	final private double duration;
 	final private Zones fromZones;
 	final private Zones toZones;
+	final double defaultDuration = 1; //seconds
 	
 	public UserInput(int TotalVehicles, double Frequency, double Duration, Zones FromZones, Zones ToZones){
-		totalVehicles = TotalVehicles;
-		frequency = Frequency;
-		duration = Duration;
-		fromZones = FromZones;
-		toZones = ToZones;		
+		this.totalVehicles = TotalVehicles;
+		this.frequency = Frequency;
+		this.duration = Duration;
+		this.fromZones = FromZones;
+		this.toZones = ToZones;		
 	}
 	
+	public UserInput(int TotalVehicles, double Frequency, Zones FromZones, Zones ToZones){
+		this.totalVehicles = TotalVehicles;
+		this.frequency = Frequency;
+		this.duration = this.defaultDuration;
+		this.fromZones = FromZones;
+		this.toZones = ToZones;		
+	}
+
 	public int getTotalVehicles() {
-		return totalVehicles;
+		return this.totalVehicles;
 	}
 
 	public double getFrequency() {
-		return frequency;
+		return this.frequency;
 	}
 
 	public Zones getFromZones() {
-		return fromZones;
+		return this.fromZones;
 	}
 
 	public Zones getToZones() {
-		return toZones;
+		return this.toZones;
 	}
 
 	public double getDuration() {		
-		return duration;
+		return this.duration;
 	}
 }

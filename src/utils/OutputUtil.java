@@ -2,10 +2,11 @@ package utils;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.util.ArrayList;
 
+import dataStructures.AllVehicles;
 import dataStructures.GPSSignal;
 import dataStructures.Trip;
+import dataStructures.Vehicle;
 
 /*
  * This class will only serve to output to a .KML file. 
@@ -52,16 +53,6 @@ public class OutputUtil {
 		return output;
 		
 	}
-	public String KMLHeader(){
-		String output = "<?xml version='1.0' encoding='UTF-8'?>\n";
-		//output += "<import namespace='http://www.w3.org/2005/Atom' schemaLocation='http://code.google.com/apis/kml/schema/atom-author-link.xsd'/>";
-		output += "<kml xmlns='http://www.opengis.net/kml/2.2'>\n";		
-		output += "<Document>\n" +
-					"<Placemark>\n" +
-						"<name>GPS path</name>\n" +
-							"<MultiGeometry>\n"; //
-		return output;
-	}
 	
 	public String KMLTrip(Trip path){
 		String output = "<LineString>\n" +
@@ -73,24 +64,20 @@ public class OutputUtil {
 		output += "</coordinates>\n</LineString>\n";
 		return output;
 	}
-	
-	public String KMLFooter(){
-		String output = 			"</MultiGeometry>\n" +
-								"</Placemark>\n" +
-							"</Document>\n" +
-						"</kml>";
+	public String KMLHeader(){
+		String output = "<?xml version='1.0' encoding='UTF-8'?>\n";
+		//output += "<import namespace='http://www.w3.org/2005/Atom' schemaLocation='http://code.google.com/apis/kml/schema/atom-author-link.xsd'/>";
+		output += "<kml xmlns='http://www.opengis.net/kml/2.2'>\n";		
+		output += "<Document>\n";
 		return output;
 	}
 	
-	
-	/*
-	 * This method accepts a list of trips and writes them into a .kml file 
-	 */
-	public void save2KML(ArrayList<Trip> trips){		
-		//check Helper.java
+	public String KMLFooter(){
+		String output = "</Document>\n" +
+						"</kml>";
+		return output;
 	}
-	
-	
+		
 	public void writeFile(String output, String ext){
 		try{
 	  		// Create file  
@@ -104,5 +91,37 @@ public class OutputUtil {
 	  		}catch (Exception e){//Catch exception if any
 	  			System.err.println("Error: " + e.getMessage());
 	  		}
+	}
+
+	public void save2KML(AllVehicles vehicles) {
+		String out = KMLHeader();
+		for(Vehicle v : vehicles.getVehicles()){
+			assert(v.getVoyage().getPath().size() == v.getVoyage().getTimes().size() );			
+			for(int i = 0; i < v.getVoyage().size(); i++){
+				GPSSignal s = v.getVoyage().getInstance(i);
+				double time = v.getVoyage().getTimeAt(i);
+				
+				out += signal2KMLPlacemark(s, v.getVehicle_id(), time);
+			}
+		}
+		out += KMLFooter();; 
+		writeFile(out,"kml");
+	}
+	
+	public static String signal2KMLPlacemark(GPSSignal s, int id, double time) {
+		GPSSignal ll = Utils.UTM2LonLat(s); 
+		String out = "<Placemark>\n" +
+				"\t<name>id="+id+"  t="+time+"</name>\n" +
+				"\t<description>"+ll.getLatitude()+","+ll.getLongitude()+"</description>\n" +
+				"\t<Point>\n" +
+				"\t\t<coordinates>"+ll.getLatitude()+","+ll.getLongitude()+"</coordinates>\n"+
+				"\t</Point>\n" +
+				"</Placemark>\n";
+		return out;
+		
+		/*
+				"\t\t<altitudeMode>relativeToGround</altitudeMode>\n" +
+				"\t\t<extrude>1</extrude>\n"+
+		 */
 	}
 }

@@ -7,29 +7,18 @@ import interfaces.IZones;
 
 public class Zones implements IZones {
 
-	final private String name;
 	private Vector<Zone> zones;
 	
 	public Zones(){
-		this.name = "unkown";
 		this.setZones(new Vector<Zone>());
-	}
-	
-	public Zones(String name){
-		this.setZones(new Vector<Zone>());
-		this.name = name;		
 	}
 	
 	public Zone getZone(int index) {
-		return zones.get(index);
+		return this.zones.get(index);
 	}
 
 	public void addZone(Zone zone) {
-		zones.add(zone);
-	}
-
-	public String getName() {
-		return name;
+		this.zones.add(zone);
 	}
 	
 	public void setZones(Vector<Zone> zones) {
@@ -37,7 +26,7 @@ public class Zones implements IZones {
 	}
 
 	public Vector<Zone> getZones() {
-		return zones;
+		return this.zones;
 	}
 	
 	public Zone selectRandomZone(){
