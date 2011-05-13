@@ -112,9 +112,9 @@ public class OutputUtil {
 		GPSSignal ll = Utils.UTM2LonLat(s); 
 		String out = "<Placemark>\n" +
 				"\t<name>id="+id+"  t="+time+"</name>\n" +
-				"\t<description>"+ll.getLongitude()+" "+ll.getLatitude()+"</description>\n" +
+				"\t<description>"+ll.getLatitude()+","+ll.getLongitude()+"</description>\n" +
 				"\t<Point>\n" +
-				"\t\t<coordinates>"+ll.getLongitude()+","+ll.getLatitude()+"</coordinates>\n"+
+				"\t\t<coordinates>"+ll.getLatitude()+","+ll.getLongitude()+"</coordinates>\n"+
 				"\t</Point>\n" +
 				"</Placemark>\n";
 		return out;
