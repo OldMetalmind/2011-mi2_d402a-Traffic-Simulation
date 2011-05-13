@@ -63,17 +63,11 @@ public class DatabaseUtil {
 	int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);		
 		assert(idFrom != idTo): "idFrom and idTo should be different.";
-		String sql = "SELECT edge_id, st_astext(startpoint) as start, " +
-				"st_astext(endpoint) as end," +
-				"hastmax, " +
-				"start_id as source, " +
-				"end_id as target " +
-				"FROM shortest_path('SELECT gid AS id," +
-				" start_id::int4 AS source," +
-				"  end_id::int4 AS target," +
-				"   ST_Length(the_geom)::float8 AS cost" +
-				"	FROM network',"+idFrom+ ","+idTo+ ", false, false) as x" +
-						" left join network ON (x.edge_id=network.gid)";
+		String sql = "SELECT st_astext(startpoint) as start, " +
+				"st_astext(endpoint) as end,hastmax," +
+				"  start_id as source, end_id as target " +
+				"FROM dijkstra_sp_delta('network',"+idFrom+","+idTo+", 1000) as x " +
+				"left join network ON (x.gid=network.gid)";
 				
 		//System.out.println(sql);
 		Statement statement = this.connection.createStatement();
@@ -120,35 +114,12 @@ public class DatabaseUtil {
 		
 		//TODO: Try to remove this loop and create a query that does this in only one query.
 		
-		/*THIS SHOULD BE USED IN GETSHORTESTPATH METHOD
-		 * SELECT st_astext(startpoint) as start,
-		st_astext(endpoint) as end,
-		hastmax,
-		start_id as source, 
-		end_id as target
-			FROM shortest_path('SELECT gid AS id,
-					    start_id::int4 AS source,
-					    end_id::int4 AS target,
-					   ST_Length(the_geom)::float8 AS cost
-						FROM network',"+ ","+ " false, false) as x
-						 left join network ON (x.edge_id=network.gid);*/
 
 		while(result.next()){
-			int id = Integer.parseInt(result.getString("edge_id"));
-			if(id == -1)
-				continue;
-			String sql = 	"SELECT ST_asText(startpoint) AS start, " +
-								" ST_asText(endpoint) AS end, " +
-								" hastmax" +
-							" FROM network WHERE id = "+id+";";
-			
-			ResultSet rst = statement.executeQuery(sql);
-			rst.next();			
-			Integer speedLimit = Integer.parseInt(rst.getString("hastmax"));
-			path.addInstance(new GPSSignal(rst.getString("start"), path.getFormat()), speedLimit);
-			path.addInstance(new GPSSignal(rst.getString("end"), path.getFormat()), speedLimit);
-			rst.close();
-		}
+			Integer speedLimit = Integer.parseInt(result.getString("hastmax"));
+			path.addInstance(new GPSSignal(result.getString("start"), path.getFormat()), speedLimit);
+			path.addInstance(new GPSSignal(result.getString("end"), path.getFormat()), speedLimit);
+					}
 		statement.close();
 		result.close();
 		assert(path.size() > 0 && path.getInstance(0) != null): "Trip should return something with";
