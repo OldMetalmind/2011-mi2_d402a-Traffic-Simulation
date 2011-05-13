@@ -115,10 +115,13 @@ public class OutputUtil {
 				"\t<description>"+ll.getLongitude()+" "+ll.getLatitude()+"</description>\n" +
 				"\t<Point>\n" +
 				"\t\t<coordinates>"+ll.getLongitude()+","+ll.getLatitude()+"</coordinates>\n"+
-				"\t\t<altitudeMode>relativeToGround</altitudeMode>\n" +
-				"\t\t<extrude>1</extrude>\n"+
 				"\t</Point>\n" +
 				"</Placemark>\n";
 		return out;
+		
+		/*
+				"\t\t<altitudeMode>relativeToGround</altitudeMode>\n" +
+				"\t\t<extrude>1</extrude>\n"+
+		 */
 	}
 }

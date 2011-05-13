@@ -8,6 +8,7 @@ public class Zone implements IZone {
 	final private GPSSignal center;
 	final private double radius;
 	private double numberVehicles = -1; // -1 = unlimited
+	private String name;
 	
 	public Zone(GPSSignal center, Double radius){
 		this.center = Utils.LatLon2UTM(center);
@@ -59,10 +60,6 @@ public class Zone implements IZone {
 		return new GPSSignal(this.center.getLatitude() + y, this.center.getLongitude() + x, "UTM");
 		*/		
 	}
-	
-	public String toString(){
-		return "["+this.center.toString() +" "+ this.center.getFormat() +" "+ this.radius +"]";
-	}
 
 	public double getMaxVehicles() {
 		return numberVehicles;
@@ -71,5 +68,13 @@ public class Zone implements IZone {
 	public void decreaseNumVehicles() {
 		if(this.numberVehicles != -1)
 			this.numberVehicles--;		
+	}
+
+	public String getName() {
+		return this.name;
+	}
+	
+	public String toString(){
+		return "["+this.center.toString() +" "+ this.center.getFormat() +" "+ this.radius +"]";
 	}	
 }

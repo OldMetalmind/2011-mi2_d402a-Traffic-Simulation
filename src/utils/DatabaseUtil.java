@@ -198,7 +198,7 @@ public class DatabaseUtil {
 
 	public GPSSignal lineInterpolatePoint(GPSSignal from, GPSSignal to, float percentage) {
 		GPSSignal point = null;
-		String sql = "SELECT ST_asText(ST_Line_Interpolate_Point(line,0.164511)) as point FROM ST_SetSRID( 'LINESTRING(548373.46 6296466.44,548239.31 6295999.02)'::geometry , 4326 ) as line;";
+		String sql = "SELECT ST_asText(ST_Line_Interpolate_Point(line,0.164511)) as point FROM ST_SetSRID( 'LINESTRING("+from.getLatitude()+" "+from.getLongitude()+","+to.getLatitude()+" "+to.getLongitude()+")'::geometry , 4326 ) as line;";
 		try {
 			Statement statement = this.connection.createStatement();
 			ResultSet result = statement.executeQuery(sql);

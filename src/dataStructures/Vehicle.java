@@ -65,13 +65,8 @@ public class Vehicle implements IVehicle {
 	public String getShortestPathFormat() {
 		return this.shortestPath.getFormat();
 	}
-	public void move(DatabaseUtil database, double timeLeft, double time) {		
+	public void move(DatabaseUtil database, double timeLeft, double time) {
 		GPSSignal position = this.getActualPosition();
-		
-		//GPSSignal checkpoint = this.getShortestPath().getInstance( this.index );
-		//GPSSignal checkpoint = this.getShortestPath().getInstance( this.getVoyage().size() );
-
-		//int speedLimit = this.getShortestPath().getSpeedLimitAt( this.getVoyage().size() );
 		int speedLimit = this.shortestPath.getSpeedLimitAt( this.index );
 		assert(speedLimit > 20);
 
@@ -83,15 +78,14 @@ public class Vehicle implements IVehicle {
 
 		GPSSignal newPosition = null;
 		if(allowedDistance < distance || allowedDistance == 0){
-			newPosition = move(database, distance, allowedDistance, position, this.checkpoint, this.index);
+			newPosition = move(database, distance, allowedDistance, position, this.index);
 		}
-		else { //distance < allowedDistance			
+		else { //allowedDistance > distance
 			double tmpAllowedDistance = allowedDistance - distance;
 			double tmpTimeLeft = timeLeft - this.timespent(distance, speedLimit);
 			assert(tmpTimeLeft < timeLeft);
 			newPosition = moveRecursive(database, tmpAllowedDistance, tmpTimeLeft, this.index + 1, this.checkpoint);
 		}		
-		
 		assert(newPosition != null): "new position is null";
 		assert(newPosition.getFormat() == "UTM"): "new position is not in UTM format";
 				
@@ -100,11 +94,14 @@ public class Vehicle implements IVehicle {
 	}
 	
 	private GPSSignal moveRecursive(DatabaseUtil database, double distance, double timeLeft, int index, GPSSignal position) {
+		
 		int speedLimit = this.shortestPath.getSpeedLimitAt( index );
 		double allowedDistance = timeLeft * speedLimit;
-		this.checkpoint = this.getShortestPath().getInstance(index);
+
+		this.setCheckpoint( this.getShortestPath().getInstance(index) );
+		
 		if(allowedDistance < distance || allowedDistance == 0){
-			return move(database, distance, allowedDistance, position, this.checkpoint, index);
+			return move(database, distance, allowedDistance, position, index);
 		}
 		else {
 			double tmpAllowedDistance = allowedDistance - distance;
@@ -114,11 +111,12 @@ public class Vehicle implements IVehicle {
 		}		
 	}
 	
-	private GPSSignal move(DatabaseUtil database, double distance, double allowedDistance, GPSSignal from, GPSSignal to, int index) {
+	private GPSSignal move(DatabaseUtil database, double distance, double allowedDistance, GPSSignal position, int index) {
+		this.setCheckpoint( this.getShortestPath().getInstance(index) );
 		this.index = index;
-		this.checkpoint = to;
-		float percentage = (float) (allowedDistance/distance);
-		GPSSignal newPosition = database.lineInterpolatePoint(from, to, percentage);
+		float percentage = allowedDistance > distance ?  (float) (distance/allowedDistance) : (float) (allowedDistance/distance);
+		GPSSignal newPosition = database.lineInterpolatePoint(position, this.checkpoint, percentage);
+		//System.out.println("move| "+newPosition+" = ( "+position+" -> "+this.checkpoint+ ") x "+ percentage);
 		return newPosition;
 	}
 	
