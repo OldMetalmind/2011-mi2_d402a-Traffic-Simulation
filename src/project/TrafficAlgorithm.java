@@ -21,11 +21,10 @@ public class TrafficAlgorithm {
 		this.database.clearVehicles();
 		
 		long t0 = System.currentTimeMillis();
-		user = userInput;
-		setVehicles(new AllVehicles());
+		user = userInput;		
 		database = new DatabaseUtil();
 		String out = "";
-		OutputUtil kml = new OutputUtil("Test");
+		OutputUtil kml = new OutputUtil("shortest_paths");
 		out = kml.KMLHeader();
 		
 		database.clearVehicles(); 
@@ -36,17 +35,14 @@ public class TrafficAlgorithm {
 			Vehicle v = this.vehicles.generateVehicle(from, to);
 			this.vehicles.addVehicle(v);
 			this.database.addVehicle(v, this.vehicles.size());			
-			
+			out += kml.KMLTrip(v.getShortestPath());
 			System.out.println((i+1) +"/"+ this.user.getTotalVehicles());	
 			 System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliceconds");
 		}		
+		out += kml.KMLFooter();
 		run();
 		}
 	
-	private void setVehicles(AllVehicles allVehicles) {
-		// TODO Auto-generated method stub		
-	}
-
 	public void run(){
 		System.out.println("Traffic Algorithm phase 2 started");
 		DatabaseUtil database = new DatabaseUtil();
@@ -60,7 +56,7 @@ public class TrafficAlgorithm {
 		System.out.println("Traffic Algorithm finished");
 		
 		System.out.print("Saving to KML...");
-		OutputUtil out = new OutputUtil("voyagesUTM");
+		OutputUtil out = new OutputUtil("voyages");
 		out.save2KML(this.vehicles);
 		System.out.println("...saved");
 		
