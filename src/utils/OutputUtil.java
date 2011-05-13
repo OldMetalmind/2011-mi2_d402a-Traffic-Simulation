@@ -109,7 +109,8 @@ public class OutputUtil {
 	}
 	
 	public static String signal2KMLPlacemark(GPSSignal s, int id, double time) {
-		GPSSignal ll = Utils.UTM2LonLat(s); 
+		//GPSSignal ll = Utils.UTM2LonLat(s);
+		GPSSignal ll = s;
 		String out = "<Placemark>\n" +
 				"\t<name>id="+id+"  t="+time+"</name>\n" +
 				"\t<description>"+ll.getLatitude()+","+ll.getLongitude()+"</description>\n" +

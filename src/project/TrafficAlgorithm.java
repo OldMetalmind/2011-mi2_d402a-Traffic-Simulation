@@ -48,7 +48,7 @@ public class TrafficAlgorithm {
 		System.out.println("Traffic Algorithm finished");
 		
 		System.out.print("Saving to KML...");
-		OutputUtil out = new OutputUtil("voyages");
+		OutputUtil out = new OutputUtil("voyagesUTM");
 		out.save2KML(this.vehicles);
 		System.out.println("...saved");
 		
