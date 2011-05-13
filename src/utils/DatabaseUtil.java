@@ -69,9 +69,9 @@ public class DatabaseUtil {
 	 * @throws SQLException
 	 */
 	public Trip getShortestPath(GPSSignal from, GPSSignal to) throws SQLException{		
+		long t0 = System.currentTimeMillis();
 		if(from.equals(to))
 			return new Trip(to.getFormat());
-			
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);		
 		assert(idFrom != idTo): "idFrom and idTo should be different.";
@@ -87,9 +87,10 @@ public class DatabaseUtil {
 				"	FROM network',"+idFrom+ ","+idTo+ ", false, false) as x" +
 						" left join network ON (x.edge_id=network.gid)";
 				
-		System.out.println(sql);
+		//System.out.println(sql);
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
+        System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliceconds");
 		return resultSet2Trip(result);
 	}
 	
@@ -181,7 +182,7 @@ public class DatabaseUtil {
 					")),the_geom)" +
 					" ORDER BY x asc limit 1;";
 		
-		System.out.println("DatabaseUtil\n"+ sql);
+		//System.out.println("DatabaseUtil\n"+ sql);
 				
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);

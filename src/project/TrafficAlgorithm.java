@@ -17,7 +17,7 @@ public class TrafficAlgorithm {
 
 	public TrafficAlgorithm(UserInput userInput) throws SQLException{
 		
-		
+		long t0 = System.currentTimeMillis();
 		user = userInput;
 		setVehicles(new AllVehicles());
 		database = new DatabaseUtil();
@@ -34,8 +34,10 @@ public class TrafficAlgorithm {
 			Vehicle v = vehicles.generateVehicle(from, to);
 			vehicles.addVehicle(v);
 			database.addVehicle(v,vehicles.size());
-			System.out.println(v);
+			//System.out.println(v);
 		}
+        System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliceconds");
+
 	}
 	
 	public void run(){
