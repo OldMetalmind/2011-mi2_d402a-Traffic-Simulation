@@ -29,7 +29,7 @@ public class TrafficAlgorithm {
 		out = kml.KMLHeader();
 		
 		database.clearVehicles(); 
-		AllVehicles vehicles = new AllVehicles();
+		this.vehicles = new AllVehicles();
 		for(int i = 0; i <  this.user.getTotalVehicles(); i++){			
 			Zone from =  this.user.getFromZones().selectRandomZone();
 			Zone to =  this.user.getToZones().selectRandomZone();
@@ -44,8 +44,7 @@ public class TrafficAlgorithm {
 		}
 	
 	private void setVehicles(AllVehicles allVehicles) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub		
 	}
 
 	public void run(){

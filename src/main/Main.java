@@ -1,7 +1,5 @@
 package main;
 
-import java.security.Timestamp;
-
 import project.Input;
 
 public class Main {
