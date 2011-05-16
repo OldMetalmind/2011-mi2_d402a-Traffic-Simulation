@@ -32,6 +32,7 @@ public class AllVehicles implements IAllVehicles {
 		assert(!f.equals(t)) : "'from' and 'to' signals shouldn't be the same";
 		
 		DatabaseUtil database = new DatabaseUtil();
+
 		ShortestPath shortestpath = null;
 		try {
 			shortestpath = database.getShortestPath(f, t);
@@ -51,6 +52,7 @@ public class AllVehicles implements IAllVehicles {
 		for(Vehicle v : vehicles){
 			v.move(database, timeleft, time);
 		}		
+
 	}
 
 	public int size() {

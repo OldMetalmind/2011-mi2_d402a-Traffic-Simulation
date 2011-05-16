@@ -79,6 +79,7 @@ public class Vehicle implements IVehicle {
 		GPSSignal newPosition = null;
 		if(allowedDistance < distance || allowedDistance == 0){
 			newPosition = move(database, distance, allowedDistance, position, this.index);
+			
 		}
 		else { //allowedDistance > distance
 			double tmpAllowedDistance = allowedDistance - distance;
@@ -90,7 +91,7 @@ public class Vehicle implements IVehicle {
 		assert(newPosition.getFormat() == "UTM"): "new position is not in UTM format";
 				
 		this.setActualPosition(newPosition, time);
-		database.setVehicle(this.vehicle_id, newPosition);
+		
 	}
 	
 	private GPSSignal moveRecursive(DatabaseUtil database, double distance, double timeLeft, int index, GPSSignal position) {
