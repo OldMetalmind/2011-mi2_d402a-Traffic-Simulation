@@ -39,7 +39,10 @@ public class ShortestPath extends Trip implements IShortestPath {
 		return super.size();
 	}
 	
-	public void addInstance(GPSSignal s, Integer speedLimit) {
+	public void addInstance(GPSSignal s, Integer speedLimit) {			
+		if(super.size() > 0 && super.getLast().equals(s))
+			return;
+		
 		super.addInstance(s);
 		this.speedLimit.add(speedLimit);
 		assert(this.speedLimit.size() == super.size());

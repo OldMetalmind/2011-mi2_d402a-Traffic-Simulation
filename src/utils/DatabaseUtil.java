@@ -125,15 +125,18 @@ public class DatabaseUtil {
 		// vertex_id | edge_id | cost
 		ShortestPath path = new ShortestPath("UTM");
 		Statement statement = this.connection.createStatement();
+		result.next();
+		Integer speedLimit = Integer.parseInt(result.getString("hastmax"));
+		path.addInstance(new GPSSignal(result.getString("start"), path.getFormat()), speedLimit);
+		//path.addInstance(new GPSSignal(result.getString("end"), path.getFormat()), speedLimit);
 		while (result.next()) {
-			Integer speedLimit = Integer.parseInt(result.getString("hastmax"));
-			path.addInstance(new GPSSignal(result.getString("start"), path
-					.getFormat()), speedLimit);
-			path.addInstance(new GPSSignal(result.getString("end"), path
-					.getFormat()), speedLimit);
+			speedLimit = Integer.parseInt(result.getString("hastmax"));
+			path.addInstance(new GPSSignal(result.getString("start"), path.getFormat()), speedLimit);
+			//path.addInstance(new GPSSignal(result.getString("end"), path.getFormat()), speedLimit);
 		}
 		statement.close();
 		result.close();
+		System.out.println("DatabaseUtil | "+path);
 		assert (path.size() > 0 && path.getInstance(0) != null) : "Trip should return something with";
 		return path;
 	}

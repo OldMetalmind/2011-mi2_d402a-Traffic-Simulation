@@ -147,92 +147,33 @@ public class Vehicle implements IVehicle {
 	}
 	
 	private GPSSignal moveRecursive(DatabaseUtil database, double allowedDistance, double timeLeft, GPSSignal position, int index, double time) {
-		if(timeLeft == 0 || allowedDistance == 0){ 	
+		if(timeLeft == 0 || allowedDistance == 0){
+			this.reachedDestination();
 			return position;
 		}
-		
+		assert(!position.equals(this.checkpoint));
 		double distance = Utils.UTMdistance(position, this.checkpoint); // distance to checkpoint in meters.
-		int speedLimit = this.shortestPath.getSpeedLimitAt( index );  // speed limit		
-		
+		if(distance == 0){
+			this.reachedDestination();
+			return position;
+		}
+		int speedLimit = this.shortestPath.getSpeedLimitAt( index );  // speed limit
 		if(allowedDistance < distance){
 			return this.move(database, distance, allowedDistance, position, index);
 		}
 		else{ //allowedDistance > distance
 			double tmpAllowedDistance = allowedDistance - distance; //tmpAllowedDistance
-			double tmpTimeLeft = timeLeft - this.timespent(distance, speedLimit); //TODO confirm method "time spent" is working correctly.			
+			double tmpTimeLeft = timeLeft - this.timespent(distance, speedLimit);
+			assert(tmpTimeLeft < timeLeft): "distance = "+ distance;
 			position = this.getCheckpoint();
 			int tmpIndex = index + 1;
+			if(tmpIndex == this.shortestPath.size()){
+				this.reachedDestination();
+				return position;
+			}
+				
 			this.setCheckpoint(this.shortestPath.getInstance(tmpIndex));
 			return moveRecursive(database, tmpAllowedDistance, tmpTimeLeft, position, tmpIndex, time);
 		}
 	}
-	
-	
-	/*
-	public void move(DatabaseUtil database, double timeLeft, double time) {
-		GPSSignal position = this.getActualPosition();
-		int speedLimit = this.shortestPath.getSpeedLimitAt( this.index );
-		assert(speedLimit > 0);
-		
-		double allowedDistance = timeLeft * speedLimit;
-		assert(allowedDistance >= 0);
-		
-		double distance = Utils.UTMdistance(position, this.checkpoint); //it's in meters;
-		assert(distance >= 0);
-
-		GPSSignal newPosition = null;
-		if(time == 0){ //First position already added.
-			return;
-		}
-		else if(allowedDistance == 0){
-			newPosition = position;
-		}
-		else if(allowedDistance < distance ){
-			newPosition = move(database, distance, allowedDistance, position, this.index);
-			
-		}
-		else { //allowedDistance > distance			
-			double tmpTimeLeft = timeLeft - this.timespent(distance, speedLimit);
-			assert(tmpTimeLeft <= timeLeft);
-			
-			int tmpIndex = this.index + 1;
-			int tmpSpeedLimit = this.shortestPath.getSpeedLimitAt( tmpIndex);
-			double tmpAllowedDistance = tmpTimeLeft * tmpSpeedLimit;
-						
-									//	database 	distance 			timeLeft	index		position
-			newPosition = moveRecursive(database, allowedDistance - distance, tmpTimeLeft, tmpIndex, this.checkpoint);
-		}	
-		
-		assert(newPosition != null): "new position is null";
-		assert(newPosition.getFormat() == "UTM"): "new position is not in UTM format";
-				
-		this.setActualPosition(newPosition, time);
-		//database.setVehicle(this.vehicle_id, newPosition); //this is for overlap restriction
-	}
-	*/
-	/*
-	private GPSSignal moveRecursive(DatabaseUtil database, double distance, double timeLeft, int index, GPSSignal position) {
-		
-		int speedLimit = this.shortestPath.getSpeedLimitAt( index );
-		double allowedDistance = timeLeft * speedLimit;
-		
-		if(timeLeft == 0){
-			return position;
-		}
-		if(allowedDistance <= distance || allowedDistance == 0){
-			return move(database, distance, allowedDistance, position, index);
-		}
-		else {			
-			this.setCheckpoint( this.getShortestPath().getInstance(index) );
-			
-			double tmpTimeLeft = timeLeft - this.timespent(distance, speedLimit);
-			assert(tmpTimeLeft <= timeLeft);
-			
-			int tmpIndex = index + 1;
-			int tmpSpeedLimit = this.shortestPath.getSpeedLimitAt( tmpIndex);
-			double tmpAllowedDistance = tmpTimeLeft * tmpSpeedLimit;
-			
-			return moveRecursive(database, allowedDistance - distance, tmpTimeLeft, tmpIndex, this.checkpoint);
-		}		
-	}*/
 }

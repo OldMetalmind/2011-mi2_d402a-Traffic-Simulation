@@ -42,9 +42,7 @@ public class GPSSignal {
 	}
 
 	public boolean equals(GPSSignal other){
-		if(other.getLatitude() == this.getLatitude() && 
-				other.getLongitude() == this.getLongitude() &&
-				other.getFormat() == this.getFormat())
+		if(other.getLatitude().doubleValue() == this.getLatitude().doubleValue() && other.getLongitude().doubleValue() == this.getLongitude().doubleValue())
 			return true;
 		else
 			return false;
