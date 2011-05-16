@@ -51,12 +51,7 @@ public class TrafficAlgorithm {
 			time += user.getFrequency();
 		}
 		
-		this.database.clearSignals();
-		int number_of_cars = vehicles.size();
-		for (int i = 0; i < number_of_cars; i++) {
-			Vehicle v = this.vehicles.getVehicle(i);
-			this.database.addSignals(i+1, v); //Vehicles ids starts from 1 not 0
-		}
+	
 
 		System.out.println("Traffic Algorithm finished");
 

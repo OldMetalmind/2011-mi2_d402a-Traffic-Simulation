@@ -183,7 +183,7 @@ public class DatabaseUtil {
 		}
 	}
 
-	public void addSignals(int vehicle_id, Vehicle v) {
+	public void addSignals( Vehicle v) {
 		assert (v.getVoyage().getPath().size() == v.getVoyage().getTimes()
 				.size());
 		int signals = v.getVoyage().getPath().size();
@@ -193,7 +193,7 @@ public class DatabaseUtil {
 		for (int i = 0; i < signals; i++) {
 			GPSSignal position = v.getVoyage().getPath().elementAt(i);
 			double time = v.getVoyage().getTimeAt(i);
-			sql += "(" + vehicle_id + "," + " ST_SetSRID(ST_MakePoint("
+			sql += "(" + v.getVehicle_id() + "," + " ST_SetSRID(ST_MakePoint("
 					+ position.getLatitude() + "," + position.getLongitude()
 					+ ")::geometry,4326)," + time + "),";
 
@@ -231,10 +231,11 @@ public class DatabaseUtil {
 		// TODO Save all vehicles to table: signals.
 		// Call methods clearSignals and addSignals(id, vehicle) from here,
 		// because now it's called from TrafficAlgorithm
-
+		clearSignals();
 		for (Vehicle v : vehicles.getVehicles()) {
+			
+			addSignals(v); 
 			System.out.println("id > " + v.getVehicle_id() + " |"
-			// TODO getVehicle_id method is not working - always returns 0
 					+ v.getVoyage());
 		}
 	}
