@@ -77,9 +77,9 @@ public class Vehicle implements IVehicle {
 		return newPosition;
 	}
 	
-	private double timespent(double distance, Integer speedLimit) {
+	private double timespent(double distance, double speedLimit) {
 		assert(speedLimit > 0);
-		return (1/speedLimit.doubleValue())*distance;
+		return (1/speedLimit)*distance;
 	}	
 
 	private void setActualPosition(GPSSignal location, double time){
@@ -97,7 +97,7 @@ public class Vehicle implements IVehicle {
 		this.stopped = true;
 	}
 	
-	public void move(DatabaseUtil database, double timeLeft, double time) {
+	public void initMovement(DatabaseUtil database, double timeLeft, double time) {
 		GPSSignal newPosition = null;
 		GPSSignal position = this.getActualPosition(); // Actual position
 		this.setCheckpoint(this.shortestPath.getInstance(this.index)); // new checkpoint
@@ -112,17 +112,20 @@ public class Vehicle implements IVehicle {
 			this.reachedDestination();
 			return;
 		}
-		int speedLimit = this.shortestPath.getSpeedLimitAt( this.index );  // speed limit
+		double speedLimit = this.shortestPath.getSpeedLimitAt( this.index );  // speed limit
 		assert(speedLimit > 0); 
 		double allowedDistance = timeLeft * speedLimit; //allowed distance regarding the time left and the speed limit on the actual road;
 		assert(allowedDistance >= 0);
+		
+		/*
 		if(allowedDistance == 0 || time == 0){
 			newPosition = this.getActualPosition();
 			assert(newPosition != null);
 			this.setActualPosition(newPosition, time);
 			this.reachedDestination();
 			return;
-		}		
+		}
+		*/		
 		double distance = Utils.UTMdistance(position, this.checkpoint); // distance to checkpoint in meters.
 		assert(distance >= 0);
 		
@@ -153,11 +156,13 @@ public class Vehicle implements IVehicle {
 		}
 		assert(!position.equals(this.checkpoint));
 		double distance = Utils.UTMdistance(position, this.checkpoint); // distance to checkpoint in meters.
+		/*
 		if(distance == 0){
 			this.reachedDestination();
 			return position;
 		}
-		int speedLimit = this.shortestPath.getSpeedLimitAt( index );  // speed limit
+		*/
+		double speedLimit = this.shortestPath.getSpeedLimitAt( index );  // speed limit
 		if(allowedDistance < distance){
 			return this.move(database, distance, allowedDistance, position, index);
 		}
@@ -165,12 +170,15 @@ public class Vehicle implements IVehicle {
 			double tmpAllowedDistance = allowedDistance - distance; //tmpAllowedDistance
 			double tmpTimeLeft = timeLeft - this.timespent(distance, speedLimit);
 			assert(tmpTimeLeft < timeLeft): "distance = "+ distance;
+			//System.out.println(tmpTimeLeft);
 			position = this.getCheckpoint();
 			int tmpIndex = index + 1;
+			
 			if(tmpIndex == this.shortestPath.size()){
 				this.reachedDestination();
 				return position;
 			}
+			
 				
 			this.setCheckpoint(this.shortestPath.getInstance(tmpIndex));
 			return moveRecursive(database, tmpAllowedDistance, tmpTimeLeft, position, tmpIndex, time);

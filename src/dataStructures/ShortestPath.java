@@ -2,6 +2,8 @@ package dataStructures;
 
 import java.util.Vector;
 
+import utils.Utils;
+
 import interfaces.IShortestPath;
 
 public class ShortestPath extends Trip implements IShortestPath {
@@ -52,8 +54,8 @@ public class ShortestPath extends Trip implements IShortestPath {
 		return this.speedLimit;
 	}
 
-	public Integer getSpeedLimitAt(Integer i) {
-		return this.speedLimit.get(i);
+	public double getSpeedLimitAt(Integer i) { // km/h
+		return Utils.convertKmh2ms(this.speedLimit.get(i)); // m/s
 	}
 	
 	public String getFormat(){

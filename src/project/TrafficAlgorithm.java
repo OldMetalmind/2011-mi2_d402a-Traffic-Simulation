@@ -36,7 +36,7 @@ public class TrafficAlgorithm {
 			out += kml.KMLTrip(v.getShortestPath(), "UTM");
 			System.out.println((i+1) +"/"+ this.user.getTotalVehicles());	
 			 System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliseconds");
-		}		
+		}
 		out += kml.KMLFooter();
 		kml.writeFile(out, "kml");
 		run();
@@ -47,12 +47,11 @@ public class TrafficAlgorithm {
 		DatabaseUtil database = new DatabaseUtil();
 		double time = user.getFrequency();
 		while(time <= this.user.getDuration()){	
-			this.vehicles.move(database, this.user.getDuration() - time, time);
+			//this.vehicles.move(database, this.user.getDuration() - time, time);
+			this.vehicles.move(database, user.getFrequency(), time);
 			time += user.getFrequency();
 		}
 		
-	
-
 		System.out.println("Traffic Algorithm finished");
 
 		System.out.print("Saving to KML...");

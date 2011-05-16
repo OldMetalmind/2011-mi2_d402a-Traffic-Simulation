@@ -136,7 +136,6 @@ public class DatabaseUtil {
 		}
 		statement.close();
 		result.close();
-		System.out.println("DatabaseUtil | "+path);
 		assert (path.size() > 0 && path.getInstance(0) != null) : "Trip should return something with";
 		return path;
 	}

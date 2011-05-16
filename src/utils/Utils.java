@@ -12,6 +12,7 @@ public class Utils {
 	
 	final static int UTMCode = 32;
 	final static char UTMZone = 'N';
+	final static double kmh2ms = 0.27777778;
 	
 	public static Trip UTM2LatLon(Trip trip) {
 		Trip lltrip = new Trip("LonLat"); 
@@ -56,15 +57,6 @@ public class Utils {
 	}
 	
 	/**
-	 * 
-	 * @param kmh - kilometer per hour
-	 * @return meter per second
-	 */
-	public static double kmh2ms(double kmh){
-		return kmh / 3600;
-	}
-
-	/**
 	 * Calculate the distance between these two UTM signals.
 	 * @param from
 	 * @param to
@@ -74,5 +66,15 @@ public class Utils {
 		assert(from.getFormat() == "UTM" && to.getFormat() == "UTM");		
 		return Math.sqrt(Math.pow(from.getLatitude() - to.getLatitude(), 2) 
 				+ Math.pow(from.getLongitude() - to.getLongitude(), 2));
+	}
+
+
+	/**
+	 * 
+	 * @param kmh - kilometer per hour
+	 * @return meter per second
+	 */
+	public static double convertKmh2ms(Integer i) {
+		return i.doubleValue()*kmh2ms;
 	}
 }
