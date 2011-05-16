@@ -30,7 +30,7 @@ public class TrafficAlgorithm {
 		for (int i = 0; i < this.user.getTotalVehicles(); i++) {
 			Zone from = this.user.getFromZones().selectRandomZone();
 			Zone to = this.user.getToZones().selectRandomZone();
-			Vehicle v = this.vehicles.generateVehicle(from, to);
+			Vehicle v = this.vehicles.generateVehicle(from, to, i);
 			this.vehicles.addVehicle(v);
 			this.database.addVehicle(v, this.vehicles.size());			
 			out += kml.KMLTrip(v.getShortestPath(), "UTM");

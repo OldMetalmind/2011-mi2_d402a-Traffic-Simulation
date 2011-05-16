@@ -11,7 +11,7 @@ public interface IAllVehicles {
 	public void addVehicle(Vehicle vehicle);
 	public Vehicle getVehicle(Integer index);
 	public Vector<Vehicle> getVehicles();
-	public Vehicle generateVehicle(Zone from, Zone to);
+	public Vehicle generateVehicle(Zone from, Zone to, int id);
 	public void move(DatabaseUtil database, double timeLeft, double time);
 	public int size();
 }

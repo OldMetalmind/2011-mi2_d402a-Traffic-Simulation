@@ -23,7 +23,7 @@ public class AllVehicles implements IAllVehicles {
 		vehicles.add(vehicle);	
 	}
 	
-	public Vehicle generateVehicle(Zone from, Zone to) {
+	public Vehicle generateVehicle(Zone from, Zone to, int id) {
 		GPSSignal f = from.generateRandomGPS();
 		GPSSignal t = to.generateRandomGPS();
 		
@@ -44,7 +44,7 @@ public class AllVehicles implements IAllVehicles {
 		assert(shortestpath.size() > 0): "'shortestpath', shouldn't not be empty";
 		assert(shortestpath.getInstance(0) != null): "value shouldn't be null";
 		
-		return new Vehicle(shortestpath);
+		return new Vehicle(shortestpath, id);
 	}
 
 	public void move(DatabaseUtil database, double timeleft, double time) {

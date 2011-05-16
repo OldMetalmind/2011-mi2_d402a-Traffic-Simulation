@@ -13,13 +13,14 @@ public class Vehicle implements IVehicle {
 	private GPSSignal checkpoint;
 		
 	
-	public Vehicle(ShortestPath shortestPath){
+	public Vehicle(ShortestPath shortestPath, int id){
 		this.index = 1;
 		this.shortestPath = shortestPath;
 		this.voyage = new Voyage(shortestPath.getInstance(0));
 		this.setCheckpoint(shortestPath.getInstance(this.index));
+		this.vehicle_id = id;
 	}	
-
+	
 	public ShortestPath getShortestPath() {
 		return shortestPath;
 	}
@@ -155,9 +156,5 @@ public class Vehicle implements IVehicle {
 
 	public GPSSignal getCheckpoint() {
 		return checkpoint;
-	}
-	
-	public void step(DatabaseUtil database, double timeLeft, double time) {
-		//TODO: redo the move method from scratch.
 	}
 }
