@@ -86,6 +86,7 @@ public class Vehicle implements IVehicle {
 		}
 		else if(allowedDistance < distance ){
 			newPosition = move(database, distance, allowedDistance, position, this.index);
+			
 		}
 		else { //allowedDistance > distance			
 			double tmpTimeLeft = timeLeft - this.timespent(distance, speedLimit);
