@@ -156,4 +156,8 @@ public class Vehicle implements IVehicle {
 	public GPSSignal getCheckpoint() {
 		return checkpoint;
 	}
+	
+	public void step(DatabaseUtil database, double timeLeft, double time) {
+		//TODO: redo the move method from scratch.
+	}
 }
