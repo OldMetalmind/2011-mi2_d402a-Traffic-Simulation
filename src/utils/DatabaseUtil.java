@@ -28,7 +28,7 @@ public class DatabaseUtil {
 		} catch (Exception e) {
 			try {
 				this.connection = DriverManager.getConnection(defaultUrl,
-						defaultUser, "admin");
+						defaultUser, "123");
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}

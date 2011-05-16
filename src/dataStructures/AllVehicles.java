@@ -50,6 +50,7 @@ public class AllVehicles implements IAllVehicles {
 	public void move(DatabaseUtil database, double timeleft, double time) {
 		assert(vehicles.size() > 0);
 		for(Vehicle v : vehicles){
+			if(v.stopped) continue;
 			v.move(database, timeleft, time);
 		}		
 

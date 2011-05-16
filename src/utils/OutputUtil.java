@@ -55,7 +55,7 @@ public class OutputUtil {
 	}
 	
 	public String KMLTrip(Trip path, String utm){		
-		String output = "<LineString>\n" +
+		String output = "<Placemark>\n<LineString>\n" +
 							"<coordinates>\n";
 		for(int i = 0; i < path.size(); i++){				
 			GPSSignal g = path.getInstance(i);
@@ -63,7 +63,7 @@ public class OutputUtil {
 					g = Utils.LatLon2UTM(g);
 			output += g.getLatitude()+","+g.getLongitude()+"\n";
 		}
-		output += "</coordinates>\n</LineString>\n";
+		output += "</coordinates>\n</LineString>\n</Placemark>\n";
 		return output;
 	}
 	public String KMLHeader(){

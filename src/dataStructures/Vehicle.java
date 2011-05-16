@@ -11,6 +11,7 @@ public class Vehicle implements IVehicle {
 	private Voyage voyage; //This is where all the positioning of the vehicle will be saved.
 	private int index; //this index is related to the 'shortest path' trip.
 	private GPSSignal checkpoint;
+	public boolean stopped;
 		
 	
 	public Vehicle(ShortestPath shortestPath, int id){
@@ -19,6 +20,7 @@ public class Vehicle implements IVehicle {
 		this.voyage = new Voyage(shortestPath.getInstance(0));
 		this.setCheckpoint(shortestPath.getInstance(this.index));
 		this.vehicle_id = id;
+		this.stopped = false;
 	}	
 	
 	public ShortestPath getShortestPath() {
@@ -67,6 +69,106 @@ public class Vehicle implements IVehicle {
 		return this.shortestPath.getFormat();
 	}
 	
+	private GPSSignal move(DatabaseUtil database, double distance, double allowedDistance, GPSSignal position, int index) {
+		this.setCheckpoint( this.getShortestPath().getInstance(index) );
+		this.index = index;
+		float percentage = allowedDistance > distance ?  (float) (distance/allowedDistance) : (float) (allowedDistance/distance);
+		GPSSignal newPosition = database.lineInterpolatePoint(this.checkpoint, position, percentage);		
+		return newPosition;
+	}
+	
+	private double timespent(double distance, Integer speedLimit) {
+		assert(speedLimit > 0);
+		return (1/speedLimit.doubleValue())*distance;
+	}	
+
+	private void setActualPosition(GPSSignal location, double time){
+		this.voyage.addInstance(location, time);
+	}
+
+	public void setCheckpoint(GPSSignal checkpoint) {
+		this.checkpoint = checkpoint;
+	}
+
+	public GPSSignal getCheckpoint() {
+		return this.checkpoint;
+	}
+	public void reachedDestination(){
+		this.stopped = true;
+	}
+	
+	public void move(DatabaseUtil database, double timeLeft, double time) {
+		GPSSignal newPosition = null;
+		GPSSignal position = this.getActualPosition(); // Actual position
+		this.setCheckpoint(this.shortestPath.getInstance(this.index)); // new checkpoint
+		if(position.equals(this.checkpoint)){
+			this.reachedDestination();
+			return;
+		}
+		if(timeLeft == 0){
+			newPosition = this.getCheckpoint();
+			assert(newPosition != null);
+			this.setActualPosition(newPosition, time);
+			this.reachedDestination();
+			return;
+		}
+		int speedLimit = this.shortestPath.getSpeedLimitAt( this.index );  // speed limit
+		assert(speedLimit > 0); 
+		double allowedDistance = timeLeft * speedLimit; //allowed distance regarding the time left and the speed limit on the actual road;
+		assert(allowedDistance >= 0);
+		if(allowedDistance == 0 || time == 0){
+			newPosition = this.getActualPosition();
+			assert(newPosition != null);
+			this.setActualPosition(newPosition, time);
+			this.reachedDestination();
+			return;
+		}		
+		double distance = Utils.UTMdistance(position, this.checkpoint); // distance to checkpoint in meters.
+		assert(distance >= 0);
+		
+		if(allowedDistance < distance){
+			newPosition = move(database, distance, allowedDistance, position, this.index);
+			return;
+		}
+		else{ // allowedDistance > distance
+			double tmpAllowedDistance = allowedDistance - distance; //tmpAllowedDistance
+			double tmpTimeLeft = timeLeft - this.timespent(distance, speedLimit); //TODO confirm method "time spent" is working correctly.			
+			position = this.getCheckpoint();
+			int tmpIndex = this.index + 1;
+			this.setCheckpoint(this.shortestPath.getInstance(tmpIndex));
+			assert(!position.equals(this.checkpoint));
+			
+			newPosition = moveRecursive(database, tmpAllowedDistance, tmpTimeLeft, position, tmpIndex, time);
+		}
+		
+		assert(newPosition != null);
+		this.setActualPosition(newPosition, time);
+		
+	}
+	
+	private GPSSignal moveRecursive(DatabaseUtil database, double allowedDistance, double timeLeft, GPSSignal position, int index, double time) {
+		if(timeLeft == 0 || allowedDistance == 0){ 	
+			return position;
+		}
+		
+		double distance = Utils.UTMdistance(position, this.checkpoint); // distance to checkpoint in meters.
+		int speedLimit = this.shortestPath.getSpeedLimitAt( index );  // speed limit		
+		
+		if(allowedDistance < distance){
+			return this.move(database, distance, allowedDistance, position, index);
+		}
+		else{ //allowedDistance > distance
+			double tmpAllowedDistance = allowedDistance - distance; //tmpAllowedDistance
+			double tmpTimeLeft = timeLeft - this.timespent(distance, speedLimit); //TODO confirm method "time spent" is working correctly.			
+			position = this.getCheckpoint();
+			int tmpIndex = index + 1;
+			this.setCheckpoint(this.shortestPath.getInstance(tmpIndex));
+			return moveRecursive(database, tmpAllowedDistance, tmpTimeLeft, position, tmpIndex, time);
+		}
+	}
+	
+	
+	/*
 	public void move(DatabaseUtil database, double timeLeft, double time) {
 		GPSSignal position = this.getActualPosition();
 		int speedLimit = this.shortestPath.getSpeedLimitAt( this.index );
@@ -107,7 +209,8 @@ public class Vehicle implements IVehicle {
 		this.setActualPosition(newPosition, time);
 		//database.setVehicle(this.vehicle_id, newPosition); //this is for overlap restriction
 	}
-	
+	*/
+	/*
 	private GPSSignal moveRecursive(DatabaseUtil database, double distance, double timeLeft, int index, GPSSignal position) {
 		
 		int speedLimit = this.shortestPath.getSpeedLimitAt( index );
@@ -131,30 +234,5 @@ public class Vehicle implements IVehicle {
 			
 			return moveRecursive(database, allowedDistance - distance, tmpTimeLeft, tmpIndex, this.checkpoint);
 		}		
-	}
-	
-	private GPSSignal move(DatabaseUtil database, double distance, double allowedDistance, GPSSignal position, int index) {
-		this.setCheckpoint( this.getShortestPath().getInstance(index) );
-		this.index = index;
-		float percentage = allowedDistance > distance ?  (float) (distance/allowedDistance) : (float) (allowedDistance/distance);
-		GPSSignal newPosition = database.lineInterpolatePoint(this.checkpoint, position, percentage);		
-		return newPosition;
-	}
-	
-	private double timespent(double distance, Integer speedLimit) {
-		assert(speedLimit > 0);
-		return (1/speedLimit.doubleValue())*distance;
-	}	
-
-	private void setActualPosition(GPSSignal location, double time){
-		this.voyage.addInstance(location, time);
-	}
-
-	public void setCheckpoint(GPSSignal checkpoint) {
-		this.checkpoint = checkpoint;
-	}
-
-	public GPSSignal getCheckpoint() {
-		return checkpoint;
-	}
+	}*/
 }

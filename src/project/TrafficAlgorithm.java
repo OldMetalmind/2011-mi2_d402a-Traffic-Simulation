@@ -45,7 +45,7 @@ public class TrafficAlgorithm {
 	public void run(){
 		System.out.println("Traffic Algorithm phase 2 started");
 		DatabaseUtil database = new DatabaseUtil();
-		double time = 0;
+		double time = user.getFrequency();
 		while(time <= this.user.getDuration()){	
 			this.vehicles.move(database, this.user.getDuration() - time, time);
 			time += user.getFrequency();
