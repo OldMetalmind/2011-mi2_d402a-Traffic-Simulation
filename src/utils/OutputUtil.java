@@ -54,12 +54,14 @@ public class OutputUtil {
 		
 	}
 	
-	public String KMLTrip(Trip path){
+	public String KMLTrip(Trip path, String utm){		
 		String output = "<LineString>\n" +
 							"<coordinates>\n";
-		for(int i = 0; i < path.size(); i++){
+		for(int i = 0; i < path.size(); i++){				
 			GPSSignal g = path.getInstance(i);
-			output += g.getLongitude()+","+g.getLatitude()+"\n";
+				if(utm == "UTM")
+					g = Utils.LatLon2UTM(g);
+			output += g.getLatitude()+","+g.getLongitude()+"\n";
 		}
 		output += "</coordinates>\n</LineString>\n";
 		return output;
@@ -93,7 +95,7 @@ public class OutputUtil {
 	  		}
 	}
 
-	public void save2KML(AllVehicles vehicles) {
+	public void save2KML(AllVehicles vehicles, String utm) {
 		String out = KMLHeader();
 		for(Vehicle v : vehicles.getVehicles()){
 			assert(v.getVoyage().getPath().size() == v.getVoyage().getTimes().size() );			
@@ -101,16 +103,17 @@ public class OutputUtil {
 				GPSSignal s = v.getVoyage().getInstance(i);
 				double time = v.getVoyage().getTimeAt(i);
 				
-				out += signal2KMLPlacemark(s, v.getVehicle_id(), time);
+				out += signal2KMLPlacemark(s, v.getVehicle_id(), time, utm);
 			}
 		}
 		out += KMLFooter();; 
 		writeFile(out,"kml");
 	}
 	
-	public static String signal2KMLPlacemark(GPSSignal s, int id, double time) {
-		GPSSignal ll = Utils.UTM2LonLat(s);
-		//GPSSignal ll = s;
+	public static String signal2KMLPlacemark(GPSSignal s, int id, double time, String utm) {
+		GPSSignal ll = s;
+		if(utm != "UTM")
+			ll = Utils.UTM2LonLat(s);
 		String out = "<Placemark>\n" +
 				"\t<name>id="+id+"  t="+time+"</name>\n" +
 				"\t<description>"+ll.getLatitude()+","+ll.getLongitude()+"</description>\n" +

@@ -70,10 +70,8 @@ public class Utils {
 	 * @param to
 	 * @return Distance between the two point in meters
 	 */
-	public static double UTMdistance(GPSSignal from, GPSSignal to) {
-		if(from.getFormat() != "UTM" || to.getFormat() != "UTM")
-			return -1;
-		
+	public static double UTMdistance(GPSSignal from, GPSSignal to) {		
+		assert(from.getFormat() == "UTM" && to.getFormat() == "UTM");		
 		return Math.sqrt(Math.pow(from.getLatitude() - to.getLatitude(), 2) 
 				+ Math.pow(from.getLongitude() - to.getLongitude(), 2));
 	}

@@ -3,79 +3,79 @@
 <Document>
 <Placemark>
 	<name>id=0  t=0.0</name>
-	<description>9.80861865442887,56.822870341764606</description>
+	<description>521335.65,6332517.9</description>
 	<Point>
-		<coordinates>9.80861865442887,56.822870341764606</coordinates>
+		<coordinates>521335.65,6332517.9</coordinates>
 	</Point>
 </Placemark>
 <Placemark>
 	<name>id=0  t=5.0</name>
-	<description>9.809310004693799,56.82227940741529</description>
+	<description>521366.96,6332522.01</description>
 	<Point>
-		<coordinates>9.809310004693799,56.82227940741529</coordinates>
+		<coordinates>521366.96,6332522.01</coordinates>
 	</Point>
 </Placemark>
 <Placemark>
 	<name>id=0  t=10.0</name>
-	<description>9.806053254239872,56.840290078475505</description>
+	<description>521373.30136151,6332579.69216056</description>
 	<Point>
-		<coordinates>9.806053254239872,56.840290078475505</coordinates>
+		<coordinates>521373.30136151,6332579.69216056</coordinates>
 	</Point>
 </Placemark>
 <Placemark>
 	<name>id=0  t=15.0</name>
-	<description>9.80039332897523,56.85784493801548</description>
+	<description>521473.26167286,6332694.24799179</description>
 	<Point>
-		<coordinates>9.80039332897523,56.85784493801548</coordinates>
+		<coordinates>521473.26167286,6332694.24799179</coordinates>
 	</Point>
 </Placemark>
 <Placemark>
 	<name>id=0  t=20.0</name>
-	<description>9.79566051297568,56.872511606503394</description>
+	<description>521406.33832714,6332699.54200821</description>
 	<Point>
-		<coordinates>9.79566051297568,56.872511606503394</coordinates>
+		<coordinates>521406.33832714,6332699.54200821</coordinates>
 	</Point>
 </Placemark>
 <Placemark>
 	<name>id=0  t=25.0</name>
-	<description>9.791703493613351,56.88476529041546</description>
+	<description>521473.26167286,6332694.24799179</description>
 	<Point>
-		<coordinates>9.791703493613351,56.88476529041546</coordinates>
+		<coordinates>521473.26167286,6332694.24799179</coordinates>
 	</Point>
 </Placemark>
 <Placemark>
 	<name>id=0  t=30.0</name>
-	<description>9.78839548804661,56.895002999314116</description>
+	<description>521512.72114151,6332838.66763649</description>
 	<Point>
-		<coordinates>9.78839548804661,56.895002999314116</coordinates>
+		<coordinates>521512.72114151,6332838.66763649</coordinates>
 	</Point>
 </Placemark>
 <Placemark>
 	<name>id=0  t=35.0</name>
-	<description>9.785630316657729,56.90355641616756</description>
+	<description>521517.26,6332867.36</description>
 	<Point>
-		<coordinates>9.785630316657729,56.90355641616756</coordinates>
+		<coordinates>521517.26,6332867.36</coordinates>
 	</Point>
 </Placemark>
 <Placemark>
 	<name>id=0  t=40.0</name>
-	<description>9.783319089871501,56.91070264854375</description>
+	<description>521520.25940551,6332878.77277974</description>
 	<Point>
-		<coordinates>9.783319089871501,56.91070264854375</coordinates>
+		<coordinates>521520.25940551,6332878.77277974</coordinates>
 	</Point>
 </Placemark>
 <Placemark>
 	<name>id=0  t=45.0</name>
-	<description>9.781387417165414,56.91667320984162</description>
+	<description>521537.63497401,6332930.70653083</description>
 	<Point>
-		<coordinates>9.781387417165414,56.91667320984162</coordinates>
+		<coordinates>521537.63497401,6332930.70653083</coordinates>
 	</Point>
 </Placemark>
 <Placemark>
 	<name>id=0  t=50.0</name>
-	<description>9.77977305919868,56.92166152211676</description>
+	<description>521537.63497401,6332930.70653083</description>
 	<Point>
-		<coordinates>9.77977305919868,56.92166152211676</coordinates>
+		<coordinates>521537.63497401,6332930.70653083</coordinates>
 	</Point>
 </Placemark>
 </Document>

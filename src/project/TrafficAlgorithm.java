@@ -35,11 +35,12 @@ public class TrafficAlgorithm {
 			Vehicle v = this.vehicles.generateVehicle(from, to);
 			this.vehicles.addVehicle(v);
 			this.database.addVehicle(v, this.vehicles.size());			
-			out += kml.KMLTrip(v.getShortestPath());
+			out += kml.KMLTrip(v.getShortestPath(), "UTM");
 			System.out.println((i+1) +"/"+ this.user.getTotalVehicles());	
-			 System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliceconds");
+			 System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliseconds");
 		}		
 		out += kml.KMLFooter();
+		kml.writeFile(out, "kml");
 		run();
 		}
 	
@@ -48,7 +49,6 @@ public class TrafficAlgorithm {
 		DatabaseUtil database = new DatabaseUtil();
 		double time = 0;
 		while(time <= this.user.getDuration()){	
-			//System.out.println( this.vehicles.getVehicle(0).getActualPosition() );
 			this.vehicles.move(database, this.user.getDuration() - time, time);			
 			time += user.getFrequency();
 		}
@@ -57,7 +57,7 @@ public class TrafficAlgorithm {
 		
 		System.out.print("Saving to KML...");
 		OutputUtil out = new OutputUtil("voyages");
-		out.save2KML(this.vehicles);
+		out.save2KML(this.vehicles, "UTM");
 		System.out.println("...saved");
 		
 		System.out.print("Saving to database...");

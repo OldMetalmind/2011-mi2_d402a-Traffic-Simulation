@@ -69,7 +69,7 @@ public class DatabaseUtil {
 				"FROM dijkstra_sp_delta('network',"+idFrom+","+idTo+", 1000) as x " +
 				"left join network ON (x.gid=network.gid)";
 				
-		//System.out.println(sql);
+		System.out.println(sql);
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 
@@ -169,9 +169,9 @@ Statement statement = this.connection.createStatement();
 		}	
 	}
 
-	public GPSSignal lineInterpolatePoint(GPSSignal from, GPSSignal to, float percentage) {
+	public GPSSignal lineInterpolatePoint(GPSSignal to, GPSSignal from, float percentage) {
 		GPSSignal point = null;
-		String sql = "SELECT ST_asText(ST_Line_Interpolate_Point(line,0.164511)) as point FROM ST_SetSRID( 'LINESTRING("+from.getLatitude()+" "+from.getLongitude()+","+to.getLatitude()+" "+to.getLongitude()+")'::geometry , 4326 ) as line;";
+		String sql = "SELECT ST_asText(ST_Line_Interpolate_Point(line,0.164511)) as point FROM ST_SetSRID( 'LINESTRING("+to.getLatitude()+" "+to.getLongitude()+","+from.getLatitude()+" "+from.getLongitude()+")'::geometry , 4326 ) as line;";
 		try {
 			Statement statement = this.connection.createStatement();
 			ResultSet result = statement.executeQuery(sql);
