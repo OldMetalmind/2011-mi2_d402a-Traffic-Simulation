@@ -104,7 +104,7 @@ public class Vehicle implements IVehicle {
 		assert(newPosition.getFormat() == "UTM"): "new position is not in UTM format";
 				
 		this.setActualPosition(newPosition, time);
-		database.setVehicle(this.vehicle_id, newPosition); //this is for overlap restriction
+		//database.setVehicle(this.vehicle_id, newPosition); //this is for overlap restriction
 	}
 	
 	private GPSSignal moveRecursive(DatabaseUtil database, double distance, double timeLeft, int index, GPSSignal position) {

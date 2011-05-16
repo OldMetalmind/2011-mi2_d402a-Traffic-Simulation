@@ -187,10 +187,7 @@ public class DatabaseUtil {
 		assert (v.getVoyage().getPath().size() == v.getVoyage().getTimes()
 				.size());
 		int signals = v.getVoyage().getPath().size();
-		System.out.println(v.getVoyage().getTimes());// TODO: Filipe, getTimes
-		// returns time 0.0 2
-		// times in a row([0.0, 0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0,
-		// 40.0, 45.0, 50.0]) is it supposed to be like this?
+		System.out.println(v.getVoyage().getTimes());
 
 		String sql = "INSERT INTO signals (vehicle_id, location, time) VALUES";
 		for (int i = 0; i < signals; i++) {
