@@ -32,7 +32,7 @@ public class TrafficAlgorithm {
 			Zone to = this.user.getToZones().selectRandomZone();
 			Vehicle v = this.vehicles.generateVehicle(from, to, i);
 			this.vehicles.addVehicle(v);
-			this.database.addVehicle(v, this.vehicles.size());			
+			this.database.addVehicle(v, v.getVehicle_id());			
 			out += kml.KMLTrip(v.getShortestPath(), "UTM");
 			System.out.println((i+1) +"/"+ this.user.getTotalVehicles());	
 			 System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliseconds");
