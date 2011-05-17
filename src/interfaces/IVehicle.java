@@ -5,7 +5,7 @@ import dataStructures.*;
 
 public interface IVehicle {
 		
-	public void initMovement(DatabaseUtil database, double timeLeft, double times);
+	public void initMovement(DatabaseUtil database, double timeLeft, double time);
 	public GPSSignal origin();
 	public GPSSignal destination();
 	public GPSSignal getActualPosition();

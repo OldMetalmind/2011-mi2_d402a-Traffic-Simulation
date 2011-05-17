@@ -61,10 +61,6 @@ public class DatabaseUtil {
 	 */
 	public ShortestPath getShortestPath(GPSSignal from, GPSSignal to)
 			throws SQLException {
-		// TODO: Do we need to make sure they are different?
-		/*
-		 * if(from.equals(to)) return new Trip(to.getFormat());
-		 */
 		long t0 = System.currentTimeMillis();
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);
