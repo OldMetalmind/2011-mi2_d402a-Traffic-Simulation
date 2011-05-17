@@ -20,7 +20,6 @@ public class Map implements IMap {
 		return this.map.containsKey(s);
 	}
 
-	//TODO: The position is occupied so finds the position that is 6 meters away.
 	public GPSSignal closestFreePosition(GPSSignal s) {
 		if(this.check(s))
 			return null;
