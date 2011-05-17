@@ -226,9 +226,6 @@ public class DatabaseUtil {
 	}
 
 	public void save(AllVehicles vehicles) {
-		// TODO Save all vehicles to table: signals.
-		// Call methods clearSignals and addSignals(id, vehicle) from here,
-		// because now it's called from TrafficAlgorithm
 		clearSignals();
 		for (Vehicle v : vehicles.getVehicles()) {
 			
@@ -239,7 +236,8 @@ public class DatabaseUtil {
 	}
 
 	public void setVehicle(int vehicle_id, GPSSignal newPosition) {
-		// TODO Deprecated method?
+		// TODO setVehicle - It is required to update the database of new position of the Vehicle
+		String sql = "UPDATE TABLE 'XXX' ('ID', 'LOCATION') VALUES "+vehicle_id+","+ newPosition+"";
 		
 	}
 }

@@ -59,8 +59,6 @@ public class Zone implements IZone {
 		double y = Math.sin(radian)*distance + this.center.getLatitude();
 
 		return new GPSSignal(y, x, "UTM");
-		
-			
 	}
 
 	public double getMaxVehicles() {
