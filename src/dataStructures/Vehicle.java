@@ -108,6 +108,7 @@ public class Vehicle implements IVehicle {
 		if(timeLeft == 0){
 			newPosition = this.getCheckpoint();
 			assert(newPosition != null);
+			//TODO: 1check Overlap - this.checkpoint
 			this.setActualPosition(newPosition, time);
 			this.reachedDestination();
 			return;
@@ -116,20 +117,12 @@ public class Vehicle implements IVehicle {
 		assert(speedLimit > 0); 
 		double allowedDistance = timeLeft * speedLimit; //allowed distance regarding the time left and the speed limit on the actual road;
 		assert(allowedDistance >= 0);
-		
-		/*
-		if(allowedDistance == 0 || time == 0){
-			newPosition = this.getActualPosition();
-			assert(newPosition != null);
-			this.setActualPosition(newPosition, time);
-			this.reachedDestination();
-			return;
-		}
-		*/		
+				
 		double distance = Utils.UTMdistance(position, this.checkpoint); // distance to checkpoint in meters.
 		assert(distance >= 0);
 		
-		if(allowedDistance < distance){
+		if(allowedDistance < distance){			
+			//TODO: 2check Overlap - after it add the difference to variable 'distance' 
 			newPosition = move(database, distance, allowedDistance, position, this.index);
 			return;
 		}
@@ -151,19 +144,15 @@ public class Vehicle implements IVehicle {
 	
 	private GPSSignal moveRecursive(DatabaseUtil database, double allowedDistance, double timeLeft, GPSSignal position, int index, double time) {
 		if(timeLeft == 0 || allowedDistance == 0){
+			//TODO: 3check Overlap
 			this.reachedDestination();
 			return position;
 		}
 		assert(!position.equals(this.checkpoint));
 		double distance = Utils.UTMdistance(position, this.checkpoint); // distance to checkpoint in meters.
-		/*
-		if(distance == 0){
-			this.reachedDestination();
-			return position;
-		}
-		*/
+		
 		double speedLimit = this.shortestPath.getSpeedLimitAt( index );  // speed limit
-		if(allowedDistance < distance){
+		if(allowedDistance < distance){			
 			return this.move(database, distance, allowedDistance, position, index);
 		}
 		else{ //allowedDistance > distance

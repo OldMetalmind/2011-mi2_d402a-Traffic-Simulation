@@ -49,11 +49,9 @@ public class AllVehicles implements IAllVehicles {
 
 	public void move(DatabaseUtil database, double timeleft, double time) {
 		assert(vehicles.size() > 0);
-		Map map = new Map();
 		for(Vehicle v : vehicles){
 			if(v.stopped) continue;
-			v.initMovement(database, timeleft, time, map);
-			map.add(v.getActualPosition(), v.getVehicle_id());
+			v.initMovement(database, timeleft, time);
 		}
 	}
 
