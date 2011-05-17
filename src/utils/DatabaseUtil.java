@@ -111,6 +111,7 @@ public class DatabaseUtil {
 	}
 
 	public double checkDistanceToOtherVehicles(GPSSignal position) {
+		//TODO what to do if cars are going in different directions?
 		String sql = "SELECT " + "ST_Distance(" + "ST_SetSRID('POINT("
 				+ position.getLongitude() + " " + position.getLatitude()
 				+ ")'::geometry,4236)" + ", location) "
