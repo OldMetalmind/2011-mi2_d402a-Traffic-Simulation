@@ -96,6 +96,39 @@ public class DatabaseUtil {
 		}
 	}
 
+	public void updateVehicle(Vehicle v, int vehicle_id) {
+		String sql = "UPDATE vehicles SET location = ST_SetSRID("
+				+ v.getActualPositionUTM() + ",4236) WHERE vehicle_id="
+				+ vehicle_id;
+		try {
+			Statement statement = this.connection.createStatement();
+			statement.executeQuery(sql);
+			v.setVehicle_id(vehicle_id);
+			statement.close();
+		} catch (SQLException e) {
+			// The query should always returns nothing;
+		}
+	}
+
+	public double checkDistanceToOtherVehicles(GPSSignal position) {
+		//TODO what to do if cars are going in different directions?
+		String sql = "SELECT " + "ST_Distance(" + "ST_SetSRID('POINT("
+				+ position.getLongitude() + " " + position.getLatitude()
+				+ ")'::geometry,4236)" + ", location) "
+				+ "as x from vehicles order by x asc";
+		try {
+			Statement statement = this.connection.createStatement();
+			ResultSet result = statement.executeQuery(sql);
+			result.next();
+			double distance = Double.parseDouble(result.getString("x"));
+			statement.close();
+			return distance;
+		} catch (SQLException e) {
+			return 0;
+		}
+
+	}
+
 	public void addVehicle(Vehicle v, int vehicle_id) {
 		String sql = "INSERT INTO vehicles VALUES (" + vehicle_id
 				+ ", ST_SetSRID(" + v.getActualPositionUTM() + ",4236))";
@@ -123,12 +156,16 @@ public class DatabaseUtil {
 		Statement statement = this.connection.createStatement();
 		result.next();
 		Integer speedLimit = Integer.parseInt(result.getString("hastmax"));
-		path.addInstance(new GPSSignal(result.getString("start"), path.getFormat()), speedLimit);
-		//path.addInstance(new GPSSignal(result.getString("end"), path.getFormat()), speedLimit);
+		path.addInstance(new GPSSignal(result.getString("start"), path
+				.getFormat()), speedLimit);
+		// path.addInstance(new GPSSignal(result.getString("end"),
+		// path.getFormat()), speedLimit);
 		while (result.next()) {
 			speedLimit = Integer.parseInt(result.getString("hastmax"));
-			path.addInstance(new GPSSignal(result.getString("start"), path.getFormat()), speedLimit);
-			//path.addInstance(new GPSSignal(result.getString("end"), path.getFormat()), speedLimit);
+			path.addInstance(new GPSSignal(result.getString("start"), path
+					.getFormat()), speedLimit);
+			// path.addInstance(new GPSSignal(result.getString("end"),
+			// path.getFormat()), speedLimit);
 		}
 		statement.close();
 		result.close();
@@ -181,7 +218,7 @@ public class DatabaseUtil {
 		}
 	}
 
-	public void addSignals( Vehicle v) {
+	public void addSignals(Vehicle v) {
 		assert (v.getVoyage().getPath().size() == v.getVoyage().getTimes()
 				.size());
 		int signals = v.getVoyage().getPath().size();
@@ -207,9 +244,18 @@ public class DatabaseUtil {
 		}
 	}
 
-	public GPSSignal lineInterpolatePoint(GPSSignal to, GPSSignal from, float percentage) {
+	public GPSSignal lineInterpolatePoint(GPSSignal to, GPSSignal from,
+			float percentage) {
 		GPSSignal point = null;
-		String sql = "SELECT ST_asText(ST_Line_Interpolate_Point(line,0.164511)) as point FROM ST_SetSRID( 'LINESTRING("+to.getLatitude()+" "+to.getLongitude()+","+from.getLatitude()+" "+from.getLongitude()+")'::geometry , 4326 ) as line;";
+		String sql = "SELECT ST_asText(ST_Line_Interpolate_Point(line,0.164511)) as point FROM ST_SetSRID( 'LINESTRING("
+				+ to.getLatitude()
+				+ " "
+				+ to.getLongitude()
+				+ ","
+				+ from.getLatitude()
+				+ " "
+				+ from.getLongitude()
+				+ ")'::geometry , 4326 ) as line;";
 		try {
 			Statement statement = this.connection.createStatement();
 			ResultSet result = statement.executeQuery(sql);
@@ -228,16 +274,12 @@ public class DatabaseUtil {
 	public void save(AllVehicles vehicles) {
 		clearSignals();
 		for (Vehicle v : vehicles.getVehicles()) {
-			
-			addSignals(v); 
+
+			addSignals(v);
 			System.out.println("id > " + v.getVehicle_id() + " |"
 					+ v.getVoyage());
 		}
 	}
 
-	public void setVehicle(int vehicle_id, GPSSignal newPosition) {
-		// TODO setVehicle - It is required to update the database of new position of the Vehicle
-		String sql = "UPDATE TABLE 'XXX' ('ID', 'LOCATION') VALUES "+vehicle_id+","+ newPosition+"";
-		
-	}
+	
 }
