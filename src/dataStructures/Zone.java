@@ -1,5 +1,7 @@
 package dataStructures;
 
+import java.util.Random;
+
 import utils.Utils;
 import interfaces.IZone;
 
@@ -41,24 +43,22 @@ public class Zone implements IZone {
 		this.numberVehicles = maxVehicles;
 	}
 	
-	//TODO: Should return a random point inside the circunference and at the momento it isn't.
 	/**
 	 * @return a random GPS signal in UTM format, that is located inside the zone
 	 */
 	public GPSSignal generateRandomGPS(){
-		assert(this.center.getFormat() == "UTM"): "center format is - " + this.center.getFormat() + ", it should be UTM";		
-		return this.center;
-		/*
+		assert(this.center.getFormat() == "UTM"): "center format is - " + this.center.getFormat() + ", it should be UTM";
+		
+		
 		Random rand = new Random();
 		double distance = rand.nextDouble()*this.radius;
 		double degree = rand.nextDouble()*360;
 		double radian = Math.toRadians(degree);
 		
-		double x = Math.cos(radian)*distance;
-		double y = Math.sin(radian)*distance;
-		
-		return new GPSSignal(this.center.getLatitude() + y, this.center.getLongitude() + x, "UTM");
-		*/		
+		double x = Math.cos(radian)*distance + this.center.getLongitude();
+		double y = Math.sin(radian)*distance + this.center.getLatitude();
+
+		return new GPSSignal(y, x, "UTM");
 	}
 
 	public double getMaxVehicles() {

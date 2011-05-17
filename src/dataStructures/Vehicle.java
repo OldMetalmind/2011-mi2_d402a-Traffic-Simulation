@@ -151,6 +151,7 @@ public class Vehicle implements IVehicle {
 			} else
 				// TODO something
 			return;
+
 		} else { // allowedDistance > distance
 			double tmpAllowedDistance = allowedDistance - distance; // tmpAllowedDistance
 			double tmpTimeLeft = timeLeft
@@ -159,6 +160,8 @@ public class Vehicle implements IVehicle {
 			// "time spent" is
 			// working
 			// correctly.
+		
+
 			position = this.getCheckpoint();
 			int tmpIndex = this.index + 1;
 			this.setCheckpoint(this.shortestPath.getInstance(tmpIndex));

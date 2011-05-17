@@ -280,8 +280,5 @@ public class DatabaseUtil {
 		}
 	}
 
-	public void setVehicle(int vehicle_id, GPSSignal newPosition) {
-		// TODO Deprecated method?
-
-	}
+	
 }
