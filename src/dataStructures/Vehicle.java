@@ -184,4 +184,5 @@ public class Vehicle implements IVehicle {
 			return moveRecursive(database, tmpAllowedDistance, tmpTimeLeft, position, tmpIndex, time);
 		}
 	}
+
 }
