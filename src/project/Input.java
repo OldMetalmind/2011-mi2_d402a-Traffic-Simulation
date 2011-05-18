@@ -174,7 +174,7 @@ public class Input extends javax.swing.JFrame {
                 jTextAreaFromZones.getText()+ "#" +
                 jTextAreaToZones.getText();
         if(insert.length() <= 3)
-        	jTextAreaSubmit.setText("1#50#5#F1 57.04711 9.91231 100 20:F2 57.04712 9.91232 100 20#T1 57.04704 9.91545 100 20");
+        	jTextAreaSubmit.setText("1#50#5#F1 57.04711 9.91231 100 1000:F2 57.04712 9.91232 100 20#T1 57.04704 9.91545 100 1000");
         else    
         	jTextAreaSubmit.setText(insert);
     }
@@ -189,7 +189,7 @@ public class Input extends javax.swing.JFrame {
         
         String input[] = jTextAreaSubmit.getText().split("#");
         
-        assert(input.length == 6);
+        assert(input.length == 5);
         
         this.numberOfCars = Integer.parseInt(input[0]);
         double duration = Double.parseDouble(input[1]); // *
