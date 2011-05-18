@@ -150,17 +150,13 @@ public class Vehicle implements IVehicle {
 				database.updateVehicle(this, this.vehicle_id);
 			} else
 				// TODO something
-			return;
+				return;
 
 		} else { // allowedDistance > distance
 			double tmpAllowedDistance = allowedDistance - distance; // tmpAllowedDistance
 			double tmpTimeLeft = timeLeft
 					- this.timespent(distance, speedLimit); // TODO confirm
-			// method
-			// "time spent" is
-			// working
-			// correctly.
-		
+			// method "time spent" is working correctly.
 
 			position = this.getCheckpoint();
 			int tmpIndex = this.index + 1;
@@ -183,7 +179,7 @@ public class Vehicle implements IVehicle {
 			database.updateVehicle(this, this.vehicle_id);
 		} else
 			// TODO something
-		database.updateVehicle(this, this.vehicle_id);
+			database.updateVehicle(this, this.vehicle_id);
 
 	}
 

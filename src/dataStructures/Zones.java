@@ -8,11 +8,11 @@ import interfaces.IZones;
 public class Zones implements IZones {
 
 	private Vector<Zone> zones;
-	
-	public Zones(){
+
+	public Zones() {
 		this.setZones(new Vector<Zone>());
 	}
-	
+
 	public Zone getZone(int index) {
 		return this.zones.get(index);
 	}
@@ -20,7 +20,7 @@ public class Zones implements IZones {
 	public void addZone(Zone zone) {
 		this.zones.add(zone);
 	}
-	
+
 	public void setZones(Vector<Zone> zones) {
 		this.zones = zones;
 	}
@@ -28,8 +28,8 @@ public class Zones implements IZones {
 	public Vector<Zone> getZones() {
 		return this.zones;
 	}
-	
-	public Zone selectRandomZone(){
+
+	public Zone selectRandomZone() {
 		Random rand = new Random();
 		int i = rand.nextInt(getZones().size());
 		getZones().get(i).decreaseNumVehicles();
@@ -39,12 +39,12 @@ public class Zones implements IZones {
 		return theChoosenOne;
 	}
 
-	public String toString(){
+	public String toString() {
 		String ret = "";
-		for(Zone z : getZones())
+		for (Zone z : getZones())
 			ret += z.toString() + " ";
-		assert(ret.length() > 0); 
-		return ret;		
+		assert (ret.length() > 0);
+		return ret;
 	}
 
 }

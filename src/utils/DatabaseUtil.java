@@ -28,7 +28,7 @@ public class DatabaseUtil {
 		} catch (Exception e) {
 			try {
 				this.connection = DriverManager.getConnection(defaultUrl,
-						defaultUser, "123");
+						defaultUser, "admin");
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -61,16 +61,14 @@ public class DatabaseUtil {
 	 */
 	public ShortestPath getShortestPath(GPSSignal from, GPSSignal to)
 			throws SQLException {
-		long t0 = System.currentTimeMillis();
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);
 		// bbox - set a bounding box containing start and end
 		// vertex
 		// plus a 0.1 degree buffer for example.
 		assert (idFrom != idTo) : "idFrom and idTo should be different.";
-		ResultSet result = shortestPathQuery(idFrom, idTo, 1000);
-		System.out.println("Execution time: "
-				+ (System.currentTimeMillis() - t0) + "miliceconds");
+		ResultSet result = shortestPathQuery(idFrom, idTo, 100);
+	//	System.out.println("Execution time: "+ (System.currentTimeMillis() - t0) + "miliceconds");
 		return resultSet2ShortestPath(result);
 
 	}
@@ -234,7 +232,7 @@ public class DatabaseUtil {
 		assert (v.getVoyage().getPath().size() == v.getVoyage().getTimes()
 				.size());
 		int signals = v.getVoyage().getPath().size();
-		System.out.println(v.getVoyage().getTimes());
+		//System.out.println(v.getVoyage().getTimes());
 
 		String sql = "INSERT INTO signals (vehicle_id, location, time) VALUES";
 		for (int i = 0; i < signals; i++) {
