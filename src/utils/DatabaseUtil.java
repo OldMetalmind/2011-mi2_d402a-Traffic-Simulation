@@ -89,7 +89,7 @@ public class DatabaseUtil {
 		ResultSet result = statement.executeQuery(sql);
 
 		if (!result.next()) {
-			result = shortestPathQuery(idFrom, idTo, bbox * 10);
+			result = shortestPathQuery(idFrom, idTo, bbox * 2);
 		}
 		return result;
 	}

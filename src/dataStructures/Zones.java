@@ -33,9 +33,10 @@ public class Zones implements IZones {
 		Random rand = new Random();
 		int i = rand.nextInt(getZones().size());
 		getZones().get(i).decreaseNumVehicles();
+		Zone theChoosenOne = getZones().get(i); 
 		if(getZones().get(i).getMaxVehicles() == 0)
 			getZones().remove(i);
-		return getZones().get(i);
+		return theChoosenOne;
 	}
 
 	public String toString(){
