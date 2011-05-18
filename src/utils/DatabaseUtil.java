@@ -64,9 +64,19 @@ public class DatabaseUtil {
 		long t0 = System.currentTimeMillis();
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);
-		int bbox = 1000; // set a bounding box containing start and end vertex
+		// bbox - set a bounding box containing start and end
+		// vertex
 		// plus a 0.1 degree buffer for example.
 		assert (idFrom != idTo) : "idFrom and idTo should be different.";
+		ResultSet result = shortestPathQuery(idFrom, idTo, 1000);
+		System.out.println("Execution time: "
+				+ (System.currentTimeMillis() - t0) + "miliceconds");
+		return resultSet2ShortestPath(result);
+
+	}
+
+	private ResultSet shortestPathQuery(int idFrom, int idTo, int bbox)
+			throws SQLException {
 		String sql = "SELECT st_astext(startpoint) as start, "
 				+ "st_astext(endpoint) as end,hastmax,"
 				+ "  start_id as source, end_id as target "
@@ -74,13 +84,14 @@ public class DatabaseUtil {
 				+ "," + bbox + ") as x "
 				+ "left join network ON (x.gid=network.gid)";
 
-		// System.out.println(sql);
+	//	System.out.println(sql);
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 
-		System.out.println("Execution time: "
-				+ (System.currentTimeMillis() - t0) + "miliceconds");
-		return resultSet2ShortestPath(result);
+		if (!result.next()) {
+			result = shortestPathQuery(idFrom, idTo, bbox * 10);
+		}
+		return result;
 	}
 
 	public void clearVehicles() {
@@ -111,7 +122,7 @@ public class DatabaseUtil {
 	}
 
 	public double checkDistanceToOtherVehicles(GPSSignal position) {
-		//TODO what to do if cars are going in different directions?
+		// TODO what to do if cars are going in different directions?
 		String sql = "SELECT " + "ST_Distance(" + "ST_SetSRID('POINT("
 				+ position.getLongitude() + " " + position.getLatitude()
 				+ ")'::geometry,4236)" + ", location) "
@@ -154,8 +165,9 @@ public class DatabaseUtil {
 		// vertex_id | edge_id | cost
 		ShortestPath path = new ShortestPath("UTM");
 		Statement statement = this.connection.createStatement();
-		result.next();
-		Integer speedLimit = Integer.parseInt(result.getString("hastmax"));
+		Integer speedLimit;
+
+		speedLimit = Integer.parseInt(result.getString("hastmax"));
 		path.addInstance(new GPSSignal(result.getString("start"), path
 				.getFormat()), speedLimit);
 		// path.addInstance(new GPSSignal(result.getString("end"),
@@ -281,5 +293,4 @@ public class DatabaseUtil {
 		}
 	}
 
-	
 }
