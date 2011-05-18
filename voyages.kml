@@ -78,5 +78,82 @@
 		<coordinates>521856.90640409,6334112.55131924</coordinates>
 	</Point>
 </Placemark>
+<Placemark>
+	<name>id=1  t=0.0</name>
+	<description>521335.65,6332517.9</description>
+	<Point>
+		<coordinates>521335.65,6332517.9</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=1  t=5.0</name>
+	<description>521612.21779595,6332491.18881079</description>
+	<Point>
+		<coordinates>521612.21779595,6332491.18881079</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=1  t=10.0</name>
+	<description>521729.12871157,6332474.55941904</description>
+	<Point>
+		<coordinates>521729.12871157,6332474.55941904</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=1  t=15.0</name>
+	<description>522190.91326806,6332394.32835894</description>
+	<Point>
+		<coordinates>522190.91326806,6332394.32835894</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=1  t=20.0</name>
+	<description>522386.25627024,6332316.39529346</description>
+	<Point>
+		<coordinates>522386.25627024,6332316.39529346</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=1  t=25.0</name>
+	<description>522518.29446399,6332196.8093958</description>
+	<Point>
+		<coordinates>522518.29446399,6332196.8093958</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=1  t=30.0</name>
+	<description>522766.32988343,6331947.13581204</description>
+	<Point>
+		<coordinates>522766.32988343,6331947.13581204</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=1  t=35.0</name>
+	<description>522984.11609366,6331684.55450511</description>
+	<Point>
+		<coordinates>522984.11609366,6331684.55450511</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=1  t=40.0</name>
+	<description>523078.00607707,6331567.18754208</description>
+	<Point>
+		<coordinates>523078.00607707,6331567.18754208</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=1  t=45.0</name>
+	<description>523156.56085577,6331461.9202174</description>
+	<Point>
+		<coordinates>523156.56085577,6331461.9202174</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=1  t=50.0</name>
+	<description>523213.82771958,6331358.931198</description>
+	<Point>
+		<coordinates>523213.82771958,6331358.931198</coordinates>
+	</Point>
+</Placemark>
 </Document>
 </kml>

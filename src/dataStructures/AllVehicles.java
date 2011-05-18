@@ -3,8 +3,6 @@ package dataStructures;
 import java.sql.SQLException;
 import java.util.*;
 
-import utils.DatabaseUtil;
-
 import interfaces.IAllVehicles;
 
 public class AllVehicles implements IAllVehicles {

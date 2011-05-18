@@ -189,7 +189,7 @@ public class Input extends javax.swing.JFrame {
         
         String input[] = jTextAreaSubmit.getText().split("#");
         
-        assert(input.length == 6);
+        assert(input.length == 5);
         
         this.numberOfCars = Integer.parseInt(input[0]);
         double duration = Double.parseDouble(input[1]); // *
