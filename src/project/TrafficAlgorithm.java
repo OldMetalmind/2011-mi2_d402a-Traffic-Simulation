@@ -11,6 +11,7 @@ public class TrafficAlgorithm {
 	private UserInput user;
 	private AllVehicles vehicles;
 	private DatabaseUtil database;
+	long t0 = System.currentTimeMillis();
 
 	public TrafficAlgorithm(UserInput userInput) throws SQLException {
 		System.out.println("Traffic Algorithm phase 1 started");
@@ -20,8 +21,6 @@ public class TrafficAlgorithm {
 		
 		OutputUtil zones_output = new OutputUtil("zones");
 		zones_output.writeZones(this.user.getFromZones(), this.user.getToZones());
-		
-		long t0 = System.currentTimeMillis();
 		user = userInput;		
 		database = new DatabaseUtil();
 		String out = "";
@@ -65,6 +64,8 @@ public class TrafficAlgorithm {
 		System.out.print("Saving to database...");
 		database.save(this.vehicles);
 		System.out.println("...saved");
+		
+		System.out.println("Total time: "+(System.currentTimeMillis()-t0)+" miliseconds.");
 
 		System.exit(1);
 	}
