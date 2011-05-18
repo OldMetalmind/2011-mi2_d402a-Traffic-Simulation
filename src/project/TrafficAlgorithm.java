@@ -17,13 +17,16 @@ public class TrafficAlgorithm {
 		this.user = userInput;
 		this.database = new DatabaseUtil();
 		this.database.clearVehicles();
-
+		
+		OutputUtil zones_output = new OutputUtil("zones");
+		zones_output.writeZones(this.user.getFromZones(), this.user.getToZones());
+		
 		long t0 = System.currentTimeMillis();
 		user = userInput;		
 		database = new DatabaseUtil();
 		String out = "";
-		OutputUtil kml = new OutputUtil("shortest_paths");
-		out = kml.KMLHeader();
+		OutputUtil shortest_paths_output = new OutputUtil("shortest_paths");
+		out = shortest_paths_output.KMLHeader();
 
 		database.clearVehicles();
 		this.vehicles = new AllVehicles();
@@ -33,12 +36,12 @@ public class TrafficAlgorithm {
 			Vehicle v = this.vehicles.generateVehicle(from, to, i);
 			this.vehicles.addVehicle(v);
 			this.database.addVehicle(v, v.getVehicle_id());			
-			out += kml.KMLTrip(v.getShortestPath(), "UTM");
+			out += shortest_paths_output.KMLTrip(v.getShortestPath(), "UTM");
 			System.out.println((i+1) +"/"+ this.user.getTotalVehicles());	
 			 System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliseconds");
 		}
-		out += kml.KMLFooter();
-		kml.writeFile(out, "kml");
+		out += shortest_paths_output.KMLFooter();
+		shortest_paths_output.writeFile(out, "kml");
 		run();
 		}
 	

@@ -7,6 +7,8 @@ import dataStructures.AllVehicles;
 import dataStructures.GPSSignal;
 import dataStructures.Trip;
 import dataStructures.Vehicle;
+import dataStructures.Zone;
+import dataStructures.Zones;
 
 /*
  * This class will only serve to output to a .KML file. 
@@ -16,6 +18,8 @@ import dataStructures.Vehicle;
 public class OutputUtil {
 
 	private static String filename;
+	final private String colorFrom = "#60da11";
+	final private String colorTo = "#1161d9";
 	
 	public OutputUtil(String name){
 		filename = name;
@@ -127,5 +131,32 @@ public class OutputUtil {
 				"\t\t<altitudeMode>relativeToGround</altitudeMode>\n" +
 				"\t\t<extrude>1</extrude>\n"+
 		 */
+	}
+
+	public void writeZones(Zones fromZones, Zones toZones) {
+		// TODO Placemark with circle surrounding , center, name of the zone and different color if is zone from or zone to.
+		String str = "";
+		str += this.KMLHeader();
+		for(Zone z : fromZones.getZones()){
+			str += this.writeZone(z, this.colorFrom);
+		}
+		for(Zone z : toZones.getZones()){
+			str += this.writeZone(z, this.colorTo);
+		}
+		str += this.KMLFooter(); 
+		this.writeFile(str, "kml");
+	}
+
+	private String writeZone(Zone z, String color) {
+		String str = "";
+		String style = "<Style id=color_"+z.getName()+"><LineStyle><color>"+color+"</color></LineStyle></Style>";		//	<color>ff00f00f</color><LineStyle><color>73ffffff</color><width>3.5</width></LineStyle>"
+		str += style;
+		str += "<styleUrl>color_"+z.getName()+"</styleUrl>\n<Polygon>\n" +
+				"	\t<LinearRing>\n" +
+				"		\t\t<coordinates>" +Utils.linearRingCoordinates(z) +" </coordinates>" +
+				"	\t</LinearRing>\n" +
+				"</Polygon>\n";		
+		
+		return str;
 	}
 }

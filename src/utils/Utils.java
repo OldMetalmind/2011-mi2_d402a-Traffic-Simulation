@@ -4,6 +4,7 @@ import uk.me.jstott.jcoord.LatLng;
 import uk.me.jstott.jcoord.UTMRef;
 import dataStructures.GPSSignal;
 import dataStructures.Trip;
+import dataStructures.Zone;
 
 /*
  * Methods that help other classes;
@@ -76,5 +77,10 @@ public class Utils {
 	 */
 	public static double convertKmh2ms(Integer i) {
 		return i.doubleValue()*kmh2ms;
+	}
+
+	public static String linearRingCoordinates(Zone z) {
+		// TODO Return a string with the coordinates of the circunference separated by a comma
+		return null;
 	}
 }

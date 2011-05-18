@@ -17,38 +17,42 @@ public class Zone implements IZone {
 		this.radius = radius;
 	}
 	
-	public Zone(GPSSignal center, double radius, double maxVehicles){
+	public Zone(GPSSignal center, double radius, double maxVehicles, String name){
 		this.center = Utils.LatLon2UTM(center);
 		this.radius = radius;
 		this.numberVehicles = maxVehicles;
+		this.name = name;
 	}
 	
 	public Zone(String zonex, String format) {
 		String coord[] = zonex.split(" ");
-		this.center = Utils.LatLon2UTM(new GPSSignal(coord[0]+" "+coord[1], format));
-		this.radius = Double.parseDouble(coord[2]);
-		this.numberVehicles = Double.parseDouble(coord[3]);
+		assert(coord.length == 5): "it should be: [0]name, [1]&[2] coordinates, [3]radius and [4]number of vehicles";
+		this.name = coord[0];
+		this.center = Utils.LatLon2UTM(new GPSSignal(coord[1]+" "+coord[2], format));
+		this.radius = Double.parseDouble(coord[3]);
+		this.numberVehicles = Double.parseDouble(coord[4]);
 	}
 	
-	public Zone(GPSSignal center, Double radius, int maxVehicles){
+	public Zone(GPSSignal center, Double radius, double maxVehicles, String name){
 		this.center = Utils.LatLon2UTM(center);
 		this.radius = radius;
 		this.numberVehicles = maxVehicles;
+		this.name = name;
 	}
 	
-	public Zone(String zonex, String format, int maxVehicles) {
+	public Zone(String zonex, String format, double maxVehicles, String name) {
 		String coord[] = zonex.split(" ");
 		this.center = Utils.LatLon2UTM(new GPSSignal(coord[0]+" "+coord[1], format));
 		this.radius = Double.parseDouble(coord[2]);
 		this.numberVehicles = maxVehicles;
+		this.name = name;
 	}
 	
 	/**
 	 * @return a random GPS signal in UTM format, that is located inside the zone
 	 */
 	public GPSSignal generateRandomGPS(){
-		assert(this.center.getFormat() == "UTM"): "center format is - " + this.center.getFormat() + ", it should be UTM";
-		
+		assert(this.center.getFormat() == "UTM"): "center format is - " + this.center.getFormat() + ", it should be UTM";	
 		
 		Random rand = new Random();
 		double distance = rand.nextDouble()*this.radius;
