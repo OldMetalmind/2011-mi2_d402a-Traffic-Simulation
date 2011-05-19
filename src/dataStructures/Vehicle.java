@@ -160,6 +160,11 @@ public class Vehicle implements IVehicle {
 
 			position = this.getCheckpoint();
 			int tmpIndex = this.index + 1;
+			if(tmpIndex == this.shortestPath.size()){
+				newPosition = position;
+				this.reachedDestination();
+				return;
+			}
 			this.setCheckpoint(this.shortestPath.getInstance(tmpIndex));
 			assert (!position.equals(this.checkpoint));
 
