@@ -63,12 +63,11 @@ public class DatabaseUtil {
 			throws SQLException {
 		int idFrom = getClosestPoint(from);
 		int idTo = getClosestPoint(to);
-		// bbox - set a bounding box containing start and end
-		// vertex
-		// plus a 0.1 degree buffer for example.
+
 		assert (idFrom != idTo) : "idFrom and idTo should be different.";
 		ResultSet result = shortestPathQuery(idFrom, idTo, 100);
-	//	System.out.println("Execution time: "+ (System.currentTimeMillis() - t0) + "miliceconds");
+		// bbox - set a bounding box containing start and end
+		// vertex plus a 0.1 degree buffer for example.
 		return resultSet2ShortestPath(result);
 
 	}
@@ -82,7 +81,7 @@ public class DatabaseUtil {
 				+ "," + bbox + ") as x "
 				+ "left join network ON (x.gid=network.gid)";
 
-	//	System.out.println(sql);
+		// System.out.println(sql);
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 
@@ -124,12 +123,12 @@ public class DatabaseUtil {
 		String sql = "SELECT " + "ST_Distance(" + "ST_SetSRID('POINT("
 				+ position.getLongitude() + " " + position.getLatitude()
 				+ ")'::geometry,4236)" + ", location) "
-				+ "as x from vehicles order by x asc";
+				+ "as distance from vehicles order by distance asc";
 		try {
 			Statement statement = this.connection.createStatement();
 			ResultSet result = statement.executeQuery(sql);
 			result.next();
-			double distance = Double.parseDouble(result.getString("x"));
+			double distance = Double.parseDouble(result.getString("distance"));
 			statement.close();
 			return distance;
 		} catch (SQLException e) {
@@ -232,7 +231,7 @@ public class DatabaseUtil {
 		assert (v.getVoyage().getPath().size() == v.getVoyage().getTimes()
 				.size());
 		int signals = v.getVoyage().getPath().size();
-		//System.out.println(v.getVoyage().getTimes());
+		// System.out.println(v.getVoyage().getTimes());
 
 		String sql = "INSERT INTO signals (vehicle_id, location, time) VALUES";
 		for (int i = 0; i < signals; i++) {
