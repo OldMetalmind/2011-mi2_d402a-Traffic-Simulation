@@ -37,7 +37,7 @@ public class TrafficAlgorithm {
 			this.database.addVehicle(v, v.getVehicle_id());			
 			out += shortest_paths_output.KMLTrip(v.getShortestPath(), "UTM");
 			System.out.println((i+1) +"/"+ this.user.getTotalVehicles());	
-			 System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliseconds");
+		//	 System.out.println("Execution time: " + (System.currentTimeMillis()-t0) + "miliseconds");
 		}
 		out += shortest_paths_output.KMLFooter();
 		shortest_paths_output.writeFile(out, "kml");

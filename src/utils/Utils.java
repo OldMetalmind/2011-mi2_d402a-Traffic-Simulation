@@ -11,8 +11,8 @@ import dataStructures.Zone;
  */
 public class Utils {
 	
-	final static int UTMCode = 32;
-	final static char UTMZone = 'N';
+	final static int UTMCode = 32; //32
+	final static char UTMZone = 'N'; // N
 	final static double kmh2ms = 0.27777778;
 	
 	public static Trip UTM2LatLon(Trip trip) {

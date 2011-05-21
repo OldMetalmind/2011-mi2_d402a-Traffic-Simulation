@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+<Document>
+<Placemark>
+	<name>id=0  t=0.0</name>
+	<description>539145.53,6286005.81</description>
+	<Point>
+		<coordinates>539145.53,6286005.81</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=5.0</name>
+	<description>539251.407527829,6286491.79702958</description>
+	<Point>
+		<coordinates>539251.407527829,6286491.79702958</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=10.0</name>
+	<description>539293.950020939,6286676.60120929</description>
+	<Point>
+		<coordinates>539293.950020939,6286676.60120929</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=15.0</name>
+	<description>539335.27047469,6286803.59191999</description>
+	<Point>
+		<coordinates>539335.27047469,6286803.59191999</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=20.0</name>
+	<description>539463.957129717,6287121.16704986</description>
+	<Point>
+		<coordinates>539463.957129717,6287121.16704986</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=25.0</name>
+	<description>539588.587662068,6287442.38754192</description>
+	<Point>
+		<coordinates>539588.587662068,6287442.38754192</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=30.0</name>
+	<description>539618.596511984,6287516.87665098</description>
+	<Point>
+		<coordinates>539618.596511984,6287516.87665098</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=35.0</name>
+	<description>539646.092947147,6287574.66242669</description>
+	<Point>
+		<coordinates>539646.092947147,6287574.66242669</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=40.0</name>
+	<description>539695.893568386,6287645.24124466</description>
+	<Point>
+		<coordinates>539695.893568386,6287645.24124466</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=45.0</name>
+	<description>539815.844096921,6287813.75761638</description>
+	<Point>
+		<coordinates>539815.844096921,6287813.75761638</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=50.0</name>
+	<description>540032.463180125,6288419.44740307</description>
+	<Point>
+		<coordinates>540032.463180125,6288419.44740307</coordinates>
+	</Point>
+</Placemark>
+</Document>
+</kml>

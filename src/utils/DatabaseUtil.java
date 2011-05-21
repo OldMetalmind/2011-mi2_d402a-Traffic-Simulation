@@ -1,14 +1,11 @@
 package utils;
 
 import java.sql.*;
-import java.util.Vector;
 
 import dataStructures.AllVehicles;
 import dataStructures.GPSSignal;
 import dataStructures.ShortestPath;
-import dataStructures.Trip;
 import dataStructures.Vehicle;
-import dataStructures.Voyage;
 
 /*
  * Every action/method related to the database, should be here.
@@ -20,7 +17,7 @@ public class DatabaseUtil {
 	static private String defaultUrl = "jdbc:postgresql://localhost:5432/project";
 	static private String defaultUser = "postgres";
 	static private String defaultPassword = "admin";
-
+	
 	public DatabaseUtil() {
 		try {
 			this.connection = DriverManager.getConnection(defaultUrl,
@@ -28,7 +25,7 @@ public class DatabaseUtil {
 		} catch (Exception e) {
 			try {
 				this.connection = DriverManager.getConnection(defaultUrl,
-						defaultUser, "admin");
+						defaultUser, "123");
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -82,7 +79,7 @@ public class DatabaseUtil {
 				+ "," + bbox + ") as x "
 				+ "left join network ON (x.gid=network.gid)";
 
-	//	System.out.println(sql);
+		//System.out.println(sql);
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 
@@ -120,11 +117,12 @@ public class DatabaseUtil {
 	}
 
 	public double checkDistanceToOtherVehicles(GPSSignal position) {
-		// TODO what to do if cars are going in different directions?
+		// TODO what to do if cars are going in different directions? :S
 		String sql = "SELECT " + "ST_Distance(" + "ST_SetSRID('POINT("
 				+ position.getLongitude() + " " + position.getLatitude()
 				+ ")'::geometry,4236)" + ", location) "
 				+ "as x from vehicles order by x asc";
+		//System.out.println(sql);
 		try {
 			Statement statement = this.connection.createStatement();
 			ResultSet result = statement.executeQuery(sql);
@@ -164,18 +162,14 @@ public class DatabaseUtil {
 		ShortestPath path = new ShortestPath("UTM");
 		Statement statement = this.connection.createStatement();
 		Integer speedLimit;
-
+		
+		result.next();
 		speedLimit = Integer.parseInt(result.getString("hastmax"));
-		path.addInstance(new GPSSignal(result.getString("start"), path
-				.getFormat()), speedLimit);
-		// path.addInstance(new GPSSignal(result.getString("end"),
-		// path.getFormat()), speedLimit);
+		path.addInstance(new GPSSignal(result.getString("start"), path.getFormat()), speedLimit);
+
 		while (result.next()) {
 			speedLimit = Integer.parseInt(result.getString("hastmax"));
-			path.addInstance(new GPSSignal(result.getString("start"), path
-					.getFormat()), speedLimit);
-			// path.addInstance(new GPSSignal(result.getString("end"),
-			// path.getFormat()), speedLimit);
+			path.addInstance(new GPSSignal(result.getString("start"), path.getFormat()), speedLimit);
 		}
 		statement.close();
 		result.close();
@@ -206,13 +200,25 @@ public class DatabaseUtil {
 				+ (lat + bboxsize) + "," + (lng + bboxsize) + ")),the_geom)"
 				+ " ORDER BY x asc limit 1;";
 
+		
+		//System.out.println(sql);
+		int id = closestPointRecursive(sql, bboxsize, 2);
+		return id;
+	}
+
+	private int closestPointRecursive(String sql, int bboxsize, int c) throws SQLException {
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		result.next();
-		int id = Integer.parseInt(result.getString("id"));
+		//assert(result.getFetchSize() > 0): "Couldn't find the shortespath";
+		try{
+		int id = Integer.parseInt( result.getString("id") );
 		result.close();
 		statement.close();
 		return id;
+		} catch(SQLException e){
+			return (c > 0)? closestPointRecursive(sql, bboxsize*10, c - 1): -1;
+		}
 	}
 
 	public void clearSignals() {
@@ -245,6 +251,7 @@ public class DatabaseUtil {
 		}
 		sql = sql.substring(0, sql.length() - 1);// Removing last comma from the
 		// string
+		System.out.println(sql);
 		try {
 			Statement statement = this.connection.createStatement();
 			statement.executeQuery(sql);
@@ -257,7 +264,7 @@ public class DatabaseUtil {
 	public GPSSignal lineInterpolatePoint(GPSSignal to, GPSSignal from,
 			float percentage) {
 		GPSSignal point = null;
-		String sql = "SELECT ST_asText(ST_Line_Interpolate_Point(line,0.164511)) as point FROM ST_SetSRID( 'LINESTRING("
+		String sql = "SELECT ST_asText(ST_Line_Interpolate_Point(line,"+percentage+")) as point FROM ST_SetSRID( 'LINESTRING("
 				+ to.getLatitude()
 				+ " "
 				+ to.getLongitude()
