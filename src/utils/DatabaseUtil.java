@@ -58,12 +58,13 @@ public class DatabaseUtil {
 	 */
 	public ShortestPath getShortestPath(GPSSignal from, GPSSignal to)
 			throws SQLException {
-		int idFrom = getClosestPoint(from);
-		int idTo = getClosestPoint(to);
+		int idFrom = getClosestPoint(from, Integer.MIN_VALUE);
+		int idTo = getClosestPoint(to, idFrom);
+		assert(idFrom != idTo);
 		// bbox - set a bounding box containing start and end
 		// vertex
 		// plus a 0.1 degree buffer for example.
-		assert (idFrom != idTo) : "idFrom and idTo should be different.";
+		//assert (idFrom != idTo) : "idFrom and idTo should be different.";
 		ResultSet result = shortestPathQuery(idFrom, idTo, 100);
 	//	System.out.println("Execution time: "+ (System.currentTimeMillis() - t0) + "miliceconds");
 		return resultSet2ShortestPath(result);
@@ -162,7 +163,7 @@ public class DatabaseUtil {
 		ShortestPath path = new ShortestPath("UTM");
 		Statement statement = this.connection.createStatement();
 		Integer speedLimit;
-		
+		if(result == null) return null;
 		result.next();
 		speedLimit = Integer.parseInt(result.getString("hastmax"));
 		path.addInstance(new GPSSignal(result.getString("start"), path.getFormat()), speedLimit);
@@ -180,14 +181,14 @@ public class DatabaseUtil {
 	/**
 	 * 
 	 * @param signal
+	 * @param prev 
 	 * @return the id of the_geom closest to the signal given
 	 * @throws SQLException
 	 */
-	private Integer getClosestPoint(GPSSignal signal) throws SQLException {
+	private Integer getClosestPoint(GPSSignal signal, int prev) throws SQLException {
 		if (signal.getFormat() == "LatLon") {
 			signal = Utils.LatLon2UTM(signal);
 		}
-
 		Double lat = signal.getLatitude();
 		Double lng = signal.getLongitude();
 		int bboxsize = 100;
@@ -198,26 +199,31 @@ public class DatabaseUtil {
 				+ "WHERE ST_intersects(ST_MakeBox2D(ST_Point("
 				+ (lat - bboxsize) + "," + (lng - bboxsize) + "),ST_Point("
 				+ (lat + bboxsize) + "," + (lng + bboxsize) + ")),the_geom)"
-				+ " ORDER BY x asc limit 1;";
-
+				+ " ORDER BY x asc limit 5;";
 		
 		//System.out.println(sql);
-		int id = closestPointRecursive(sql, bboxsize, 2);
-		return id;
+		int id = closestPointRecursive(sql, bboxsize, 10, prev);
+		System.out.println(prev+"  "+id);
+		return id; 
 	}
 
-	private int closestPointRecursive(String sql, int bboxsize, int c) throws SQLException {
+	private int closestPointRecursive(String sql, int bboxsize, int c, int prev) throws SQLException {
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		result.next();
 		//assert(result.getFetchSize() > 0): "Couldn't find the shortespath";
-		try{
-		int id = Integer.parseInt( result.getString("id") );
-		result.close();
-		statement.close();
+		try{			
+			int id = Integer.parseInt( result.getString("id") );
+			while(id == prev){
+				System.out.println(id+"  "+prev);
+				result.next();
+				id = Integer.parseInt( result.getString("id") );
+			}
+			result.close();
+			statement.close();
 		return id;
 		} catch(SQLException e){
-			return (c > 0)? closestPointRecursive(sql, bboxsize*10, c - 1): -1;
+			return (c > 0)? closestPointRecursive(sql, bboxsize*10, c - 1, prev): -1;
 		}
 	}
 

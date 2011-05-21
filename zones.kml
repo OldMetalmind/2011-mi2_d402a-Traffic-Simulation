@@ -6,6 +6,11 @@
 		<LinearRing>
 				<coordinates>null </coordinates>		</LinearRing>
 </Polygon>
+<Style id=color_F2><LineStyle><color>#60da11</color></LineStyle></Style><styleUrl>color_F2</styleUrl>
+<Polygon>
+		<LinearRing>
+				<coordinates>null </coordinates>		</LinearRing>
+</Polygon>
 <Style id=color_T1><LineStyle><color>#1161d9</color></LineStyle></Style><styleUrl>color_T1</styleUrl>
 <Polygon>
 		<LinearRing>

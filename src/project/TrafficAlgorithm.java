@@ -19,6 +19,7 @@ public class TrafficAlgorithm {
 		this.database = new DatabaseUtil();
 		this.database.clearVehicles();
 		
+		init();
 		OutputUtil zones_output = new OutputUtil("zones");
 		zones_output.writeZones(this.user.getFromZones(), this.user.getToZones());
 		user = userInput;		
@@ -41,9 +42,14 @@ public class TrafficAlgorithm {
 		}
 		out += shortest_paths_output.KMLFooter();
 		shortest_paths_output.writeFile(out, "kml");
-		run();
+		//run();
 		}
 	
+	private void init() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void run(){
 		System.out.println("Traffic Algorithm phase 2 started");
 		DatabaseUtil database = new DatabaseUtil();
