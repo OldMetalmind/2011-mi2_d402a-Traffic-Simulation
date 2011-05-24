@@ -83,4 +83,13 @@ public class Utils {
 		// TODO Return a string with the coordinates of the circunference separated by a comma
 		return null;
 	}
+	
+	public static double distance(GPSSignal s1, GPSSignal s2) {
+	    LatLng ll1 = new LatLng(s1.getLatitude(), s1.getLongitude());
+	    LatLng ll2 = new LatLng(s2.getLatitude(), s2.getLongitude());
+	    UTMRef utm1 = ll1.toUTMRef();
+	    UTMRef utm2 = ll2.toUTMRef();			
+		System.out.println(utm1.toString()+ "<<<<<<<<<<<<<<<");
+		return Math.sqrt(Math.pow(utm1.getEasting() - utm2.getEasting(), 2) + Math.pow(utm1.getNorthing() - utm2.getNorthing(), 2));
+	}
 }

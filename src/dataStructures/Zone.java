@@ -80,5 +80,9 @@ public class Zone implements IZone {
 	
 	public String toString(){
 		return "["+this.center.toString() +" "+ this.center.getFormat() +" "+ this.radius +"]";
+	}
+
+	public GPSSignal getCenter() {		
+		return this.center;
 	}	
 }

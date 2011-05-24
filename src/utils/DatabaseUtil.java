@@ -203,7 +203,7 @@ public class DatabaseUtil {
 		
 		//System.out.println(sql);
 		int id = closestPointRecursive(sql, bboxsize, 10, prev);
-		System.out.println(prev+"  "+id);
+		//System.out.println(prev+"  "+id);
 		return id; 
 	}
 

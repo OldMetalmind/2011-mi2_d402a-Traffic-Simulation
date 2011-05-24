@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import utils.DatabaseUtil;
 import utils.OutputUtil;
+import utils.Utils;
 import dataStructures.*;
 
 public class TrafficAlgorithm {
@@ -18,6 +19,12 @@ public class TrafficAlgorithm {
 		this.user = userInput;
 		this.database = new DatabaseUtil();
 		this.database.clearVehicles();
+		/*
+		System.out.println("_________");
+		double d = Utils.distance(this.user.getFromZones().getZone(0).getCenter(), this.user.getToZones().getZone(0).getCenter());
+		System.out.println("_________  " + d +" _________");
+		*/
+		
 		
 		init();
 		OutputUtil zones_output = new OutputUtil("zones");
@@ -45,6 +52,8 @@ public class TrafficAlgorithm {
 		//run();
 		}
 	
+	
+
 	private void init() {
 		// TODO Auto-generated method stub
 		
@@ -60,6 +69,8 @@ public class TrafficAlgorithm {
 			time += user.getFrequency();
 		}
 		
+		System.out.println("Total time: "+(System.currentTimeMillis()-t0)+" miliseconds.");
+		/*
 		System.out.println("Traffic Algorithm finished");
 
 		System.out.print("Saving to KML...");
@@ -70,8 +81,8 @@ public class TrafficAlgorithm {
 		System.out.print("Saving to database...");
 		database.save(this.vehicles);
 		System.out.println("...saved");
+		*/
 		
-		System.out.println("Total time: "+(System.currentTimeMillis()-t0)+" miliseconds.");
 
 		System.exit(1);
 	}
