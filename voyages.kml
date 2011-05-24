@@ -3,6 +3,7 @@
 <Document>
 <Placemark>
 	<name>id=0  t=0.0</name>
+<<<<<<< HEAD
 	<description>556577.94,6321081.99</description>
 	<Point>
 		<coordinates>556577.94,6321081.99</coordinates>
@@ -7083,6 +7084,18 @@
 	<description>535835.99,6178921.88</description>
 	<Point>
 		<coordinates>535835.99,6178921.88</coordinates>
+=======
+	<description>521226.66,6332488.44</description>
+	<Point>
+		<coordinates>521226.66,6332488.44</coordinates>
+	</Point>
+</Placemark>
+<Placemark>
+	<name>id=0  t=0.5</name>
+	<description>520868.901825422,6332319.92472378</description>
+	<Point>
+		<coordinates>520868.901825422,6332319.92472378</coordinates>
+>>>>>>> 33deae7d2764e1026a7457e2b97d5e14f0c9f735
 	</Point>
 </Placemark>
 </Document>

@@ -69,7 +69,6 @@ public class Input extends javax.swing.JFrame {
                 jButtonSubmitMouseClicked(evt);
             }
         });
-
         jLabelFrequency.setText("Frequency (seconds)");
 
         jTextFieldFrequency.addActionListener(new java.awt.event.ActionListener() {
@@ -173,8 +172,11 @@ public class Input extends javax.swing.JFrame {
                 jTextFieldFrequency.getText()+ "#" +
                 jTextAreaFromZones.getText()+ "#" +
                 jTextAreaToZones.getText();
-        if(insert.length() <= 3)
-        	jTextAreaSubmit.setText("1#50#5#F1 57.04711 9.91231 100 1000:F2 57.04712 9.91232 100 20#T1 57.04704 9.91545 100 1000");
+        if(insert.length() <= 3){        	
+        	jTextAreaSubmit.setText("1#50#5#F1 57.04711 9.91231 100 1000#T1 57.04704 9.91545 100 1000");
+        }   //:F2 57.04712 9.91232 100 20
+        	//jTextAreaSubmit.setText("1#50#5#F1 57.18671089732462 11.09345870069965 100 1000#T1 57.2938011527299 10.918933864106227 100 1000");
+        	//jTextAreaSubmit.setText("1#50#5#F1 57.04711 9.91231 100 1000:F2 57.04712 9.91232 100 20#T1 57.04704 9.91545 100 1000");
         else    
         	jTextAreaSubmit.setText(insert);
     }

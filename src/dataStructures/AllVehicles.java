@@ -27,10 +27,10 @@ public class AllVehicles implements IAllVehicles {
 		GPSSignal f = from.generateRandomGPS();
 		GPSSignal t = to.generateRandomGPS();
 		
-		assert(!f.toString().isEmpty()): "'from' signal, shouldn't be empty";
-		assert(!t.toString().isEmpty()): "'to' signal, shouldn't be empty";
-		assert(!f.equals(t)) : "'from' and 'to' signals shouldn't be the same";
-		
+		//assert(!f.toString().isEmpty()): "'from' signal, shouldn't be empty";
+		//assert(!t.toString().isEmpty()): "'to' signal, shouldn't be empty";
+		//assert(!f.equals(t)) : "'from' and 'to' signals shouldn't be the same";
+		//System.out.println(f+"\n"+t+"\n");
 		DatabaseUtil database = new DatabaseUtil();
 
 		ShortestPath shortestpath = null;
@@ -40,9 +40,9 @@ public class AllVehicles implements IAllVehicles {
 			e.printStackTrace();
 		}
 		
-		assert(shortestpath != null): "'shortestpath', shouldn't be NULL";
-		assert(shortestpath.size() > 0): "'shortestpath', shouldn't not be empty";
-		assert(shortestpath.getInstance(0) != null): "value shouldn't be null";
+		//assert(shortestpath != null): "'shortestpath', shouldn't be NULL";
+		//assert(shortestpath.size() > 0): "'shortestpath', shouldn't not be empty";
+		//assert(shortestpath.getInstance(0) != null): "value shouldn't be null";
 		
 		return new Vehicle(shortestpath, id);
 	}
@@ -50,7 +50,7 @@ public class AllVehicles implements IAllVehicles {
 	public void move(DatabaseUtil database, double timeleft, double time) {
 		assert(vehicles.size() > 0);
 		for(Vehicle v : vehicles){
-			if(v.stopped) continue;
+			if(v.stopped || v.getShortestPath().isEmpty()) continue;
 			v.initMovement(database, timeleft, time);
 		}
 	}

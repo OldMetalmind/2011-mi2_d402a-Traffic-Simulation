@@ -1,14 +1,11 @@
 package utils;
 
 import java.sql.*;
-import java.util.Vector;
 
 import dataStructures.AllVehicles;
 import dataStructures.GPSSignal;
 import dataStructures.ShortestPath;
-import dataStructures.Trip;
 import dataStructures.Vehicle;
-import dataStructures.Voyage;
 
 /*
  * Every action/method related to the database, should be here.
@@ -20,7 +17,7 @@ public class DatabaseUtil {
 	static private String defaultUrl = "jdbc:postgresql://localhost:5432/project";
 	static private String defaultUser = "postgres";
 	static private String defaultPassword = "admin";
-
+	
 	public DatabaseUtil() {
 		try {
 			this.connection = DriverManager.getConnection(defaultUrl,
@@ -28,7 +25,7 @@ public class DatabaseUtil {
 		} catch (Exception e) {
 			try {
 				this.connection = DriverManager.getConnection(defaultUrl,
-						defaultUser, "admin");
+						defaultUser, "123");
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -61,10 +58,14 @@ public class DatabaseUtil {
 	 */
 	public ShortestPath getShortestPath(GPSSignal from, GPSSignal to)
 			throws SQLException {
-		int idFrom = getClosestPoint(from);
-		int idTo = getClosestPoint(to);
 
-		assert (idFrom != idTo) : "idFrom and idTo should be different.";
+		int idFrom = getClosestPoint(from, Integer.MIN_VALUE);
+		int idTo = getClosestPoint(to, idFrom);
+		assert(idFrom != idTo);
+		// bbox - set a bounding box containing start and end
+		// vertex
+		// plus a 0.1 degree buffer for example.
+		//assert (idFrom != idTo) : "idFrom and idTo should be different.";
 		ResultSet result = shortestPathQuery(idFrom, idTo, 100);
 		// bbox - set a bounding box containing start and end
 		// vertex plus a 0.1 degree buffer for example.
@@ -119,11 +120,12 @@ public class DatabaseUtil {
 	}
 
 	public double checkDistanceToOtherVehicles(GPSSignal position) {
-		// TODO what to do if cars are going in different directions?
+		// TODO what to do if cars are going in different directions? :S
 		String sql = "SELECT " + "ST_Distance(" + "ST_SetSRID('POINT("
 				+ position.getLongitude() + " " + position.getLatitude()
 				+ ")'::geometry,4236)" + ", location) "
 				+ "as distance from vehicles order by distance asc";
+		//System.out.println(sql);
 		try {
 			Statement statement = this.connection.createStatement();
 			ResultSet result = statement.executeQuery(sql);
@@ -163,18 +165,14 @@ public class DatabaseUtil {
 		ShortestPath path = new ShortestPath("UTM");
 		Statement statement = this.connection.createStatement();
 		Integer speedLimit;
-
+		if(result == null) return null;
+		result.next();
 		speedLimit = Integer.parseInt(result.getString("hastmax"));
-		path.addInstance(new GPSSignal(result.getString("start"), path
-				.getFormat()), speedLimit);
-		// path.addInstance(new GPSSignal(result.getString("end"),
-		// path.getFormat()), speedLimit);
+		path.addInstance(new GPSSignal(result.getString("start"), path.getFormat()), speedLimit);
+
 		while (result.next()) {
 			speedLimit = Integer.parseInt(result.getString("hastmax"));
-			path.addInstance(new GPSSignal(result.getString("start"), path
-					.getFormat()), speedLimit);
-			// path.addInstance(new GPSSignal(result.getString("end"),
-			// path.getFormat()), speedLimit);
+			path.addInstance(new GPSSignal(result.getString("start"), path.getFormat()), speedLimit);
 		}
 		statement.close();
 		result.close();
@@ -185,14 +183,14 @@ public class DatabaseUtil {
 	/**
 	 * 
 	 * @param signal
+	 * @param prev 
 	 * @return the id of the_geom closest to the signal given
 	 * @throws SQLException
 	 */
-	private Integer getClosestPoint(GPSSignal signal) throws SQLException {
+	private Integer getClosestPoint(GPSSignal signal, int prev) throws SQLException {
 		if (signal.getFormat() == "LatLon") {
 			signal = Utils.LatLon2UTM(signal);
 		}
-
 		Double lat = signal.getLatitude();
 		Double lng = signal.getLongitude();
 		int bboxsize = 100;
@@ -203,15 +201,32 @@ public class DatabaseUtil {
 				+ "WHERE ST_intersects(ST_MakeBox2D(ST_Point("
 				+ (lat - bboxsize) + "," + (lng - bboxsize) + "),ST_Point("
 				+ (lat + bboxsize) + "," + (lng + bboxsize) + ")),the_geom)"
-				+ " ORDER BY x asc limit 1;";
+				+ " ORDER BY x asc limit 5;";
+		
+		//System.out.println(sql);
+		int id = closestPointRecursive(sql, bboxsize, 10, prev);
+		//System.out.println(prev+"  "+id);
+		return id; 
+	}
 
+	private int closestPointRecursive(String sql, int bboxsize, int c, int prev) throws SQLException {
 		Statement statement = this.connection.createStatement();
 		ResultSet result = statement.executeQuery(sql);
 		result.next();
-		int id = Integer.parseInt(result.getString("id"));
-		result.close();
-		statement.close();
+		//assert(result.getFetchSize() > 0): "Couldn't find the shortespath";
+		try{			
+			int id = Integer.parseInt( result.getString("id") );
+			while(id == prev){
+				System.out.println(id+"  "+prev);
+				result.next();
+				id = Integer.parseInt( result.getString("id") );
+			}
+			result.close();
+			statement.close();
 		return id;
+		} catch(SQLException e){
+			return (c > 0)? closestPointRecursive(sql, bboxsize*10, c - 1, prev): -1;
+		}
 	}
 
 	public void clearSignals() {
@@ -244,6 +259,7 @@ public class DatabaseUtil {
 		}
 		sql = sql.substring(0, sql.length() - 1);// Removing last comma from the
 		// string
+		System.out.println(sql);
 		try {
 			Statement statement = this.connection.createStatement();
 			statement.executeQuery(sql);
@@ -256,7 +272,7 @@ public class DatabaseUtil {
 	public GPSSignal lineInterpolatePoint(GPSSignal to, GPSSignal from,
 			float percentage) {
 		GPSSignal point = null;
-		String sql = "SELECT ST_asText(ST_Line_Interpolate_Point(line,0.164511)) as point FROM ST_SetSRID( 'LINESTRING("
+		String sql = "SELECT ST_asText(ST_Line_Interpolate_Point(line,"+percentage+")) as point FROM ST_SetSRID( 'LINESTRING("
 				+ to.getLatitude()
 				+ " "
 				+ to.getLongitude()
