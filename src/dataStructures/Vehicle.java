@@ -149,14 +149,13 @@ public class Vehicle implements IVehicle {
 				this.setActualPosition(newPosition, time);
 				database.updateVehicle(this, this.vehicle_id);
 			} else
-				// TODO something
+
 				return;
 
 		} else { // allowedDistance > distance
 			double tmpAllowedDistance = allowedDistance - distance; // tmpAllowedDistance
 			double tmpTimeLeft = timeLeft
-					- this.timespent(distance, speedLimit); // TODO confirm
-			// method "time spent" is working correctly.
+					- this.timespent(distance, speedLimit);
 
 			position = this.getCheckpoint();
 			int tmpIndex = this.index + 1;
@@ -178,7 +177,6 @@ public class Vehicle implements IVehicle {
 			this.setActualPosition(newPosition, time);
 			database.updateVehicle(this, this.vehicle_id);
 		} else
-			// TODO something
 			database.updateVehicle(this, this.vehicle_id);
 
 	}
@@ -187,7 +185,6 @@ public class Vehicle implements IVehicle {
 			double allowedDistance, double timeLeft, GPSSignal position,
 			int index, double time) {
 		if (timeLeft == 0 || allowedDistance == 0) {
-			// TODO: 3check Overlap
 			this.reachedDestination();
 			return position;
 		}
